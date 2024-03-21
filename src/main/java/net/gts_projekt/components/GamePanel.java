@@ -1,5 +1,7 @@
 package net.gts_projekt.components;
 
+import net.gts_projekt.util.procedural.OpenSimplex2S;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.KeyEvent;
@@ -37,9 +39,14 @@ public class GamePanel extends JPanel implements Runnable, KeyListener {
         super.paintComponent(g);
         Graphics2D g2 = (Graphics2D) g;
 
-        for(int i = 0; i <= this.getWidth()/32; i++) {
-            for(int j = 0; j <= this.getHeight()/32; j++) {
-                g2.drawRect(i*32, j*32, 16, 16);
+        for(int i = 0; i < this.getWidth(); i++) {
+            for(int j = 0; j < this.getHeight(); j++) {
+                double value = OpenSimplex2S.noise3_ImproveXY(798887, i * 0.05, j * 0.05, 0.0);
+                int rgb = 0x010101 * (int)((value + 1) * 127.5);
+
+                g2.setColor(new Color(rgb));
+
+                g2.fillRect(i, j, 1, 1);
             }
         }
     }
