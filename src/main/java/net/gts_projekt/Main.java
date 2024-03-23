@@ -8,14 +8,25 @@ import org.w3c.dom.NodeList;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
+import java.nio.file.Path;
 
 public class Main {
-    public static String name;
-    public static String version;
+    private static String name;
+    private static String version;
+    private static Path path;
 
     public static Frame frame;
 
     public static void main(String[] args) {
+        initialize();
+
+        frame = new Frame();
+
+        Session session = new Session("test");
+        session.start();
+    }
+
+    private static void initialize() {
         name = "Name";
         version = "Version";
 
@@ -40,10 +51,17 @@ public class Main {
         } catch(Exception e) {
             Logger.log(e);
         }
+    }
 
-        frame = new Frame();
+    public static String getName() {
+        return name;
+    }
 
-        Session session = new Session("test");
-        session.start();
+    public static String getVersion() {
+        return version;
+    }
+
+    public static Path getPath() {
+        return path;
     }
 }

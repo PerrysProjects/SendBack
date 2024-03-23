@@ -1,10 +1,13 @@
 package net.gts_projekt;
 
 import java.nio.file.Path;
+import java.util.Date;
 
 public class Session implements Runnable {
     private String name;
     private Path path;
+    private Date creationDate;
+    private Date lastUse;
 
     private Thread thread;
     private int tps;

@@ -6,7 +6,7 @@ import javax.swing.*;
 
 public class Frame extends JFrame {
     public Frame() {
-        setTitle(Main.name + " | " + Main.version);
+        setTitle(Main.getName() + " | " + Main.getVersion());
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setFocusable(true);
 
