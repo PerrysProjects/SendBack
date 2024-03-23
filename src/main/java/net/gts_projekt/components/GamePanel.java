@@ -1,6 +1,5 @@
 package net.gts_projekt.components;
 
-import net.gts_projekt.util.procedural.OpenSimplex2S;
 import net.gts_projekt.util.procedural.PerlinNoise;
 
 import javax.swing.*;
