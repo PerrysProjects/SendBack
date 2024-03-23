@@ -1,6 +1,7 @@
 package net.gts_projekt;
 
 import net.gts_projekt.components.Frame;
+import net.gts_projekt.util.LogType;
 import net.gts_projekt.util.Logger;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
@@ -41,9 +42,12 @@ public class Main {
             Logger.log(e);
         }
 
-        frame = new Frame();
+       /* frame = new Frame();
 
         Session session = new Session("test");
-        session.start();
+        session.start(); */
+
+        System.out.println("Hallo");
+        Logger.log("Hallo2", LogType.ERROR);
     }
 }
