@@ -20,16 +20,17 @@ public class Main {
     private static String name;
     private static String version;
     private static Path path;
-
     private static OperatingSystem os;
 
     private static Frame frame;
 
+    private static Session currentSession;
+
     public static void main(String[] args) {
         initialize();
 
-        Session session = new Session("test");
-        session.start();
+        currentSession = new Session("test", 87623465);
+        currentSession.start();
     }
 
     private static void initialize() {
@@ -88,5 +89,9 @@ public class Main {
 
     public static Frame getFrame() {
         return frame;
+    }
+
+    public static Session getCurrentSession() {
+        return currentSession;
     }
 }

@@ -3,6 +3,7 @@ package net.gts_projekt.components;
 import net.gts_projekt.Main;
 
 import javax.swing.*;
+import java.awt.*;
 
 public class Frame extends JFrame {
     public Frame() {
@@ -12,10 +13,11 @@ public class Frame extends JFrame {
 
         setContentPane(new GamePanel());
         getContentPane().setFocusable(true);
-        getContentPane().requestFocusInWindow();
+        getContentPane().requestFocus();
         pack();
 
         setSize(900, 700);
+        setMinimumSize(new Dimension(900, 700));
         setLocationRelativeTo(null);
         setVisible(true);
     }

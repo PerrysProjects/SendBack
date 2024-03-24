@@ -1,6 +1,6 @@
 package net.gts_projekt.components;
 
-import net.gts_projekt.util.procedural.PerlinNoise;
+import net.gts_projekt.Main;
 
 import javax.swing.*;
 import java.awt.*;
@@ -11,10 +11,21 @@ public class GamePanel extends JPanel implements Runnable, KeyListener {
     private Thread thread;
     private int fps;
 
+    private int zoom;
+    private int lastWindowWidth;
+    private int lastWindowHeight;
+
+    private int cameraX, cameraY;
+    private int maxTop, maxBottom, maxLeft, maxRight;
+
     public GamePanel() {
         thread = new Thread(this);
         fps = 60;
 
+        zoom = 16;
+
+        setFocusable(true);
+        requestFocus();
         addKeyListener(this);
         setLayout(null);
 
@@ -22,7 +33,18 @@ public class GamePanel extends JPanel implements Runnable, KeyListener {
     }
 
     private void update() {
+        if(Main.getFrame() != null) {
+            cameraX = Main.getFrame().getWidth() / 2;
+            cameraY = Main.getFrame().getHeight() / 2;
 
+            maxTop = Main.getFrame().getHeight() / 3;
+            maxBottom = Main.getFrame().getHeight() - maxTop;
+            maxLeft = Main.getFrame().getWidth() / 3;
+            maxRight = Main.getFrame().getWidth() - maxLeft;
+        }
+
+        setFocusable(true);
+        requestFocus();
         repaint();
     }
 
@@ -39,26 +61,29 @@ public class GamePanel extends JPanel implements Runnable, KeyListener {
         super.paintComponent(g);
         Graphics2D g2 = (Graphics2D) g;
 
-        for(int i = 0; i < this.getWidth()/16; i++) {
-            for(int j = 0; j < this.getHeight()/16; j++) {
-                double value = PerlinNoise.noise(i, j, 0.0, 20, 798887); //OpenSimplex2S.noise3_ImproveXY(798887, i * 0.05, j * 0.05, 0.0);
-                int rgb; //= 0x010101 * (int)((value + 1) * 127.5);
-                if(value < 0.2 && value > -0.2)
-                    rgb = 0;
-                else
-                    rgb = 0x010101 * 255;
+        if(Main.getCurrentSession() != null) {
+            int width = Main.getCurrentSession().getWorlds()[0].getWidth();
+            int height = Main.getCurrentSession().getWorlds()[0].getHeight();
 
-                System.out.println(value);
+            for(int x = 0; x < width; x++) {
+                for(int y = 0; y < height; y++) {
+                    double value = Main.getCurrentSession().getWorlds()[0].getGrid()[x][y];
+                    int rgb = (value < 0.2 && value > -0.2) ? 0 : 0x010101 * 255;
 
-                g2.setColor(new Color(rgb));
-                g2.fillRect(i*16, j*16, 16, 16);
+                    g2.setColor(new Color(rgb));
+                    g2.fillRect(x * zoom, y * zoom, zoom, zoom);
+                }
             }
+
+            int beanSize = 16;
+            g2.setColor(Color.red);
+            g2.fillOval(cameraX - beanSize / 2, cameraY - beanSize / 2, beanSize, beanSize);
         }
     }
 
     @Override
     public void run() {
-        double drawInterval = (double) 1000000000/fps;
+        double drawInterval = (double) 1000000000 / fps;
         double delta = 0;
         long lastTime = System.nanoTime();
         long currentTime;
@@ -90,7 +115,7 @@ public class GamePanel extends JPanel implements Runnable, KeyListener {
 
     @Override
     public void keyPressed(KeyEvent e) {
-
+        
     }
 
     @Override

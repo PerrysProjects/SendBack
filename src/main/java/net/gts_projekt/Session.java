@@ -1,5 +1,7 @@
 package net.gts_projekt;
 
+import net.gts_projekt.worlds.World;
+
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Date;
@@ -10,14 +12,20 @@ public class Session implements Runnable {
     private Date creationDate;
     private Date lastUse;
 
+    private int seed;
+    private World[] worlds;
+
     private Thread thread;
     private int tps;
 
-    public Session(String name) {
+    public Session(String name, int seed) {
         this.name = name;
         path = Paths.get(Main.getPath() + "/" + name);
         creationDate = new Date();
         lastUse = new Date();
+
+        this.seed = seed;
+        worlds = new World[]{new World("Test", 500, 500, 20, seed)};
 
         thread = new Thread(this, name);
         tps = 60;
@@ -59,5 +67,37 @@ public class Session implements Runnable {
                 timer = 0;
             }
         }
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public Path getPath() {
+        return path;
+    }
+
+    public Date getCreationDate() {
+        return creationDate;
+    }
+
+    public Date getLastUse() {
+        return lastUse;
+    }
+
+    public int getSeed() {
+        return seed;
+    }
+
+    public World[] getWorlds() {
+        return worlds;
+    }
+
+    public Thread getThread() {
+        return thread;
+    }
+
+    public int getTps() {
+        return tps;
     }
 }
