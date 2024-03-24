@@ -1,6 +1,7 @@
 package net.gts_projekt;
 
 import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.Date;
 
 public class Session implements Runnable {
@@ -14,22 +15,10 @@ public class Session implements Runnable {
 
     public Session(String name) {
         this.name = name;
+        path = Paths.get(Main.getPath() + "/" + name);
+        creationDate = new Date();
+        lastUse = new Date();
 
-        initialize();
-    }
-
-    /*
-    * This Contructor will be finished when the saving system is implemented
-    * Needs to grab the name of the session from the sessions saving file and
-    * put it into the name attribute!
-     */
-    public Session(Path path) {
-        this.path = path;
-
-        initialize();
-    }
-
-    private void initialize() {
         thread = new Thread(this, name);
         tps = 60;
     }
