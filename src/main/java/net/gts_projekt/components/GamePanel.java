@@ -4,16 +4,18 @@ import net.gts_projekt.Main;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ComponentEvent;
+import java.awt.event.ComponentListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
-public class GamePanel extends JPanel implements Runnable, KeyListener {
+public class GamePanel extends JPanel implements Runnable, KeyListener, ComponentListener {
     private Thread thread;
     private int fps;
 
     private int zoom;
-    private int lastWindowWidth;
-    private int lastWindowHeight;
+
+    double currentX, currentY;
 
     private int cameraX, cameraY;
     private int maxTop, maxBottom, maxLeft, maxRight;
@@ -24,9 +26,16 @@ public class GamePanel extends JPanel implements Runnable, KeyListener {
 
         zoom = 16;
 
+        currentX = 8;
+        currentY = 8;
+
+        cameraX = -1;
+        cameraY = -1;
+
         setFocusable(true);
         requestFocus();
         addKeyListener(this);
+        addComponentListener(this);
         setLayout(null);
 
         start();
@@ -34,8 +43,10 @@ public class GamePanel extends JPanel implements Runnable, KeyListener {
 
     private void update() {
         if(Main.getFrame() != null) {
-            cameraX = Main.getFrame().getWidth() / 2;
-            cameraY = Main.getFrame().getHeight() / 2;
+            if(cameraX == -1 && cameraY == -1) {
+                cameraX = Main.getFrame().getWidth() / 2;
+                cameraY = Main.getFrame().getHeight() / 2;
+            }
 
             maxTop = Main.getFrame().getHeight() / 3;
             maxBottom = Main.getFrame().getHeight() - maxTop;
@@ -62,22 +73,35 @@ public class GamePanel extends JPanel implements Runnable, KeyListener {
         Graphics2D g2 = (Graphics2D) g;
 
         if(Main.getCurrentSession() != null) {
-            int width = Main.getCurrentSession().getWorlds()[0].getWidth();
-            int height = Main.getCurrentSession().getWorlds()[0].getHeight();
+            int width = Main.getFrame().getWidth();
+            int height = Main.getFrame().getHeight();
 
-            for(int x = 0; x < width; x++) {
-                for(int y = 0; y < height; y++) {
-                    double value = Main.getCurrentSession().getWorlds()[0].getGrid()[x][y];
-                    int rgb = (value < 0.2 && value > -0.2) ? 0 : 0x010101 * 255;
+            for(int x = -1; x <= width / zoom; x++) {
+                for(int y = -1; y <= height / zoom; y++) {
+                    int screenX = (int) (currentX - width / zoom / 2 + x);
+                    int screenY = (int) (currentY - height / zoom / 2 + y);
+
+                    int rgb = Color.blue.getRGB();
+
+                    if(screenX >= 0 && screenX < Main.getCurrentSession().getWorlds()[0].getWidth()
+                            && screenY >= 0 && screenY < Main.getCurrentSession().getWorlds()[0].getHeight()) {
+                        double value = Main.getCurrentSession().getWorlds()[0].getGrid()[screenX][screenY];
+                        rgb = (value < 0.2 && value > -0.2) ? 0 : 0x010101 * 255;
+                    }
+
 
                     g2.setColor(new Color(rgb));
-                    g2.fillRect(x * zoom, y * zoom, zoom, zoom);
+                    g2.fillRect(x * zoom + cameraX % zoom, y * zoom + cameraY % zoom, zoom, zoom);
+
+                    g2.setColor(Color.red);
+                    g2.drawString(String.valueOf(screenX), x * zoom + cameraX % zoom, y * zoom + cameraY % zoom);
                 }
             }
 
             int beanSize = 16;
             g2.setColor(Color.red);
             g2.fillOval(cameraX - beanSize / 2, cameraY - beanSize / 2, beanSize, beanSize);
+
         }
     }
 
@@ -115,11 +139,34 @@ public class GamePanel extends JPanel implements Runnable, KeyListener {
 
     @Override
     public void keyPressed(KeyEvent e) {
-        
+
     }
 
     @Override
     public void keyReleased(KeyEvent e) {
+
+    }
+
+    @Override
+    public void componentResized(ComponentEvent e) {
+        if(Main.getFrame() != null) {
+            cameraX = Main.getFrame().getWidth() / 2;
+            cameraY = Main.getFrame().getHeight() / 2;
+        }
+    }
+
+    @Override
+    public void componentMoved(ComponentEvent e) {
+
+    }
+
+    @Override
+    public void componentShown(ComponentEvent e) {
+
+    }
+
+    @Override
+    public void componentHidden(ComponentEvent e) {
 
     }
 }

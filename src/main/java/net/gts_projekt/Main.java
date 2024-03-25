@@ -29,7 +29,7 @@ public class Main {
     public static void main(String[] args) {
         initialize();
 
-        currentSession = new Session("test", 87623465);
+        currentSession = new Session("test", -345676);
         currentSession.start();
     }
 
