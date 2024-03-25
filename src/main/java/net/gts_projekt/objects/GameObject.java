@@ -1,7 +1,6 @@
 package net.gts_projekt.objects;
 
 import net.gts_projekt.ObjectId.ObjectId;
-
 import java.awt.Graphics;
 import java.util.LinkedList;
 
@@ -38,7 +37,7 @@ public abstract class GameObject {
     public int getHeight() {
         return height;
     }
-     public ObjectId id() {
+     public ObjectId getId() {
         return id;
      }
 }

@@ -4,17 +4,20 @@ import net.gts_projekt.ObjectId.ObjectId;
 import java.awt.*;
 import java.util.LinkedList;
 
-public class CollisionObject extends GameObject{
-    protected boolean isColliding;
+public class TileObject extends GameObject {
 
-    public CollisionObject(int x, int y, int width, int height, ObjectId id, Boolean isColliding) {
+    protected boolean isSolid;
+
+    public TileObject(int x, int y, int width, int height, ObjectId id, boolean isSolid) {
         super(x, y, width, height, id);
-        this.isColliding = false;
+        this.isSolid = isSolid;
     }
 
-    public boolean isColliding() {
-        return isColliding;
+
+    public boolean isSolid() {
+        return isSolid;
     }
+
     @Override
     public void tick(LinkedList<GameObject> object) {
 
