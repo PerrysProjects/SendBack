@@ -1,8 +1,6 @@
 package net.gts_projekt.objects;
 
-import net.gts_projekt.ObjectId.ObjectId;
-import java.awt.*;
-import java.util.LinkedList;
+import net.gts_projekt.objects.objectId.ObjectId;
 
 public class HarvestableObject extends InteractiveObject {
     protected int health;

@@ -1,11 +1,11 @@
 package net.gts_projekt.objects;
 
-import net.gts_projekt.ObjectId.ObjectId;
+import net.gts_projekt.objects.objectId.ObjectId;
+
 import java.awt.Graphics;
 import java.util.LinkedList;
 
 public abstract class GameObject {
-
     private int x;
     private int y;
     private int width;
@@ -13,7 +13,7 @@ public abstract class GameObject {
 
     protected ObjectId id;
 
-    public GameObject(int x, int y, int width, int height, ObjectId id){
+    public GameObject(int x, int y, int width, int height, ObjectId id) {
         this.x = x;
         this.y = y;
         this.width = width;
@@ -22,6 +22,7 @@ public abstract class GameObject {
     }
 
     public abstract void tick(LinkedList<GameObject> object);
+
     public abstract void render(Graphics g);
 
     public int getX() {
@@ -31,14 +32,17 @@ public abstract class GameObject {
     public int getY() {
         return y;
     }
+
     public int getWidth() {
         return width;
     }
+
     public int getHeight() {
         return height;
     }
+
      public ObjectId getId() {
         return id;
-     }
+    }
 }
 

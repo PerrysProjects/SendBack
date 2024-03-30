@@ -1,6 +1,7 @@
 package net.gts_projekt.objects;
 
-import net.gts_projekt.ObjectId.ObjectId;
+import net.gts_projekt.objects.objectId.ObjectId;
+
 import java.awt.Graphics;
 import java.util.LinkedList;
 
@@ -26,7 +27,6 @@ public class InteractiveObject extends GameObject {
     public void tick(LinkedList<GameObject> object) {
 
     }
-
 
     @Override
     public void render(Graphics g) {

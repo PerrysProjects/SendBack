@@ -1,6 +1,7 @@
 package net.gts_projekt.components;
 
 import net.gts_projekt.Main;
+import net.gts_projekt.worlds.World;
 
 import javax.swing.*;
 import java.awt.*;
@@ -15,7 +16,7 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, Componen
 
     private int zoom;
 
-    double currentX, currentY;
+    private double currentX, currentY;
 
     private int cameraX, cameraY;
     private int maxTop, maxBottom, maxLeft, maxRight;
@@ -24,10 +25,10 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, Componen
         thread = new Thread(this);
         fps = 60;
 
-        zoom = 16;
+        zoom = 80;
 
-        currentX = 8;
-        currentY = 8;
+        currentX = 80;
+        currentY = 80;
 
         cameraX = -1;
         cameraY = -1;
@@ -73,36 +74,41 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, Componen
         Graphics2D g2 = (Graphics2D) g;
 
         if(Main.getCurrentSession() != null) {
-            int width = Main.getFrame().getWidth();
-            int height = Main.getFrame().getHeight();
+            World world = Main.getCurrentSession().getWorlds()[0];
+            double[][] grid = world.getGrid();
+            grid[80][80] = 60;
 
-            for(int x = -1; x <= width / zoom; x++) {
-                for(int y = -1; y <= height / zoom; y++) {
-                    int screenX = (int) (currentX - width / zoom / 2 + x);
-                    int screenY = (int) (currentY - height / zoom / 2 + y);
+            int startX = (int) (currentX - (getWidth() / 2 / zoom));
+            int endX = (int) (currentX + (getWidth() / 2 / zoom)) + 1;
+            int startY = (int) (currentY - (getHeight() / 2 / zoom));
+            int endY = (int) (currentY + (getHeight() / 2 / zoom)) + 1;
 
-                    int rgb = Color.blue.getRGB();
+            //System.out.println(startX + " " + endX);
+            System.out.println((startX + endX) / 2);
+            System.out.println((startY + endY) / 2);
+            //System.out.println(startY + " " + endY);
 
-                    if(screenX >= 0 && screenX < Main.getCurrentSession().getWorlds()[0].getWidth()
-                            && screenY >= 0 && screenY < Main.getCurrentSession().getWorlds()[0].getHeight()) {
-                        double value = Main.getCurrentSession().getWorlds()[0].getGrid()[screenX][screenY];
-                        rgb = (value < 0.2 && value > -0.2) ? 0 : 0x010101 * 255;
+            for(int x = startX; x <= endX + 1; x++) {
+                for(int y = startY; y <= endY + 1; y++) {
+                    int screenX = (int) ((x - startX) * zoom - Math.ceil(currentX % 1 * zoom));
+                    int screenY = (int) ((y - startY) * zoom - Math.ceil(currentY % 1 * zoom));
+
+                    if(x == 80 && y == 80) {
+                        System.out.println(screenX + "xxxx" + screenY);
                     }
 
+                    double value = grid[x][y];
+                    int rgb = (value < 0.2 && value > -0.2) ? 0 : 0x010101 * 255;
+                    rgb = (value == 60) ? Color.blue.getRGB() : rgb;
 
                     g2.setColor(new Color(rgb));
-                    g2.fillRect(x * zoom + cameraX % zoom, y * zoom + cameraY % zoom, zoom, zoom);
-
-                    g2.setColor(Color.red);
-                    g2.drawString(String.valueOf(screenX), x * zoom + cameraX % zoom, y * zoom + cameraY % zoom);
+                    g2.fillRect(screenX, screenY, zoom, zoom);
                 }
             }
-
-            int beanSize = 16;
-            g2.setColor(Color.red);
-            g2.fillOval(cameraX - beanSize / 2, cameraY - beanSize / 2, beanSize, beanSize);
-
         }
+
+        g2.setColor(Color.red);
+        g2.fillRect(0, 0, 16, 16);
     }
 
     @Override
@@ -139,7 +145,12 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, Componen
 
     @Override
     public void keyPressed(KeyEvent e) {
-
+        switch(e.getKeyCode()) {
+            case KeyEvent.VK_W -> currentY -= 0.1;
+            case KeyEvent.VK_A -> currentX -= 0.1;
+            case KeyEvent.VK_S -> currentY += 0.1;
+            case KeyEvent.VK_D -> currentX += 0.1;
+        }
     }
 
     @Override
