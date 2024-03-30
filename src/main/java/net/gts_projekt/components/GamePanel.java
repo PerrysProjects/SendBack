@@ -78,10 +78,10 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, Componen
             double[][] grid = world.getGrid();
             grid[80][80] = 60;
 
-            int startX = (int) (currentX - (getWidth() / 2 / zoom));
-            int endX = (int) (currentX + (getWidth() / 2 / zoom)) + 1;
-            int startY = (int) (currentY - (getHeight() / 2 / zoom));
-            int endY = (int) (currentY + (getHeight() / 2 / zoom)) + 1;
+            int startX = (int) Math.max(0, currentX - (getWidth() / (2 * zoom)));
+            int endX = (int) Math.min(world.getWidth(), currentX + (getWidth() / (2 * zoom)) + 1);
+            int startY = (int) Math.max(0, currentY - (getHeight() / (2 * zoom)));
+            int endY = (int) Math.min(world.getHeight(), currentY + (getHeight() / (2 * zoom)) + 1);
 
             //System.out.println(startX + " " + endX);
             System.out.println((startX + endX) / 2);
