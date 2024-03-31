@@ -92,33 +92,52 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, Componen
             grid[80][80] = 60;
             grid[80][0] = 60;
 
-            int startX = (int) Math.max(0, player.getX() - (getWidth() / (2 * zoom)));
-            int endX = (int) Math.min(world.getWidth(), player.getX() + (getWidth() / (2 * zoom)) + 1);
-            int startY = (int) Math.max(0, player.getY() - (getHeight() / (2 * zoom)));
-            int endY = (int) Math.min(world.getHeight(), player.getY() + (getHeight() / (2 * zoom)) + 1);
+            int startX = (int) player.getX() - (getWidth() / (2 * zoom));
+            int endX = (int) player.getX() + (getWidth() / (2 * zoom)) + 1;
+            int startY = (int) player.getY() - (getHeight() / (2 * zoom));
+            int endY = (int) player.getY() + (getHeight() / (2 * zoom)) + 1;
 
-            System.out.println(startY);
+            for(int x = startX - 1; x <= endX + 1; x++) {
+                for(int y = startY - 1; y <= endY + 1; y++) {
+                    //System.out.println((getWidth() % zoom) / 2);
+                    //System.out.println((getWidth() / 2 - zoom / 2) % zoom);
 
-            for(int x = startX; x <= endX + 1; x++) {
-                for(int y = startY; y <= endY + 1; y++) {
-                    int screenX = (int) ((x - startX) * zoom - Math.ceil((player.getX() % 1) * zoom));
-                    int screenY = (int) ((y - startY) * zoom - Math.ceil((player.getY() % 1) * zoom));
-
-                    if(x == 80 && y == 80) {
-                        //System.out.println(screenX + "xxxx" + screenY);
-                        //System.out.println(player.getX() + "xxxxxxx" + player.getY());
+                    int extraX, extraY;
+                    if((getWidth() / 2 - zoom / 2) % zoom < zoom / 2) {
+                        extraX = (getWidth() / 2 - zoom / 2) % zoom;
+                    } else {
+                        extraX = ((getWidth() / 2 - zoom / 2) % zoom) - zoom;
                     }
 
-                    double value = grid[x][y];
-                    int rgb = (value < 0.2 && value > -0.2) ? 0 : 0x010101 * 255;
-                    rgb = (value == 60) ? Color.blue.getRGB() : rgb;
+                    if((getHeight() / 2 - zoom / 2) % zoom < zoom / 2) {
+                        extraY = (getHeight() / 2 - zoom / 2) % zoom;
+                    } else {
+                        extraY = ((getHeight() / 2 - zoom / 2) % zoom) - zoom;
+                    }
+
+                    int screenX = (int) ((x - startX) * zoom - Math.ceil((player.getX() % 1) * zoom)) + extraX;
+                    int screenY = (int) ((y - startY) * zoom - Math.ceil((player.getY() % 1) * zoom)) + extraY;
+
+                    if(x == 80 && y == 80) {
+                        //System.out.println(screenX + "x" + screenY);
+                    }
+
+                    int rgb = Color.cyan.getRGB();
+                    if(x >= 0 && x < world.getWidth() && y >= 0 && y < world.getHeight()) {
+                        double value = grid[x][y];
+                        rgb = (value < 0.2 && value > -0.2) ? 0 : 0x010101 * 255;
+                        rgb = (value == 60) ? Color.blue.getRGB() : rgb;
+                    }
 
                     g2.setColor(new Color(rgb));
                     g2.fillRect(screenX, screenY, zoom, zoom);
                 }
             }
-            g2.setColor(Color.red);
-            g2.fillOval(cameraX - zoom / 2, cameraY - zoom / 2, zoom, zoom);
+
+            int ovalX = getWidth() / 2 - zoom / 2;
+            int ovalY = getHeight() / 2 - zoom / 2;
+            g2.setColor(Color.RED);
+            g2.drawRect(ovalX, ovalY, zoom, zoom);
         }
     }
 
@@ -139,11 +158,7 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, Componen
 
             if(delta >= 1) {
                 update();
-                if(cf != 60) {
-                    cf++;
-                } else {
-                    cf = 1;
-                }
+                cf = (cf != 60) ? cf + 1 : 1;
                 delta--;
             }
 
@@ -162,52 +177,20 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, Componen
     @Override
     public void keyPressed(KeyEvent e) {
         switch(e.getKeyCode()) {
-            case KeyEvent.VK_W -> {
-                if(player.getY() > 0) {
-                    player.startMoving(MoveType.UP);
-                } else {
-                    player.stopMoving(MoveType.UP);
-                }
-            }
-            case KeyEvent.VK_A -> {
-                if(player.getX() > 0) {
-                    player.startMoving(MoveType.LEFT);
-                } else {
-                    player.stopMoving(MoveType.LEFT);
-                }
-            }
-            case KeyEvent.VK_S -> {
-                if(player.getY() < world.getHeight()) {
-                    player.startMoving(MoveType.DOWN);
-                } else {
-                    player.stopMoving(MoveType.DOWN);
-                }
-            }
-            case KeyEvent.VK_D -> {
-                if(player.getX() < world.getWidth()) {
-                    player.startMoving(MoveType.RIGHT);
-                } else {
-                    player.stopMoving(MoveType.RIGHT);
-                }
-            }
+            case KeyEvent.VK_W -> player.startMoving(MoveType.UP);
+            case KeyEvent.VK_A -> player.startMoving(MoveType.LEFT);
+            case KeyEvent.VK_S -> player.startMoving(MoveType.DOWN);
+            case KeyEvent.VK_D -> player.startMoving(MoveType.RIGHT);
         }
     }
 
     @Override
     public void keyReleased(KeyEvent e) {
         switch(e.getKeyCode()) {
-            case KeyEvent.VK_W -> {
-                player.stopMoving(MoveType.UP);
-            }
-            case KeyEvent.VK_A -> {
-                player.stopMoving(MoveType.LEFT);
-            }
-            case KeyEvent.VK_S -> {
-                player.stopMoving(MoveType.DOWN);
-            }
-            case KeyEvent.VK_D -> {
-                player.stopMoving(MoveType.RIGHT);
-            }
+            case KeyEvent.VK_W -> player.stopMoving(MoveType.UP);
+            case KeyEvent.VK_A -> player.stopMoving(MoveType.LEFT);
+            case KeyEvent.VK_S -> player.stopMoving(MoveType.DOWN);
+            case KeyEvent.VK_D -> player.stopMoving(MoveType.RIGHT);
         }
     }
 

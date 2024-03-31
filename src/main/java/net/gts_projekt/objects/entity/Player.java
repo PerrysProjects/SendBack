@@ -1,20 +1,29 @@
 package net.gts_projekt.objects.entity;
 
+import net.gts_projekt.util.Session;
+import net.gts_projekt.worlds.World;
+
 public class Player {
     private double size;
+
+    private Session session;
+    private World world;
 
     private double x, y;
     private boolean movingUp, movingLeft, movingDown, movingRight;
 
     private double speed;
 
-    public Player(double x, double y) {
+    public Player(Session session, double x, double y) {
         size = 1;
+
+        this.session = session;
+        world = session.getCurrentWorld();
 
         this.x = x;
         this.y = y;
 
-        speed = 0.1;
+        speed = 0.3;
     }
 
     public void startMoving(MoveType type) {
@@ -56,25 +65,53 @@ public class Player {
     }
 
     public void update() {
-        if(movingUp) {
-            y -= speed;
+        if(world != session.getCurrentWorld()) {
+            world = session.getCurrentWorld();
         }
 
-        if(movingLeft) {
-            x -= speed;
+        if(movingUp && y > 0) {
+            if(y - speed < 0) {
+                y = 0;
+            } else {
+                y -= speed;
+            }
         }
 
-        if(movingDown) {
-            y += speed;
+        if(movingLeft && x > 0) {
+            if(x - speed < 0) {
+                x = 0;
+            } else {
+                x -= speed;
+            }
         }
 
-        if(movingRight) {
-            x += speed;
+        if(movingDown && y < world.getHeight() - 1) {
+            if(y + speed > world.getHeight() - 1) {
+                y = world.getHeight() - 1;
+            } else {
+                y += speed;
+            }
+        }
+
+        if(movingRight && x < world.getWidth() - 1) {
+            if(x + speed > world.getWidth() - 1) {
+                x = world.getWidth() - 1;
+            } else {
+                x += speed;
+            }
         }
     }
 
     public double getSize() {
         return size;
+    }
+
+    public Session getSession() {
+        return session;
+    }
+
+    public World getWorld() {
+        return world;
     }
 
     public double getX() {

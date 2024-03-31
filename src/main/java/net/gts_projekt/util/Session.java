@@ -16,6 +16,7 @@ public class Session implements Runnable {
 
     private int seed;
     private World[] worlds;
+    private World currentWorld;
 
     private Player player;
 
@@ -29,9 +30,10 @@ public class Session implements Runnable {
         lastUse = new Date();
 
         this.seed = seed;
-        worlds = new World[]{new World("Test", 500, 500, 30, seed)};
+        worlds = new World[]{new World("Test", 500, 500, 20, seed)};
+        currentWorld = worlds[0];
 
-        player = new Player(80, 80);
+        player = new Player(this,80, 80);
 
         thread = new Thread(this, name);
         tps = 60;
@@ -101,6 +103,10 @@ public class Session implements Runnable {
 
     public World[] getWorlds() {
         return worlds;
+    }
+
+    public World getCurrentWorld() {
+        return currentWorld;
     }
 
     public Player getPlayer() {
