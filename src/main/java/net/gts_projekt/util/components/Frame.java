@@ -1,4 +1,4 @@
-package net.gts_projekt.components;
+package net.gts_projekt.util.components;
 
 import net.gts_projekt.Main;
 

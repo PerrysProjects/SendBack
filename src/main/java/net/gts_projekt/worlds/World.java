@@ -33,6 +33,10 @@ public class World {
         }
     }
 
+    public void update() {
+
+    }
+
     public String getName() {
         return name;
     }

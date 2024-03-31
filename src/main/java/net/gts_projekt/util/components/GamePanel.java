@@ -1,6 +1,9 @@
-package net.gts_projekt.components;
+package net.gts_projekt.util.components;
 
 import net.gts_projekt.Main;
+import net.gts_projekt.objects.entity.MoveType;
+import net.gts_projekt.objects.entity.Player;
+import net.gts_projekt.util.Session;
 import net.gts_projekt.worlds.World;
 
 import javax.swing.*;
@@ -13,25 +16,30 @@ import java.awt.event.KeyListener;
 public class GamePanel extends JPanel implements Runnable, KeyListener, ComponentListener {
     private Thread thread;
     private int fps;
+    private int cf;
 
     private int zoom;
-
-    private double currentX, currentY;
 
     private int cameraX, cameraY;
     private int maxTop, maxBottom, maxLeft, maxRight;
 
+    private Session session;
+    private World world;
+    private Player player;
+
     public GamePanel() {
         thread = new Thread(this);
         fps = 60;
+        cf = 1;
 
         zoom = 80;
 
-        currentX = 80;
-        currentY = 80;
-
         cameraX = -1;
         cameraY = -1;
+
+        /*session = Main.getCurrentSession();
+        world = session.getWorlds()[0];
+        player = session.getPlayer();*/
 
         setFocusable(true);
         requestFocus();
@@ -55,6 +63,12 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, Componen
             maxRight = Main.getFrame().getWidth() - maxLeft;
         }
 
+        if(Main.getCurrentSession() != null && session == null) {
+            session = Main.getCurrentSession();
+            world = session.getWorlds()[0];
+            player = session.getPlayer();
+        }
+
         setFocusable(true);
         requestFocus();
         repaint();
@@ -73,25 +87,19 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, Componen
         super.paintComponent(g);
         Graphics2D g2 = (Graphics2D) g;
 
-        if(Main.getCurrentSession() != null) {
-            World world = Main.getCurrentSession().getWorlds()[0];
+        if(session != null) {
             double[][] grid = world.getGrid();
             grid[80][80] = 60;
 
-            int startX = (int) Math.max(0, currentX - (getWidth() / (2 * zoom)));
-            int endX = (int) Math.min(world.getWidth(), currentX + (getWidth() / (2 * zoom)) + 1);
-            int startY = (int) Math.max(0, currentY - (getHeight() / (2 * zoom)));
-            int endY = (int) Math.min(world.getHeight(), currentY + (getHeight() / (2 * zoom)) + 1);
-
-            //System.out.println(startX + " " + endX);
-            System.out.println((startX + endX) / 2);
-            System.out.println((startY + endY) / 2);
-            //System.out.println(startY + " " + endY);
+            int startX = (int) Math.max(0, player.getX() - (getWidth() / (2 * zoom)));
+            int endX = (int) Math.min(world.getWidth(), player.getX() + (getWidth() / (2 * zoom)) + 1);
+            int startY = (int) Math.max(0, player.getY() - (getHeight() / (2 * zoom)));
+            int endY = (int) Math.min(world.getHeight(), player.getY() + (getHeight() / (2 * zoom)) + 1);
 
             for(int x = startX; x <= endX + 1; x++) {
                 for(int y = startY; y <= endY + 1; y++) {
-                    int screenX = (int) ((x - startX) * zoom - Math.ceil(currentX % 1 * zoom));
-                    int screenY = (int) ((y - startY) * zoom - Math.ceil(currentY % 1 * zoom));
+                    int screenX = (int) ((x - startX) * zoom - Math.ceil((player.getX() % 1) * zoom));
+                    int screenY = (int) ((y - startY) * zoom - Math.ceil((player.getY() % 1) * zoom));
 
                     if(x == 80 && y == 80) {
                         System.out.println(screenX + "xxxx" + screenY);
@@ -105,10 +113,9 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, Componen
                     g2.fillRect(screenX, screenY, zoom, zoom);
                 }
             }
+            g2.setColor(Color.red);
+            g2.fillRect(0, 0, 16, 16);
         }
-
-        g2.setColor(Color.red);
-        g2.fillRect(0, 0, 16, 16);
     }
 
     @Override
@@ -128,6 +135,12 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, Componen
 
             if(delta >= 1) {
                 update();
+                if(cf != 60) {
+                    cf++;
+                } else {
+                    cf = 1;
+                }
+                System.out.println(cf);
                 delta--;
             }
 
@@ -146,16 +159,37 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, Componen
     @Override
     public void keyPressed(KeyEvent e) {
         switch(e.getKeyCode()) {
-            case KeyEvent.VK_W -> currentY -= 0.1;
-            case KeyEvent.VK_A -> currentX -= 0.1;
-            case KeyEvent.VK_S -> currentY += 0.1;
-            case KeyEvent.VK_D -> currentX += 0.1;
+            case KeyEvent.VK_W -> {
+                player.startMoving(MoveType.UP);
+            }
+            case KeyEvent.VK_A -> {
+                player.startMoving(MoveType.LEFT);
+            }
+            case KeyEvent.VK_S -> {
+                player.startMoving(MoveType.DOWN);
+            }
+            case KeyEvent.VK_D -> {
+                player.startMoving(MoveType.RIGHT);
+            }
         }
     }
 
     @Override
     public void keyReleased(KeyEvent e) {
-
+        switch(e.getKeyCode()) {
+            case KeyEvent.VK_W -> {
+                player.stopMoving(MoveType.UP);
+            }
+            case KeyEvent.VK_A -> {
+                player.stopMoving(MoveType.LEFT);
+            }
+            case KeyEvent.VK_S -> {
+                player.stopMoving(MoveType.DOWN);
+            }
+            case KeyEvent.VK_D -> {
+                player.stopMoving(MoveType.RIGHT);
+            }
+        }
     }
 
     @Override

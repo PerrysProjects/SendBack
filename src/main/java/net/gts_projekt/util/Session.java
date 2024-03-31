@@ -1,5 +1,7 @@
-package net.gts_projekt;
+package net.gts_projekt.util;
 
+import net.gts_projekt.Main;
+import net.gts_projekt.objects.entity.Player;
 import net.gts_projekt.worlds.World;
 
 import java.nio.file.Path;
@@ -15,6 +17,8 @@ public class Session implements Runnable {
     private int seed;
     private World[] worlds;
 
+    private Player player;
+
     private Thread thread;
     private int tps;
 
@@ -26,6 +30,8 @@ public class Session implements Runnable {
 
         this.seed = seed;
         worlds = new World[]{new World("Test", 500, 500, 20, seed)};
+
+        player = new Player(80, 80);
 
         thread = new Thread(this, name);
         tps = 60;
@@ -40,7 +46,11 @@ public class Session implements Runnable {
     }
 
     private void update() {
+        for(World world : worlds) {
+            world.update();
+        }
 
+        player.update();
     }
 
     @Override
@@ -91,6 +101,10 @@ public class Session implements Runnable {
 
     public World[] getWorlds() {
         return worlds;
+    }
+
+    public Player getPlayer() {
+        return player;
     }
 
     public Thread getThread() {

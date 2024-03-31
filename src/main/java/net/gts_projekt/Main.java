@@ -1,8 +1,9 @@
 package net.gts_projekt;
 
-import net.gts_projekt.components.Frame;
+import net.gts_projekt.util.components.Frame;
 import net.gts_projekt.util.Logger;
 import net.gts_projekt.util.OperatingSystem;
+import net.gts_projekt.util.Session;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
