@@ -29,7 +29,7 @@ public class Session implements Runnable {
         lastUse = new Date();
 
         this.seed = seed;
-        worlds = new World[]{new World("Test", 500, 500, 20, seed)};
+        worlds = new World[]{new World("Test", 500, 500, 30, seed)};
 
         player = new Player(80, 80);
 

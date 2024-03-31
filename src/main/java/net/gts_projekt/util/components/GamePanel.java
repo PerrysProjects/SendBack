@@ -90,11 +90,14 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, Componen
         if(session != null) {
             double[][] grid = world.getGrid();
             grid[80][80] = 60;
+            grid[80][0] = 60;
 
             int startX = (int) Math.max(0, player.getX() - (getWidth() / (2 * zoom)));
             int endX = (int) Math.min(world.getWidth(), player.getX() + (getWidth() / (2 * zoom)) + 1);
             int startY = (int) Math.max(0, player.getY() - (getHeight() / (2 * zoom)));
             int endY = (int) Math.min(world.getHeight(), player.getY() + (getHeight() / (2 * zoom)) + 1);
+
+            System.out.println(startY);
 
             for(int x = startX; x <= endX + 1; x++) {
                 for(int y = startY; y <= endY + 1; y++) {
@@ -102,7 +105,8 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, Componen
                     int screenY = (int) ((y - startY) * zoom - Math.ceil((player.getY() % 1) * zoom));
 
                     if(x == 80 && y == 80) {
-                        System.out.println(screenX + "xxxx" + screenY);
+                        //System.out.println(screenX + "xxxx" + screenY);
+                        //System.out.println(player.getX() + "xxxxxxx" + player.getY());
                     }
 
                     double value = grid[x][y];
@@ -114,7 +118,7 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, Componen
                 }
             }
             g2.setColor(Color.red);
-            g2.fillRect(0, 0, 16, 16);
+            g2.fillOval(cameraX - zoom / 2, cameraY - zoom / 2, zoom, zoom);
         }
     }
 
@@ -140,7 +144,6 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, Componen
                 } else {
                     cf = 1;
                 }
-                System.out.println(cf);
                 delta--;
             }
 
@@ -160,16 +163,32 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, Componen
     public void keyPressed(KeyEvent e) {
         switch(e.getKeyCode()) {
             case KeyEvent.VK_W -> {
-                player.startMoving(MoveType.UP);
+                if(player.getY() > 0) {
+                    player.startMoving(MoveType.UP);
+                } else {
+                    player.stopMoving(MoveType.UP);
+                }
             }
             case KeyEvent.VK_A -> {
-                player.startMoving(MoveType.LEFT);
+                if(player.getX() > 0) {
+                    player.startMoving(MoveType.LEFT);
+                } else {
+                    player.stopMoving(MoveType.LEFT);
+                }
             }
             case KeyEvent.VK_S -> {
-                player.startMoving(MoveType.DOWN);
+                if(player.getY() < world.getHeight()) {
+                    player.startMoving(MoveType.DOWN);
+                } else {
+                    player.stopMoving(MoveType.DOWN);
+                }
             }
             case KeyEvent.VK_D -> {
-                player.startMoving(MoveType.RIGHT);
+                if(player.getX() < world.getWidth()) {
+                    player.startMoving(MoveType.RIGHT);
+                } else {
+                    player.stopMoving(MoveType.RIGHT);
+                }
             }
         }
     }

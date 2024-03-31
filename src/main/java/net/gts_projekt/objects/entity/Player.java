@@ -1,12 +1,16 @@
 package net.gts_projekt.objects.entity;
 
 public class Player {
+    private double size;
+
     private double x, y;
     private boolean movingUp, movingLeft, movingDown, movingRight;
 
     private double speed;
 
     public Player(double x, double y) {
+        size = 1;
+
         this.x = x;
         this.y = y;
 
@@ -31,6 +35,26 @@ public class Player {
         }
     }
 
+    public boolean isMoving(MoveType type) {
+        switch(type) {
+            case UP -> {
+                return movingUp;
+            }
+            case LEFT -> {
+                return movingLeft;
+            }
+            case DOWN -> {
+                return movingDown;
+            }
+            case RIGHT -> {
+                return movingRight;
+            }
+            default -> {
+                return false;
+            }
+        }
+    }
+
     public void update() {
         if(movingUp) {
             y -= speed;
@@ -49,11 +73,19 @@ public class Player {
         }
     }
 
+    public double getSize() {
+        return size;
+    }
+
     public double getX() {
         return x;
     }
 
     public double getY() {
         return y;
+    }
+
+    public double getSpeed() {
+        return speed;
     }
 }
