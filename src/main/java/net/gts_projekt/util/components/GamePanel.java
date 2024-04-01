@@ -32,7 +32,7 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, Componen
         fps = 60;
         cf = 1;
 
-        zoom = 80;
+        zoom = 40;
 
         cameraX = -1;
         cameraY = -1;
@@ -117,10 +117,6 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, Componen
 
                     int screenX = (int) ((x - startX) * zoom - Math.ceil((player.getX() % 1) * zoom)) + extraX;
                     int screenY = (int) ((y - startY) * zoom - Math.ceil((player.getY() % 1) * zoom)) + extraY;
-
-                    if(x == 80 && y == 80) {
-                        //System.out.println(screenX + "x" + screenY);
-                    }
 
                     int rgb = Color.cyan.getRGB();
                     if(x >= 0 && x < world.getWidth() && y >= 0 && y < world.getHeight()) {
