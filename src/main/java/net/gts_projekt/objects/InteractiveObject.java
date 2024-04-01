@@ -9,8 +9,9 @@ public class InteractiveObject extends GameObject {
     protected boolean isInteractable;
     protected String message;
 
-    public InteractiveObject(int x, int y, int width, int height, ObjectId id, boolean isInteractable, String message) {
-        super(x, y, width, height, id);
+
+    public InteractiveObject(int x, int y, int width, int height, ObjectId id, boolean isInteractable, Image image, String message) {
+        super(x, y, width, height, id, image);
         this.isInteractable = isInteractable;
         this.message = message;
     }
@@ -23,10 +24,6 @@ public class InteractiveObject extends GameObject {
         return message;
     }
 
-    @Override
-    public void tick(LinkedList<GameObject> object) {
-
-    }
 
     @Override
     public void render(Graphics g) {

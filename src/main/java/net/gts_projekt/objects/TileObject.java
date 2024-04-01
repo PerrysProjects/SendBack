@@ -5,21 +5,17 @@ import java.awt.*;
 import java.util.LinkedList;
 
 public class TileObject extends GameObject {
-    protected boolean isSolid;
+    protected boolean isWalkable;
 
-    public TileObject(int x, int y, int width, int height, ObjectId id, boolean isSolid) {
-        super(x, y, width, height, id);
-        this.isSolid = isSolid;
+    public TileObject(int x, int y, int width, int height, ObjectId id, Image image, boolean isWalkable) {
+        super(x, y, width, height, id, image);
+        this.isWalkable = isWalkable;
     }
 
-    public boolean isSolid() {
-        return isSolid;
+    public boolean getIsWalkable() {
+        return isWalkable;
     }
 
-    @Override
-    public void tick(LinkedList<GameObject> object) {
-
-    }
 
     @Override
     public void render(Graphics g) {
