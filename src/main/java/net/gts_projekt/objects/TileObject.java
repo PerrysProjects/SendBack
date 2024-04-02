@@ -16,8 +16,8 @@ public class TileObject extends GameObject {
     }
 
 
-    @Override
+    /*  @Override
     public void render(Graphics g) {
 
-    }
+    } */
 }

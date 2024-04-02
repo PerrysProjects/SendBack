@@ -24,8 +24,8 @@ public class InteractiveObject extends GameObject {
     }
 
 
-    @Override
+    /* @Override
     public void render(Graphics g) {
 
-    }
+    }*/
 }
