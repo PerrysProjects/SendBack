@@ -3,14 +3,13 @@ package net.gts_projekt.objects;
 import net.gts_projekt.objects.objectId.ObjectId;
 
 import java.awt.Graphics;
-import java.util.LinkedList;
 
 public class InteractiveObject extends GameObject {
     protected boolean isInteractable;
     protected String message;
 
 
-    public InteractiveObject(int x, int y, int width, int height, ObjectId id, boolean isInteractable, Image image, String message) {
+    public InteractiveObject(int x, int y, int width, int height, ObjectId id, boolean isInteractable, ObjectId.Image image, String message) {
         super(x, y, width, height, id, image);
         this.isInteractable = isInteractable;
         this.message = message;

@@ -2,7 +2,6 @@ package net.gts_projekt.objects;
 
 import net.gts_projekt.objects.objectId.ObjectId;
 import java.awt.*;
-import java.util.LinkedList;
 
 public class CollisionObject extends GameObject{
 
@@ -11,14 +10,14 @@ public class CollisionObject extends GameObject{
     protected boolean isDestroyed;
     protected int CollisionArea = x * y;  // Vielleicht auch einfach die Koordinaten
 
-    public CollisionObject(int x, int y, int width, int height, ObjectId id, Image image, Boolean isColliding) {
+    public CollisionObject(int x, int y, int width, int height, ObjectId id, ObjectId.Image image, Boolean isColliding) {
         super(x, y, width, height, id, image);
         this.isColliding = false;
     }
 
     //Konstruktor mit Leben für beispielsweise Objekte die man zerstören sollen kann
 
-    public CollisionObject(int x, int y, int width, int height, ObjectId id, Image image, Boolean isColliding, int health) {
+    public CollisionObject(int x, int y, int width, int height, ObjectId id, ObjectId.Image image, Boolean isColliding, int health) {
         super(x, y, width, height, id, image);
         this.isColliding = false;
         this.health = health;
