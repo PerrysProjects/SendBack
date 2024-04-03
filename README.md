@@ -29,18 +29,20 @@ ThrowBack offers players a unique experience of exploration and puzzle-solving w
 |      |             |
 |      |             |
 
-## Dev Team
+## Contributors
+
+### Dev Team
 
 - **Kian**: Group Leader, Developer
 - **Elena**: Texture Artist, Developer
 - **Nassim**: Developer
 - **Ilya**: Developer
 
-## Project Supervisor
+### Project Supervisor
 
 - **Prof. Weber**: Providing guidance and oversight to ensure the project meets academic standards and objectives.
 
-## How to Contribute
+### How to Contribute
 
 Interested in contributing to ThrowBack? We welcome collaboration and feedback from fellow enthusiasts and developers! Feel free to reach out to our team to discuss potential contributions or suggestions.
 
