@@ -1,4 +1,4 @@
-package net.gts_projekt.util.procedural;
+package net.throwback.util.procedural;
 
 public class OpenSimplex2S {
 

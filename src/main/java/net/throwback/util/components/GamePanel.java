@@ -1,10 +1,10 @@
-package net.gts_projekt.util.components;
+package net.throwback.util.components;
 
-import net.gts_projekt.Main;
-import net.gts_projekt.objects.entity.MoveType;
-import net.gts_projekt.objects.entity.Player;
-import net.gts_projekt.util.Session;
-import net.gts_projekt.worlds.World;
+import net.throwback.Main;
+import net.throwback.objects.entity.MovementType;
+import net.throwback.objects.entity.Player;
+import net.throwback.util.Session;
+import net.throwback.worlds.World;
 
 import javax.swing.*;
 import java.awt.*;
@@ -51,16 +51,16 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, Componen
     }
 
     private void update() {
-        if(Main.getFrame() != null) {
+        if(Frame.getInstance() != null) {
             if(cameraX == -1 && cameraY == -1) {
-                cameraX = Main.getFrame().getWidth() / 2;
-                cameraY = Main.getFrame().getHeight() / 2;
+                cameraX = getWidth() / 2;
+                cameraY = getHeight() / 2;
             }
 
-            maxTop = Main.getFrame().getHeight() / 3;
-            maxBottom = Main.getFrame().getHeight() - maxTop;
-            maxLeft = Main.getFrame().getWidth() / 3;
-            maxRight = Main.getFrame().getWidth() - maxLeft;
+            maxTop = getHeight() / 3;
+            maxBottom = getHeight() - maxTop;
+            maxLeft = getWidth() / 3;
+            maxRight = getWidth() - maxLeft;
         }
 
         if(Main.getCurrentSession() != null && session == null) {
@@ -173,28 +173,28 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, Componen
     @Override
     public void keyPressed(KeyEvent e) {
         switch(e.getKeyCode()) {
-            case KeyEvent.VK_W -> player.startMoving(MoveType.UP);
-            case KeyEvent.VK_A -> player.startMoving(MoveType.LEFT);
-            case KeyEvent.VK_S -> player.startMoving(MoveType.DOWN);
-            case KeyEvent.VK_D -> player.startMoving(MoveType.RIGHT);
+            case KeyEvent.VK_W -> player.startMoving(MovementType.UP);
+            case KeyEvent.VK_A -> player.startMoving(MovementType.LEFT);
+            case KeyEvent.VK_S -> player.startMoving(MovementType.DOWN);
+            case KeyEvent.VK_D -> player.startMoving(MovementType.RIGHT);
         }
     }
 
     @Override
     public void keyReleased(KeyEvent e) {
         switch(e.getKeyCode()) {
-            case KeyEvent.VK_W -> player.stopMoving(MoveType.UP);
-            case KeyEvent.VK_A -> player.stopMoving(MoveType.LEFT);
-            case KeyEvent.VK_S -> player.stopMoving(MoveType.DOWN);
-            case KeyEvent.VK_D -> player.stopMoving(MoveType.RIGHT);
+            case KeyEvent.VK_W -> player.stopMoving(MovementType.UP);
+            case KeyEvent.VK_A -> player.stopMoving(MovementType.LEFT);
+            case KeyEvent.VK_S -> player.stopMoving(MovementType.DOWN);
+            case KeyEvent.VK_D -> player.stopMoving(MovementType.RIGHT);
         }
     }
 
     @Override
     public void componentResized(ComponentEvent e) {
-        if(Main.getFrame() != null) {
-            cameraX = Main.getFrame().getWidth() / 2;
-            cameraY = Main.getFrame().getHeight() / 2;
+        if(Frame.getInstance() != null) {
+            cameraX = getWidth() / 2;
+            cameraY = getHeight() / 2;
         }
     }
 

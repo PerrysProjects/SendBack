@@ -1,4 +1,4 @@
-package net.gts_projekt.util;
+package net.throwback.util;
 
 public enum OperatingSystem {
     WINDOWS,

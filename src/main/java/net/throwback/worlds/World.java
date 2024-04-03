@@ -1,6 +1,6 @@
-package net.gts_projekt.worlds;
+package net.throwback.worlds;
 
-import net.gts_projekt.util.procedural.PerlinNoise;
+import net.throwback.util.procedural.PerlinNoise;
 
 public class World {
     private String name;

@@ -1,8 +1,8 @@
-package net.gts_projekt.util;
+package net.throwback.util;
 
-import net.gts_projekt.Main;
-import net.gts_projekt.objects.entity.Player;
-import net.gts_projekt.worlds.World;
+import net.throwback.Main;
+import net.throwback.objects.entity.Player;
+import net.throwback.worlds.World;
 
 import java.nio.file.Path;
 import java.nio.file.Paths;

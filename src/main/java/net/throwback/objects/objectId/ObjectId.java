@@ -1,6 +1,4 @@
-package net.gts_projekt.objects.objectId;
-
-import java.awt.*;
+package net.throwback.objects.objectId;
 
 public enum ObjectId {
     Player();

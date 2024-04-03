@@ -1,4 +1,4 @@
-package net.gts_projekt.util.procedural;
+package net.throwback.util.procedural;
 
 public class PerlinNoise {
     private static final int[] permutation = {151, 160, 137, 91, 90, 15, 131, 13, 201,

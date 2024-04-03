@@ -1,12 +1,14 @@
-package net.gts_projekt.util.components;
+package net.throwback.util.components;
 
-import net.gts_projekt.Main;
+import net.throwback.Main;
 
 import javax.swing.*;
 import java.awt.*;
 
 public class Frame extends JFrame {
-    public Frame() {
+    private static Frame instance;
+
+    private Frame() {
         setTitle(Main.getName() + " | " + Main.getVersion());
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setFocusable(true);
@@ -19,6 +21,12 @@ public class Frame extends JFrame {
         setSize(900, 700);
         setMinimumSize(new Dimension(900, 700));
         setLocationRelativeTo(null);
-        setVisible(true);
+    }
+
+    public static Frame getInstance() {
+        if(instance == null) {
+            instance = new Frame();
+        }
+        return instance;
     }
 }

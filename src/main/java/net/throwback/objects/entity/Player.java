@@ -1,7 +1,7 @@
-package net.gts_projekt.objects.entity;
+package net.throwback.objects.entity;
 
-import net.gts_projekt.util.Session;
-import net.gts_projekt.worlds.World;
+import net.throwback.util.Session;
+import net.throwback.worlds.World;
 
 public class Player {
     private double size;
@@ -26,7 +26,7 @@ public class Player {
         speed = 0.3;
     }
 
-    public void startMoving(MoveType type) {
+    public void startMoving(MovementType type) {
         switch(type) {
             case UP -> movingUp = true;
             case LEFT -> movingLeft = true;
@@ -35,7 +35,7 @@ public class Player {
         }
     }
 
-    public void stopMoving(MoveType type) {
+    public void stopMoving(MovementType type) {
         switch(type) {
             case UP -> movingUp = false;
             case LEFT -> movingLeft = false;
@@ -44,7 +44,7 @@ public class Player {
         }
     }
 
-    public boolean isMoving(MoveType type) {
+    public boolean isMoving(MovementType type) {
         switch(type) {
             case UP -> {
                 return movingUp;

@@ -1,9 +1,9 @@
-package net.gts_projekt;
+package net.throwback;
 
-import net.gts_projekt.util.components.Frame;
-import net.gts_projekt.util.Logger;
-import net.gts_projekt.util.OperatingSystem;
-import net.gts_projekt.util.Session;
+import net.throwback.util.components.Frame;
+import net.throwback.util.Logger;
+import net.throwback.util.OperatingSystem;
+import net.throwback.util.Session;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
@@ -22,8 +22,6 @@ public class Main {
     private static String version;
     private static Path path;
     private static OperatingSystem os;
-
-    private static Frame frame;
 
     private static Session currentSession;
 
@@ -69,7 +67,7 @@ public class Main {
 
         os = OperatingSystem.checkOS(System.getProperty("os.name"));
 
-        frame = new Frame();
+        Frame.getInstance().setVisible(true);
     }
 
     public static String getName() {
@@ -86,10 +84,6 @@ public class Main {
 
     public static OperatingSystem getOs() {
         return os;
-    }
-
-    public static Frame getFrame() {
-        return frame;
     }
 
     public static Session getCurrentSession() {

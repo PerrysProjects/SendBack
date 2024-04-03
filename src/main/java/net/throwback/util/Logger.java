@@ -1,4 +1,4 @@
-package net.gts_projekt.util;
+package net.throwback.util;
 
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;

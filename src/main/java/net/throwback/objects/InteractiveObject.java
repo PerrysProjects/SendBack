@@ -1,8 +1,6 @@
-package net.gts_projekt.objects;
+package net.throwback.objects;
 
-import net.gts_projekt.objects.objectId.ObjectId;
-
-import java.awt.Graphics;
+import net.throwback.objects.objectId.ObjectId;
 
 public class InteractiveObject extends GameObject {
     protected boolean isInteractable;
