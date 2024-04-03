@@ -33,10 +33,10 @@ ThrowBack offers players a unique experience of exploration and puzzle-solving w
 
 ### Dev Team
 
-- **Kian**: Group Leader, Developer
+- **[Kian](https://github.com/Perry6226)**: Group Leader, Developer
 - **Elena**: Texture Artist, Developer
-- **Nassim**: Developer
-- **Ilya**: Developer
+- **[Nassim](https://github.com/Duplos01)**: Developer
+- **[Ilya](https://github.com/AnimaMea1)**: Developer
 
 ### Project Supervisor
 
@@ -48,7 +48,7 @@ Interested in contributing to ThrowBack? We welcome collaboration and feedback f
 
 ## Acknowledgements
 
-Special thanks to **alksily**, who developed a [Perlin Noise Generator](https://gist.github.com/alksily/7a85a1898e65c936f861ee93516e397d) that we used and modified for our game.
+Special thanks to **[alksily](https://github.com/alksily)**, who developed a [Perlin Noise Generator](https://gist.github.com/alksily/7a85a1898e65c936f861ee93516e397d) that we used and modified for our game.
 
 ## Connect with Us
 
