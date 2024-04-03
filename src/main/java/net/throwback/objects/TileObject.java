@@ -5,8 +5,8 @@ import net.throwback.objects.objectId.ObjectId;
 public class TileObject extends GameObject {
     protected boolean isWalkable;
 
-    public TileObject(int x, int y, int width, int height, ObjectId id, ObjectId.Image image, boolean isWalkable) {
-        super(x, y, width, height, id, image);
+    public TileObject(int x, int y, int width, int height, ObjectId id, boolean isWalkable) {
+        super(x, y, width, height, id);
         this.isWalkable = isWalkable;
     }
 

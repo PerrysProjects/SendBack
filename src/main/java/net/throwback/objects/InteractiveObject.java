@@ -7,8 +7,8 @@ public class InteractiveObject extends GameObject {
     protected String message;
 
 
-    public InteractiveObject(int x, int y, int width, int height, ObjectId id, boolean isInteractable, ObjectId.Image image, String message) {
-        super(x, y, width, height, id, image);
+    public InteractiveObject(int x, int y, int width, int height, ObjectId id, boolean isInteractable, String message) {
+        super(x, y, width, height, id);
         this.isInteractable = isInteractable;
         this.message = message;
     }
