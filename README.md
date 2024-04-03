@@ -11,8 +11,6 @@ ThrowBack offers players a unique experience of exploration and puzzle-solving w
 
 
 
----
-
 ## Todo
 
 | Task | Assigned To | Status |
@@ -31,8 +29,6 @@ ThrowBack offers players a unique experience of exploration and puzzle-solving w
 |      |             |
 |      |             |
 
----
-
 ## Dev Team
 
 - **Kian**: Group Leader, Developer
@@ -44,27 +40,19 @@ ThrowBack offers players a unique experience of exploration and puzzle-solving w
 
 - **Prof. Weber**: Providing guidance and oversight to ensure the project meets academic standards and objectives.
 
----
-
 ## How to Contribute
 
 Interested in contributing to ThrowBack? We welcome collaboration and feedback from fellow enthusiasts and developers! Feel free to reach out to our team to discuss potential contributions or suggestions.
 
----
-
 ## Acknowledgements
 
 Special thanks to **alksily**, who developed a [Perlin Noise Generator](https://gist.github.com/alksily/7a85a1898e65c936f861ee93516e397d) that we used and modified for our game.
-
----
 
 ## Connect with Us
 
 Stay updated on ThrowBack's development and future releases by following us on social media:
 
 - Coming soon
-
----
 
 ## License
 
