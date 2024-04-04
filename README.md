@@ -1,11 +1,7 @@
 # ThrowBack
 [![Java](https://img.shields.io/badge/Java-17-orange.svg)](https://openjdk.java.net/projects/jdk/17/) [![Maven](https://img.shields.io/badge/Maven-3.9.6-blue.svg)](https://maven.apache.org/download.cgi) [![License](https://img.shields.io/badge/License-Apache_2.0-blue.svg)](https://github.com/DaPlatypus26/ThrowBack?tab=Apache-2.0-1-ov-file#)
 
-Welcome to ThrowBack - a 2D open-world game developed as a school project for our computer science class. Step into a wild adventure where a professor's experiment completely messes up time itself. Imagine objects and creatures suddenly popping up in all sorts of different historical eras. Your job? Fix this crazy time mix-up by throwing everything back where it belongs.
-
-### About the Game
-
-ThrowBack offers players a unique experience of exploration and puzzle-solving within a procedurally generated world. Start a journey, encountering challenges and anomalies as you uncover the mysteries behind the professor's failed time machine experiment. Developed using Java 17 and built with Maven 3.9.6, this game promises an immersive journey through time and space.
+Welcome to ThrowBack - a 2D open-world game developed as a school project for our computer science class. Step into a wild adventure where a professor's experiment completely messes up time itself, causing objects and creatures to suddenly pop up in different historical eras. Your mission? Fix this crazy time mix-up by throwing everything back where it belongs. ThrowBack offers players a unique experience of exploration and puzzle-solving within a procedurally generated world. Embark on a journey, facing challenges and anomalies as you uncover the mysteries behind the professor's failed time machine experiment. Developed using Java 17 and built with Maven 3.9.6, this game promises an immersive journey through time and space.
 
 ### Features
 
