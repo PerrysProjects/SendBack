@@ -5,7 +5,6 @@ import net.throwback.objects.objectId.ObjectId;
 import java.awt.*;
 
 public abstract class GameObject {
-
     protected int x, y;
     protected int width, height;
     protected ObjectId id;
@@ -17,7 +16,6 @@ public abstract class GameObject {
         this.height = height;
         this.id = id;
     }
-
 
     /* public void render(Graphics g) {
         g.drawImage(image, x, y, width, height, null);

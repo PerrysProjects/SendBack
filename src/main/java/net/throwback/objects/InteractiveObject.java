@@ -6,7 +6,6 @@ public class InteractiveObject extends GameObject {
     protected boolean isInteractable;
     protected String message;
 
-
     public InteractiveObject(int x, int y, int width, int height, ObjectId id, boolean isInteractable, String message) {
         super(x, y, width, height, id);
         this.isInteractable = isInteractable;
@@ -20,7 +19,6 @@ public class InteractiveObject extends GameObject {
     public String getMessage() {
         return message;
     }
-
 
     /* @Override
     public void render(Graphics g) {

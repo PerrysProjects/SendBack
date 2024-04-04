@@ -14,7 +14,6 @@ public class TileObject extends GameObject {
         return isWalkable;
     }
 
-
     /*  @Override
     public void render(Graphics g) {
 

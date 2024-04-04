@@ -30,7 +30,7 @@ Welcome to ThrowBack - a 2D open-world game developed as a school project for ou
 ### Dev Team
 
 - **[Kian](https://github.com/Perry6226)**: Group Leader, Developer
-- **Elena**: Texture Artist, Developer
+- **[Elena](https://github.com/3layna)**: Texture Artist, Developer
 - **[Nassim](https://github.com/Duplos01)**: Developer
 - **[Ilya](https://github.com/AnimaMea1)**: Developer
 

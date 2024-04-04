@@ -4,7 +4,7 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 
 public enum ObjectId {
-    Player("Player", new BufferedImage(6, 6, Image.SCALE_DEFAULT));
+    EXAMPLE("example", new BufferedImage(6, 6, Image.SCALE_DEFAULT));
 
     private String name;
     private Image image;
