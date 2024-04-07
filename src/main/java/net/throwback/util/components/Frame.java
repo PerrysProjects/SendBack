@@ -13,7 +13,7 @@ public class Frame extends JFrame {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setFocusable(true);
 
-        setContentPane(new GamePanel());
+        setContentPane(SessionListPanel.getInstance());
         getContentPane().setFocusable(true);
         getContentPane().requestFocus();
         pack();
@@ -28,5 +28,15 @@ public class Frame extends JFrame {
             instance = new Frame();
         }
         return instance;
+    }
+
+    public void switchPanel(JPanel panel) {
+        remove(getContentPane());
+        setContentPane(panel);
+        getContentPane().setFocusable(true);
+        getContentPane().requestFocus();
+        getContentPane().revalidate();
+        getContentPane().repaint();
+        pack();
     }
 }

@@ -1,9 +1,10 @@
 package net.throwback;
 
-import net.throwback.util.components.Frame;
 import net.throwback.util.Logger;
 import net.throwback.util.OperatingSystem;
 import net.throwback.util.Session;
+import net.throwback.util.components.Frame;
+import net.throwback.util.components.SessionListPanel;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
@@ -23,13 +24,8 @@ public class Main {
     private static Path path;
     private static OperatingSystem os;
 
-    private static Session currentSession;
-
     public static void main(String[] args) {
         initialize();
-
-        currentSession = new Session("test", -345676);
-        currentSession.start();
     }
 
     private static void initialize() {
@@ -67,6 +63,8 @@ public class Main {
 
         os = OperatingSystem.checkOS(System.getProperty("os.name"));
 
+        SessionListPanel.setSessionList(new Session[]{new Session("Test", -673232), new Session("ztt", 111), new Session("jhk", -65445)});
+
         Frame.getInstance().setVisible(true);
     }
 
@@ -84,9 +82,5 @@ public class Main {
 
     public static OperatingSystem getOs() {
         return os;
-    }
-
-    public static Session getCurrentSession() {
-        return currentSession;
     }
 }

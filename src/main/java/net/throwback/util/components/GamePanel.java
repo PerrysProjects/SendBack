@@ -1,6 +1,5 @@
 package net.throwback.util.components;
 
-import net.throwback.Main;
 import net.throwback.objects.entity.MovementType;
 import net.throwback.objects.entity.Player;
 import net.throwback.util.Session;
@@ -14,6 +13,8 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
 public class GamePanel extends JPanel implements Runnable, KeyListener, ComponentListener {
+    private static GamePanel instance;
+
     private Thread thread;
     private int fps;
     private int cf;
@@ -27,7 +28,7 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, Componen
     private World world;
     private Player player;
 
-    public GamePanel() {
+    private GamePanel() {
         thread = new Thread(this);
         fps = 60;
         cf = 1;
@@ -37,49 +38,58 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, Componen
         cameraX = -1;
         cameraY = -1;
 
-        /*session = Main.getCurrentSession();
-        world = session.getWorlds()[0];
-        player = session.getPlayer();*/
-
         setFocusable(true);
         requestFocus();
         addKeyListener(this);
         addComponentListener(this);
         setLayout(null);
-
-        start();
     }
 
     private void update() {
-        if(Frame.getInstance() != null) {
-            if(cameraX == -1 && cameraY == -1) {
-                cameraX = getWidth() / 2;
-                cameraY = getHeight() / 2;
-            }
-
-            maxTop = getHeight() / 3;
-            maxBottom = getHeight() - maxTop;
-            maxLeft = getWidth() / 3;
-            maxRight = getWidth() - maxLeft;
+        if(cameraX == -1 && cameraY == -1) {
+            cameraX = getWidth() / 2;
+            cameraY = getHeight() / 2;
         }
 
-        if(Main.getCurrentSession() != null && session == null) {
-            session = Main.getCurrentSession();
-            world = session.getWorlds()[0];
-            player = session.getPlayer();
-        }
+        maxTop = getHeight() / 3;
+        maxBottom = getHeight() - maxTop;
+        maxLeft = getWidth() / 3;
+        maxRight = getWidth() - maxLeft;
 
         setFocusable(true);
         requestFocus();
+        revalidate();
         repaint();
     }
 
+    public static GamePanel getInstance() {
+        if(instance == null) {
+            instance = new GamePanel();
+        }
+        return instance;
+    }
+
     public void start() {
-        thread.start();
+        if(session != null) {
+            thread.start();
+            session.start();
+        }
     }
 
     public void stop() {
         thread.interrupt();
+        session.stop();
+    }
+
+    public void setup(Session session) {
+        if(thread.isAlive()) {
+            stop();
+        }
+        this.session = session;
+        world = session.getWorlds()[0];
+        player = session.getPlayer();
+
+        start();
     }
 
     @Override
@@ -99,9 +109,6 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, Componen
 
             for(int x = startX - 1; x <= endX + 1; x++) {
                 for(int y = startY - 1; y <= endY + 1; y++) {
-                    //System.out.println((getWidth() % zoom) / 2);
-                    //System.out.println((getWidth() / 2 - zoom / 2) % zoom);
-
                     int extraX, extraY;
                     if((getWidth() / 2 - zoom / 2) % zoom < zoom / 2) {
                         extraX = (getWidth() / 2 - zoom / 2) % zoom;
@@ -192,10 +199,8 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, Componen
 
     @Override
     public void componentResized(ComponentEvent e) {
-        if(Frame.getInstance() != null) {
-            cameraX = getWidth() / 2;
-            cameraY = getHeight() / 2;
-        }
+        cameraX = getWidth() / 2;
+        cameraY = getHeight() / 2;
     }
 
     @Override
