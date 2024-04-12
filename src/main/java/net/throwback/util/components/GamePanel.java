@@ -98,9 +98,9 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, Componen
         Graphics2D g2 = (Graphics2D) g;
 
         if(session != null) {
-            double[][] grid = world.getGrid();
-            grid[80][80] = 60;
-            grid[80][0] = 60;
+            Color[][] grid = world.getGrid();
+            grid[80][80] = Color.BLUE;
+            grid[80][0] = Color.BLUE;
 
             int startX = (int) player.getX() - (getWidth() / (2 * zoom));
             int endX = (int) player.getX() + (getWidth() / (2 * zoom)) + 1;
@@ -125,11 +125,9 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, Componen
                     int screenX = (int) ((x - startX) * zoom - Math.ceil((player.getX() % 1) * zoom)) + extraX;
                     int screenY = (int) ((y - startY) * zoom - Math.ceil((player.getY() % 1) * zoom)) + extraY;
 
-                    int rgb = Color.cyan.getRGB();
+                    int rgb = world.getBorderTile().getRGB();
                     if(x >= 0 && x < world.getWidth() && y >= 0 && y < world.getHeight()) {
-                        double value = grid[x][y];
-                        rgb = (value < 0.2 && value > -0.2) ? 0 : 0x010101 * 255;
-                        rgb = (value == 60) ? Color.blue.getRGB() : rgb;
+                        rgb = grid[x][y].getRGB();
                     }
 
                     g2.setColor(new Color(rgb));
