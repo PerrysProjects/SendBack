@@ -1,13 +1,15 @@
 package net.throwback.objects.objectId;
 
+import net.throwback.util.Resources;
+
 import java.awt.*;
 import java.awt.image.BufferedImage;
 
 public enum ObjectId {
-    EXAMPLE(-1, new BufferedImage[]{new BufferedImage(6, 6, Image.SCALE_DEFAULT)}, true, false, 16, 16, true),
-    GRASS(0, new BufferedImage[]{new BufferedImage(6, 6, Image.SCALE_DEFAULT)}, true, false, 16, 16, true),
-    BAUM1(1, new BufferedImage[]{new BufferedImage(6, 6, Image.SCALE_DEFAULT)},true, false, 16, 16, true),
-    STEIN1(2, new BufferedImage[]{new BufferedImage(6, 6, Image.SCALE_DEFAULT)}, true, false, 16, 16, true);
+    EXAMPLE(-1, new Image[]{new BufferedImage(6, 6, Image.SCALE_DEFAULT)}, true, false, 16, 16, true),
+    GRASS(0, new Image[]{Resources.getTileTexture("grass")}, true, false, 16, 16, true),
+    STONE(1, new Image[]{Resources.getTileTexture("stone")},true, false, 16, 16, true),
+    TREE(2, new Image[]{new BufferedImage(6, 6, Image.SCALE_DEFAULT)}, true, false, 16, 16, true);
     // ("/objectImages/tree1.png")  beispiel, weil, warum nicht
 
     private final int id;
@@ -43,15 +45,15 @@ public enum ObjectId {
         return width;
     }
 
-    public boolean getIsSolid() {
+    public boolean isSolid() {
         return solid;
     }
 
-    public boolean getIsRotatedX() {
+    public boolean isRotateX() {
         return rotateX;
     }
 
-    public boolean getIsRotatedY() {
+    public boolean isRotateY() {
         return rotateY;
     }
 }

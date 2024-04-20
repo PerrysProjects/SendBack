@@ -1,27 +1,27 @@
 package net.throwback.worlds;
 
+import net.throwback.objects.TileObject;
+import net.throwback.objects.objectId.ObjectId;
 import net.throwback.util.procedural.PerlinNoise;
 
-import java.awt.*;
-
 public class World {
-    private String name;
+    private final String name;
 
-    private int width;
-    private int height;
-    private Color[][] grid;
-    private Color borderTile;
+    private final int width;
+    private final int height;
+    private final TileObject[][] grid;
+    private final TileObject borderTile;
 
-    private int size;
-    private int seed;
+    private final int size;
+    private final int seed;
 
     public World(String name, int width, int height, int size, int seed) {
         this.name = name;
 
         this.width = width;
         this.height = height;
-        grid = new Color[width][height];
-        borderTile = Color.CYAN;
+        grid = new TileObject[width][height];
+        borderTile = new TileObject(-1, -1, ObjectId.EXAMPLE);
 
         this.size = size;
         this.seed = seed;
@@ -33,8 +33,11 @@ public class World {
         for(int x = 0; x < width; x++) {
             for(int y = 0; y < height; y++) {
                 double value = PerlinNoise.noise(x, y, 0.0, size, seed);
-                int rgb = (value < 0.3 && value > -0.3) ? 0 : 0x010101 * 255;
-                grid[x][y] = new Color(rgb);
+                if(value < 0.3 && value > -0.3) {
+                    grid[x][y] = new TileObject(x, y, ObjectId.GRASS);
+                } else {
+                    grid[x][y] = new TileObject(x, y, ObjectId.STONE);
+                }
             }
         }
     }
@@ -55,11 +58,11 @@ public class World {
         return height;
     }
 
-    public Color[][] getGrid() {
+    public TileObject[][] getGrid() {
         return grid;
     }
 
-    public Color getBorderTile() {
+    public TileObject getBorderTile() {
         return borderTile;
     }
 

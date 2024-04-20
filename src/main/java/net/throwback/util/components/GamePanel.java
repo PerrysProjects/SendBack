@@ -1,7 +1,9 @@
 package net.throwback.util.components;
 
+import net.throwback.objects.TileObject;
 import net.throwback.objects.entity.MovementType;
 import net.throwback.objects.entity.Player;
+import net.throwback.objects.objectId.ObjectId;
 import net.throwback.util.Session;
 import net.throwback.worlds.World;
 
@@ -15,11 +17,11 @@ import java.awt.event.KeyListener;
 public class GamePanel extends JPanel implements Runnable, KeyListener, ComponentListener {
     private static GamePanel instance;
 
-    private Thread thread;
-    private int fps;
+    private final Thread thread;
+    private final int fps;
     private int cf;
 
-    private int zoom;
+    private final int zoom;
 
     private int cameraX, cameraY;
     private int maxTop, maxBottom, maxLeft, maxRight;
@@ -98,9 +100,9 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, Componen
         Graphics2D g2 = (Graphics2D) g;
 
         if(session != null) {
-            Color[][] grid = world.getGrid();
-            grid[80][80] = Color.BLUE;
-            grid[80][0] = Color.BLUE;
+            TileObject[][] grid = world.getGrid();
+            grid[80][80] = new TileObject(80, 80, ObjectId.EXAMPLE);
+            grid[80][0] = new TileObject(80, 0, ObjectId.EXAMPLE);
 
             int startX = (int) player.getX() - (getWidth() / (2 * zoom));
             int endX = (int) player.getX() + (getWidth() / (2 * zoom)) + 1;
@@ -125,13 +127,12 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, Componen
                     int screenX = (int) ((x - startX) * zoom - Math.ceil((player.getX() % 1) * zoom)) + extraX;
                     int screenY = (int) ((y - startY) * zoom - Math.ceil((player.getY() % 1) * zoom)) + extraY;
 
-                    int rgb = world.getBorderTile().getRGB();
+                    Image texture = world.getBorderTile().getTextures()[0];
                     if(x >= 0 && x < world.getWidth() && y >= 0 && y < world.getHeight()) {
-                        rgb = grid[x][y].getRGB();
+                        texture = grid[x][y].getTextures()[0];
                     }
 
-                    g2.setColor(new Color(rgb));
-                    g2.fillRect(screenX, screenY, zoom, zoom);
+                    g2.drawImage(texture, screenX, screenY, zoom, zoom, this);
                 }
             }
 

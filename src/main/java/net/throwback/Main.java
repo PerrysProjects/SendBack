@@ -1,8 +1,6 @@
 package net.throwback;
 
-import net.throwback.util.Logger;
-import net.throwback.util.OperatingSystem;
-import net.throwback.util.Session;
+import net.throwback.util.*;
 import net.throwback.util.components.Frame;
 import net.throwback.util.components.SessionListPanel;
 import org.w3c.dom.Document;
@@ -50,18 +48,22 @@ public class Main {
                     }
                 }
             }
+
+            Logger.log("Starting " + name + " version " + version + "!");
         } catch(ParserConfigurationException | IOException | SAXException e) {
-            Logger.log(e);
+            Logger.log("Failed getting pom.xml, still staring game with error: " + Logger.buildStackTrace(e), LogType.WARN);
         }
 
         try {
             Path pathToJar = Paths.get(Main.class.getProtectionDomain().getCodeSource().getLocation().toURI());
             path = pathToJar.getParent();
-        } catch (URISyntaxException e) {
+        } catch(URISyntaxException e) {
             Logger.log(e);
         }
 
         os = OperatingSystem.checkOS(System.getProperty("os.name"));
+
+        Resources.init();
 
         SessionListPanel.setSessionList(new Session[]{new Session("Test", -673232), new Session("ztt", 111), new Session("jhk", -65445)});
 
