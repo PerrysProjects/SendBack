@@ -8,7 +8,8 @@ public enum ObjectId {
     GRASS(0, new BufferedImage(6, 6, Image.SCALE_DEFAULT), 16, 16, true),
     BAUM1(1, new BufferedImage(6, 6, Image.SCALE_DEFAULT), 16, 16, true),
     STEIN1(2, new BufferedImage(6, 6, Image.SCALE_DEFAULT), 16, 16, true);
-// ("/objectImages/tree1.png")  beispiel, weil, warum nicht
+    // ("/objectImages/tree1.png")  beispiel, weil, warum nicht
+
     private final int id;
     private final Image texture;
     private final int height, width;
@@ -37,6 +38,7 @@ public enum ObjectId {
     public int getWidth() {
         return width;
     }
+
     public boolean getIsSolid() {
         return solid;
     }

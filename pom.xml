@@ -9,10 +9,56 @@
     <version>a1.0</version>
 
     <properties>
-        <maven.compiler.source>17</maven.compiler.source>
-        <maven.compiler.target>17</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <maven.compiler.version>3.9.6</maven.compiler.version>
+        <java.version>17</java.version>
+        <maven.compiler.source>${java.version}</maven.compiler.source>
+        <maven.compiler.target>${java.version}</maven.compiler.target>
     </properties>
 
+    <build>
+        <resources>
+            <resource>
+                <directory>src/main/resources</directory>
+            </resource>
+        </resources>
+    </build>
+
+    <name>ThrowBack</name>
+    <description>2D open-world game developed as a school project</description>
+    <url>https://github.com/Perry6226/ThrowBack</url>
+    <inceptionYear>2024</inceptionYear>
+    <licenses>
+        <license>
+            <name>Apache 2.0</name>
+            <url>https://github.com/DaPlatypus26/ThrowBack?tab=Apache-2.0-1-ov-file</url>
+        </license>
+    </licenses>
+    <developers>
+        <developer>
+            <name>Kian</name>
+            <roles>
+                <role>Lead Developer</role>
+            </roles>
+        </developer>
+        <developer>
+            <name>Elena</name>
+            <roles>
+                <role>Texture Artist</role>
+            </roles>
+        </developer>
+        <developer>
+            <name>Nassim</name>
+        </developer>
+        <developer>
+            <name>Ilya</name>
+        </developer>
+    </developers>
+    <contributors>
+        <contributor>
+            <name>Prof. Weber</name>
+            <roles>
+                <role>Project Supervisor</role>
+            </roles>
+        </contributor>
+    </contributors>
 </project>

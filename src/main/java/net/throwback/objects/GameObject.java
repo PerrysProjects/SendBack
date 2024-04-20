@@ -5,8 +5,8 @@ import net.throwback.objects.objectId.ObjectId;
 import java.awt.*;
 
 public abstract class GameObject {
-    private int x, y;
-    private ObjectId id;
+    private final int x, y;
+    private final ObjectId id;
     private Image texture;
     private int height, width;
     private boolean solid;
@@ -32,7 +32,10 @@ public abstract class GameObject {
     public int getHeight() {
         return height;
     }
-    public boolean getIsSolid() {return solid; }
+
+    public boolean isSolid() {
+        return solid;
+    }
 
     public ObjectId getId() {
         return id;

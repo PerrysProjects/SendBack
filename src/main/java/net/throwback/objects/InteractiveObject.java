@@ -3,18 +3,23 @@ package net.throwback.objects;
 import net.throwback.objects.objectId.ObjectId;
 
 public class InteractiveObject extends WorldObject {
-    private boolean isInteractable;
-    private int health;
-    private String message;
+    private final boolean interactable;
+    private final int health;
+    private final String message;
 
-    public InteractiveObject(int x, int y, ObjectId id, boolean isCollidable, boolean isInteractable, String message) {
-        super(x, y, id, isCollidable);
-        this.isInteractable = isInteractable;
+    public InteractiveObject(int x, int y, ObjectId id, boolean interactable, int health, String message) {
+        super(x, y, id);
+        this.interactable = interactable;
+        this.health = health;
         this.message = message;
     }
 
-    public boolean GetIsInteractable() {
-        return isInteractable;
+    public boolean isInteractable() {
+        return interactable;
+    }
+
+    public int getHealth() {
+        return health;
     }
 
     public String getMessage() {
