@@ -7,9 +7,11 @@ import java.awt.*;
 public abstract class GameObject {
     private final int x, y;
     private final ObjectId id;
-    private Image texture;
+    private Image[] textures;
     private int height, width;
     private boolean solid;
+    private boolean rotateX, rotateY;
+
 
     public GameObject(int x, int y, ObjectId id) {
         this.x = x;
@@ -39,5 +41,13 @@ public abstract class GameObject {
 
     public ObjectId getId() {
         return id;
+    }
+
+    public boolean getIsRotatedX() {
+        return rotateX;
+    }
+
+    public boolean getIsRotatedY() {
+        return rotateY;
     }
 }
