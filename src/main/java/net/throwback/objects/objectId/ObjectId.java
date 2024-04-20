@@ -14,23 +14,34 @@ public enum ObjectId {
     ObjectId(String name, Image image) {
     this.name = name;
 getObjectImage();
+getTileImage();
 
     }
 
     public String getName() {
         return name;
     }
-    public BufferedImage tree1, stone1;
+    public BufferedImage tree1, stone1, tile1;
 
     public void getObjectImage() {
         try {
-    tree1 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/objectImages/tree1.png")));
-    stone1 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/objectImages/stone1.png")));
-        } catch (IOException e){
-            //noinspection CallToPrintStackTrace
+            tree1 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/objectImages/tree1.png")));
+            stone1 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/objectImages/stone1.png")));
+        }
+        catch (IOException e) {
             e.printStackTrace();
         }
-
     }
-}
+        public void getTileImage() {
+            try {
+                tile1 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/objectImages/Tile1.png")));
+            }
+            catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+
+
 

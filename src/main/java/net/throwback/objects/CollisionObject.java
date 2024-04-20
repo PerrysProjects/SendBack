@@ -4,24 +4,24 @@ import net.throwback.objects.objectId.ObjectId;
 
 public class CollisionObject extends GameObject {
     protected int health;
-    protected boolean isColliding;
+    protected boolean isCollidable; // in einer Metohde des Spielers sollte man nicht durch Objekte laufen können bei denen dieses Attribut 'true' ist.
     protected boolean isDestroyed;
-    protected int CollisionArea = x * y;  // Vielleicht auch einfach die Koordinaten
+    protected int CollisionArea = width * height;
 
     public CollisionObject(int x, int y, int width, int height, ObjectId id, Boolean isColliding) {
         super(x, y, width, height, id);
-        this.isColliding = false;
+        this.isCollidable = false;
     }
 
     //Konstruktor mit Leben für beispielsweise Objekte die man zerstören sollen kann
     public CollisionObject(int x, int y, int width, int height, ObjectId id, Boolean isColliding, int health) {
         super(x, y, width, height, id);
-        this.isColliding = false;
+        this.isCollidable = false;
         this.health = health;
     }
 
     public boolean getIsColliding() {
-        return isColliding;
+        return isCollidable;
     }
 
     public int getHealth() {
