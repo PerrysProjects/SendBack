@@ -9,6 +9,9 @@ public abstract class GameObject {
     protected int width, height;
     protected ObjectId id;
 
+
+
+
     public GameObject(int x, int y, int width, int height, ObjectId id) {
         this.x = x;
         this.y = y;
@@ -38,9 +41,6 @@ public abstract class GameObject {
         return height;
     }
 
-    public Image getImage() {
-        return id.getImage();
-    }
 
     public ObjectId getId() {
         return id;
