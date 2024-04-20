@@ -43,9 +43,4 @@ public void harvest(int amount) {
         }
     }
  */
-
- /*   @Override
-    public void render(Graphics g) {
-
-    } */
 }

@@ -1,46 +1,40 @@
 package net.throwback.objects.objectId;
 
-import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.image.BufferedImage;
-import java.io.IOException;
-import java.util.Objects;
 
 public enum ObjectId {
-    EXAMPLE("example", new BufferedImage(6, 6, Image.SCALE_DEFAULT));
+    EXAMPLE(-1, new BufferedImage(6, 6, Image.SCALE_DEFAULT), 16, 16);
 
-    private String name;
+    private final int id;
+    private final Image texture;
+    private final int height, width;
+    private final boolean solid;
 
-    ObjectId(String name, Image image) {
-    this.name = name;
-getObjectImage();
-getTileImage();
-
+    ObjectId(int id, Image texture, int height, int width, boolean solid) {
+        this.id = id;
+        this.texture = texture;
+        this.height = height;
+        this.width = width;
+        this.solid = solid;
     }
 
-    public String getName() {
-        return name;
+    public int getId() {
+        return id;
     }
-    public BufferedImage tree1, stone1, tile1;
 
-    public void getObjectImage() {
-        try {
-            tree1 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/objectImages/tree1.png")));
-            stone1 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/objectImages/stone1.png")));
-        }
-        catch (IOException e) {
-            e.printStackTrace();
-        }
+    public Image getTexture() {
+        return texture;
     }
-        public void getTileImage() {
-            try {
-                tile1 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/objectImages/Tile1.png")));
-            }
-            catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
+
+    public int getHeight() {
+        return height;
     }
+
+    public int getWidth() {
+        return width;
+    }
+}
 
 
 

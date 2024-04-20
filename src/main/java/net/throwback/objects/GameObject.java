@@ -5,25 +5,19 @@ import net.throwback.objects.objectId.ObjectId;
 import java.awt.*;
 
 public abstract class GameObject {
-    protected int x, y;
-    protected int width, height;
-    protected ObjectId id;
+    private int x, y;
+    private ObjectId id;
+    private Image texture;
+    private int height, width;
+    private boolean solid;
 
-
-
-
-    public GameObject(int x, int y, int width, int height, ObjectId id) {
+    public GameObject(int x, int y, ObjectId id) {
         this.x = x;
         this.y = y;
-        this.width = width;
-        this.height = height;
+        this.width = id.getWidth();
+        this.height = id.getHeight();
         this.id = id;
     }
-
-    /* public void render(Graphics g) {
-        g.drawImage(image, x, y, width, height, null);
-    }
-    */
 
     public int getX() {
         return x;
@@ -41,10 +35,7 @@ public abstract class GameObject {
         return height;
     }
 
-
-
     public ObjectId getId() {
         return id;
     }
 }
-

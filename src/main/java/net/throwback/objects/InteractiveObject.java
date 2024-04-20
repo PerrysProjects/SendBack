@@ -19,9 +19,4 @@ public class InteractiveObject extends GameObject {
     public String getMessage() {
         return message;
     }
-
-    /* @Override
-    public void render(Graphics g) {
-
-    }*/
 }
