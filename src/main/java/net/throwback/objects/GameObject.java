@@ -14,8 +14,6 @@ public abstract class GameObject {
     public GameObject(int x, int y, ObjectId id) {
         this.x = x;
         this.y = y;
-        this.width = id.getWidth();
-        this.height = id.getHeight();
         this.id = id;
     }
 
@@ -34,6 +32,7 @@ public abstract class GameObject {
     public int getHeight() {
         return height;
     }
+    public boolean getIsSolid() {return solid; }
 
     public ObjectId getId() {
         return id;
