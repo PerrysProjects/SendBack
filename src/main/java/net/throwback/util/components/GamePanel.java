@@ -1,6 +1,7 @@
 package net.throwback.util.components;
 
 import net.throwback.objects.TileObject;
+import net.throwback.objects.WorldObject;
 import net.throwback.objects.entity.MovementType;
 import net.throwback.objects.entity.Player;
 import net.throwback.objects.objectId.ObjectId;
@@ -100,9 +101,11 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, Componen
         Graphics2D g2 = (Graphics2D) g;
 
         if(session != null) {
-            TileObject[][] grid = world.getGrid();
-            grid[80][80] = new TileObject(80, 80, ObjectId.EXAMPLE);
-            grid[80][0] = new TileObject(80, 0, ObjectId.EXAMPLE);
+            TileObject[][] tileGrid = world.getTileGrid();
+            tileGrid[80][80] = new TileObject(80, 80, ObjectId.EXAMPLE);
+            tileGrid[80][0] = new TileObject(80, 0, ObjectId.EXAMPLE);
+
+            WorldObject[][] worldGrid = world.getWorldGrid();
 
             int startX = (int) player.getX() - (getWidth() / (2 * zoom));
             int endX = (int) player.getX() + (getWidth() / (2 * zoom)) + 1;
@@ -127,12 +130,19 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, Componen
                     int screenX = (int) ((x - startX) * zoom - Math.ceil((player.getX() % 1) * zoom)) + extraX;
                     int screenY = (int) ((y - startY) * zoom - Math.ceil((player.getY() % 1) * zoom)) + extraY;
 
-                    Image texture = world.getBorderTile().getTextures()[0];
+                    Image tileObject = world.getBorderTile().getTextures()[0];
+                    Image worldObject = null;
                     if(x >= 0 && x < world.getWidth() && y >= 0 && y < world.getHeight()) {
-                        texture = grid[x][y].getTextures()[0];
+                        tileObject = tileGrid[x][y].getTextures()[0];
+                        if(worldGrid[x][y] != null) {
+                            worldObject = worldGrid[x][y].getTextures()[0];
+                        }
                     }
 
-                    g2.drawImage(texture, screenX, screenY, zoom, zoom, this);
+                    g2.drawImage(tileObject, screenX, screenY, zoom, zoom, this);
+                    if(worldGrid != null) {
+                        g2.drawImage(worldObject, screenX, screenY, zoom, zoom, this);
+                    }
                 }
             }
 

@@ -1,6 +1,7 @@
 package net.throwback.worlds;
 
 import net.throwback.objects.TileObject;
+import net.throwback.objects.WorldObject;
 import net.throwback.objects.objectId.ObjectId;
 import net.throwback.util.procedural.PerlinNoise;
 
@@ -9,8 +10,9 @@ public class World {
 
     private final int width;
     private final int height;
-    private final TileObject[][] grid;
+    private final TileObject[][] tileGrid;
     private final TileObject borderTile;
+    private final WorldObject[][] worldGrid;
 
     private final int size;
     private final int seed;
@@ -20,8 +22,9 @@ public class World {
 
         this.width = width;
         this.height = height;
-        grid = new TileObject[width][height];
+        tileGrid = new TileObject[width][height];
         borderTile = new TileObject(-1, -1, ObjectId.EXAMPLE);
+        worldGrid = new WorldObject[width][height];
 
         this.size = size;
         this.seed = seed;
@@ -32,11 +35,16 @@ public class World {
     private void generateWorld() {
         for(int x = 0; x < width; x++) {
             for(int y = 0; y < height; y++) {
-                double value = PerlinNoise.noise(x, y, 0.0, size, seed);
-                if(value < 0.3 && value > -0.3) {
-                    grid[x][y] = new TileObject(x, y, ObjectId.GRASS);
+                double tileValue = PerlinNoise.noise(x, y, 0.0, size, seed);
+                if(tileValue < 0.3 && tileValue > -0.3) {
+                    tileGrid[x][y] = new TileObject(x, y, ObjectId.GRASS);
                 } else {
-                    grid[x][y] = new TileObject(x, y, ObjectId.STONE);
+                    tileGrid[x][y] = new TileObject(x, y, ObjectId.STONE);
+                }
+
+                double worldValue = PerlinNoise.noise(x, y, 2.0, size, seed);
+                if(worldValue > 0.3 || worldValue < -0.3) {
+                    worldGrid[x][y] = new WorldObject(x, y, ObjectId.TREE);
                 }
             }
         }
@@ -58,12 +66,16 @@ public class World {
         return height;
     }
 
-    public TileObject[][] getGrid() {
-        return grid;
+    public TileObject[][] getTileGrid() {
+        return tileGrid;
     }
 
     public TileObject getBorderTile() {
         return borderTile;
+    }
+
+    public WorldObject[][] getWorldGrid() {
+        return worldGrid;
     }
 
     public int getSeed() {

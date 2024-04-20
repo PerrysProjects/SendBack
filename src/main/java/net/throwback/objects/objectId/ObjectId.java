@@ -9,7 +9,7 @@ public enum ObjectId {
     EXAMPLE(-1, new Image[]{new BufferedImage(6, 6, Image.SCALE_DEFAULT)}, true, false, 16, 16, true),
     GRASS(0, new Image[]{Resources.getTileTexture("grass")}, true, false, 16, 16, true),
     STONE(1, new Image[]{Resources.getTileTexture("stone")},true, false, 16, 16, true),
-    TREE(2, new Image[]{new BufferedImage(6, 6, Image.SCALE_DEFAULT)}, true, false, 16, 16, true);
+    TREE(2, new Image[]{Resources.getTileTexture("tree")}, true, false, 16, 16, true);
     // ("/objectImages/tree1.png")  beispiel, weil, warum nicht
 
     private final int id;
