@@ -23,7 +23,7 @@ public class World {
         this.width = width;
         this.height = height;
         tileGrid = new TileObject[width][height];
-        borderTile = new TileObject(-1, -1, ObjectId.EXAMPLE);
+        borderTile = new TileObject(-1, -1, ObjectId.GRASS);
         worldGrid = new WorldObject[width][height];
 
         this.size = size;

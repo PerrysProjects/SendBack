@@ -32,7 +32,7 @@ public class Logger {
     public static String buildStackTrace(Exception error) {
         String time = LocalTime.now().format(DateTimeFormatter.ofPattern("HH:mm:ss"));
         StringBuilder stacktrace = new StringBuilder();
-        stacktrace.append(String.format("[%s | %s] %s: %s\n", time, LogType.ERROR, error.getClass().getSimpleName(), error.getMessage()));
+        stacktrace.append(String.format("%s: %s\n", error.getClass().getSimpleName(), error.getMessage()));
         for(StackTraceElement element : error.getStackTrace()) {
             stacktrace.append("\t").append(element.toString());
             if(element != error.getStackTrace()[error.getStackTrace().length - 1]) {

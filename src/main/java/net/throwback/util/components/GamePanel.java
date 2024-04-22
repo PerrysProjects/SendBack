@@ -1,10 +1,12 @@
 package net.throwback.util.components;
 
+import net.throwback.objects.GameObject;
 import net.throwback.objects.TileObject;
 import net.throwback.objects.WorldObject;
 import net.throwback.objects.entity.MovementType;
 import net.throwback.objects.entity.Player;
 import net.throwback.objects.objectId.ObjectId;
+import net.throwback.util.Resources;
 import net.throwback.util.Session;
 import net.throwback.worlds.World;
 
@@ -20,7 +22,9 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, Componen
 
     private final Thread thread;
     private final int fps;
-    private int cf;
+    private int currentFps;
+    private long lastFpsCheckTime;
+    private int frameCount;
 
     private final int zoom;
 
@@ -34,7 +38,9 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, Componen
     private GamePanel() {
         thread = new Thread(this);
         fps = 60;
-        cf = 1;
+        currentFps = 0;
+        lastFpsCheckTime = System.nanoTime();
+        frameCount = 0;
 
         zoom = 40;
 
@@ -46,6 +52,13 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, Componen
         addKeyListener(this);
         addComponentListener(this);
         setLayout(null);
+    }
+
+    public static GamePanel getInstance() {
+        if(instance == null) {
+            instance = new GamePanel();
+        }
+        return instance;
     }
 
     private void update() {
@@ -63,13 +76,6 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, Componen
         requestFocus();
         revalidate();
         repaint();
-    }
-
-    public static GamePanel getInstance() {
-        if(instance == null) {
-            instance = new GamePanel();
-        }
-        return instance;
     }
 
     public void start() {
@@ -95,10 +101,21 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, Componen
         start();
     }
 
+    private void calculateFPS() {
+        long currentTime = System.nanoTime();
+        if (currentTime - lastFpsCheckTime >= 1_000_000_000) {
+            currentFps = frameCount;
+            frameCount = 0;
+            lastFpsCheckTime = currentTime;
+        }
+    }
+
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
         Graphics2D g2 = (Graphics2D) g;
+
+        g2.setFont(Resources.getFonts()[0]);
 
         if(session != null) {
             TileObject[][] tileGrid = world.getTileGrid();
@@ -130,19 +147,15 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, Componen
                     int screenX = (int) ((x - startX) * zoom - Math.ceil((player.getX() % 1) * zoom)) + extraX;
                     int screenY = (int) ((y - startY) * zoom - Math.ceil((player.getY() % 1) * zoom)) + extraY;
 
-                    Image tileObject = world.getBorderTile().getTextures()[0];
-                    Image worldObject = null;
+                    TileObject tileObject = world.getBorderTile();
                     if(x >= 0 && x < world.getWidth() && y >= 0 && y < world.getHeight()) {
-                        tileObject = tileGrid[x][y].getTextures()[0];
-                        if(worldGrid[x][y] != null) {
-                            worldObject = worldGrid[x][y].getTextures()[0];
-                        }
+                        tileObject = tileGrid[x][y];
                     }
 
-                    g2.drawImage(tileObject, screenX, screenY, zoom, zoom, this);
-                    if(worldGrid != null) {
-                        g2.drawImage(worldObject, screenX, screenY, zoom, zoom, this);
-                    }
+                    int width = (int) ((double) tileObject.getWidth() / GameObject.getStandardWidth() * zoom);
+                    int height = (int) ((double) tileObject.getHeight() / GameObject.getStandardHeight() * zoom);
+                    g2.drawImage(tileObject.getTextures()[0], screenX - (width - zoom), screenY - (height - zoom),
+                            width, height, this);
                 }
             }
 
@@ -150,7 +163,44 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, Componen
             int ovalY = getHeight() / 2 - zoom / 2;
             g2.setColor(Color.RED);
             g2.drawRect(ovalX, ovalY, zoom, zoom);
+
+            for(int x = startX - 1; x <= endX + 1; x++) {
+                for(int y = startY - 1; y <= endY + 1; y++) {
+                    int extraX, extraY;
+                    if((getWidth() / 2 - zoom / 2) % zoom < zoom / 2) {
+                        extraX = (getWidth() / 2 - zoom / 2) % zoom;
+                    } else {
+                        extraX = ((getWidth() / 2 - zoom / 2) % zoom) - zoom;
+                    }
+
+                    if((getHeight() / 2 - zoom / 2) % zoom < zoom / 2) {
+                        extraY = (getHeight() / 2 - zoom / 2) % zoom;
+                    } else {
+                        extraY = ((getHeight() / 2 - zoom / 2) % zoom) - zoom;
+                    }
+
+                    int screenX = (int) ((x - startX) * zoom - Math.ceil((player.getX() % 1) * zoom)) + extraX;
+                    int screenY = (int) ((y - startY) * zoom - Math.ceil((player.getY() % 1) * zoom)) + extraY;
+
+                    WorldObject worldObject = null;
+                    if(x >= 0 && x < world.getWidth() && y >= 0 && y < world.getHeight()) {
+                        if(worldGrid[x][y] != null) {
+                            worldObject = worldGrid[x][y];
+                        }
+                    }
+
+                    if(worldObject != null) {
+                        int width = (int) ((double) worldObject.getWidth() / GameObject.getStandardWidth() * zoom);
+                        int height = (int) ((double) worldObject.getHeight() / GameObject.getStandardHeight() * zoom);
+                        g2.drawImage(worldObject.getTextures()[0], screenX - (width - zoom), screenY - (height - zoom),
+                                width, height, this);
+                    }
+                }
+            }
         }
+
+        g2.setColor(Color.YELLOW);
+        g2.drawString("FPS: " + currentFps, 50, 50);
     }
 
     @Override
@@ -161,7 +211,7 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, Componen
         long currentTime;
         long timer = 0;
 
-        while(thread != null) {
+        while(thread.isAlive()) {
             currentTime = System.nanoTime();
 
             delta += (currentTime - lastTime) / drawInterval;
@@ -170,16 +220,17 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, Componen
 
             if(delta >= 1) {
                 update();
-                cf = (cf != 60) ? cf + 1 : 1;
                 delta--;
+                frameCount++;
             }
+
+            calculateFPS();
 
             if(timer >= 1000000000) {
                 timer = 0;
             }
         }
     }
-
 
     @Override
     public void keyTyped(KeyEvent e) {
