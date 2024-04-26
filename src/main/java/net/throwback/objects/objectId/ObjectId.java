@@ -7,8 +7,8 @@ import java.awt.image.BufferedImage;
 
 public enum ObjectId {
     EXAMPLE(-1, new Image[]{new BufferedImage(6, 6, Image.SCALE_DEFAULT)}, true, false, 16, 16, true),
-    GRASS(0, new Image[]{Resources.getTileTexture("grass.png")}, true, false, 32, 32, true),
-    STONE(1, new Image[]{Resources.getTileTexture("stone.png")},true, false, 32, 32, true),
+    GRASS(0, new Image[]{Resources.getTileTexture("grass2.png")}, true, false, 32, 32, true),
+    STONE(1, new Image[]{Resources.getTileTexture("stone1.png")},true, false, 32, 32, true),
     TREE(2, new Image[]{Resources.getTileTexture("tree.png")}, true, false, 32, 40, true);
     // ("/objectImages/tree1.png")  beispiel, weil, warum nicht
 
