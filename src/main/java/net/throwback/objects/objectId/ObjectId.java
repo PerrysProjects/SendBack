@@ -24,8 +24,8 @@ public enum ObjectId {
         this.textures = textures;
         this.rotateX = rotateX;
         this.rotateY = rotateY;
-        this.height = height;
         this.width = width;
+        this.height = height;
         this.solid = solid;
     }
 
