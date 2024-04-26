@@ -9,19 +9,19 @@ import java.nio.file.Paths;
 import java.util.Date;
 
 public class Session implements Runnable {
-    private String name;
-    private Path path;
-    private Date creationDate;
-    private Date lastUse;
+    private final String name;
+    private final Path path;
+    private final Date creationDate;
+    private final Date lastUse;
 
-    private int seed;
-    private World[] worlds;
-    private World currentWorld;
+    private final int seed;
+    private final World[] worlds;
+    private final World currentWorld;
 
-    private Player player;
+    private final Player player;
 
-    private Thread thread;
-    private int tps;
+    private final Thread thread;
+    private final int tps;
 
     public Session(String name, int seed) {
         this.name = name;
@@ -36,7 +36,7 @@ public class Session implements Runnable {
         player = new Player(this,80, 80);
 
         thread = new Thread(this, name);
-        tps = 60;
+        tps = 20;
     }
 
     public void start() {
@@ -63,7 +63,7 @@ public class Session implements Runnable {
         long currentTime;
         long timer = 0;
 
-        while(thread != null) {
+        while(thread.isAlive()) {
             currentTime = System.nanoTime();
 
             delta += (currentTime - lastTime) / drawInterval;

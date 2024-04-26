@@ -72,9 +72,9 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, Componen
         maxLeft = getWidth() / 3;
         maxRight = getWidth() - maxLeft;
 
-        setFocusable(true);
-        requestFocus();
-        revalidate();
+        //setFocusable(true);
+        //requestFocus();
+        //revalidate();
         repaint();
     }
 
@@ -117,84 +117,69 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, Componen
 
         g2.setFont(Resources.getFonts()[0]);
 
-        if(session != null) {
-            TileObject[][] tileGrid = world.getTileGrid();
-            tileGrid[80][80] = new TileObject(80, 80, ObjectId.EXAMPLE);
-            tileGrid[80][0] = new TileObject(80, 0, ObjectId.EXAMPLE);
+        TileObject[][] tileGrid = world.getTileGrid();
+        tileGrid[80][80] = new TileObject(80, 80, ObjectId.EXAMPLE);
+        tileGrid[80][0] = new TileObject(80, 0, ObjectId.EXAMPLE);
 
-            WorldObject[][] worldGrid = world.getWorldGrid();
+        WorldObject[][] worldGrid = world.getWorldGrid();
 
-            int startX = (int) player.getX() - (getWidth() / (2 * zoom));
-            int endX = (int) player.getX() + (getWidth() / (2 * zoom)) + 1;
-            int startY = (int) player.getY() - (getHeight() / (2 * zoom));
-            int endY = (int) player.getY() + (getHeight() / (2 * zoom)) + 1;
+        int startX = (int) player.getX() - (getWidth() / (2 * zoom));
+        int endX = (int) player.getX() + (getWidth() / (2 * zoom)) + 1;
+        int startY = (int) player.getY() - (getHeight() / (2 * zoom));
+        int endY = (int) player.getY() + (getHeight() / (2 * zoom)) + 1;
 
-            for(int x = startX - 1; x <= endX + 1; x++) {
-                for(int y = startY - 1; y <= endY + 1; y++) {
-                    int extraX, extraY;
-                    if((getWidth() / 2 - zoom / 2) % zoom < zoom / 2) {
-                        extraX = (getWidth() / 2 - zoom / 2) % zoom;
-                    } else {
-                        extraX = ((getWidth() / 2 - zoom / 2) % zoom) - zoom;
-                    }
+        int extraX, extraY;
+        if((getWidth() / 2 - zoom / 2) % zoom < zoom / 2) {
+            extraX = (getWidth() / 2 - zoom / 2) % zoom;
+        } else {
+            extraX = ((getWidth() / 2 - zoom / 2) % zoom) - zoom;
+        }
 
-                    if((getHeight() / 2 - zoom / 2) % zoom < zoom / 2) {
-                        extraY = (getHeight() / 2 - zoom / 2) % zoom;
-                    } else {
-                        extraY = ((getHeight() / 2 - zoom / 2) % zoom) - zoom;
-                    }
+        if((getHeight() / 2 - zoom / 2) % zoom < zoom / 2) {
+            extraY = (getHeight() / 2 - zoom / 2) % zoom;
+        } else {
+            extraY = ((getHeight() / 2 - zoom / 2) % zoom) - zoom;
+        }
 
-                    int screenX = (int) ((x - startX) * zoom - Math.ceil((player.getX() % 1) * zoom)) + extraX;
-                    int screenY = (int) ((y - startY) * zoom - Math.ceil((player.getY() % 1) * zoom)) + extraY;
+        for(int x = startX - 1; x <= endX + 1; x++) {
+            for(int y = startY - 1; y <= endY + 1; y++) {
+                int screenX = (int) ((x - startX) * zoom - Math.ceil((player.getX() % 1) * zoom)) + extraX;
+                int screenY = (int) ((y - startY) * zoom - Math.ceil((player.getY() % 1) * zoom)) + extraY;
 
-                    TileObject tileObject = world.getBorderTile();
-                    if(x >= 0 && x < world.getWidth() && y >= 0 && y < world.getHeight()) {
-                        tileObject = tileGrid[x][y];
-                    }
-
-                    int width = (int) ((double) tileObject.getWidth() / GameObject.getStandardWidth() * zoom);
-                    int height = (int) ((double) tileObject.getHeight() / GameObject.getStandardHeight() * zoom);
-                    g2.drawImage(tileObject.getTextures()[0], screenX - (width - zoom), screenY - (height - zoom),
-                            width, height, this);
+                TileObject tileObject = world.getBorderTile();
+                if(x >= 0 && x < world.getWidth() && y >= 0 && y < world.getHeight()) {
+                    tileObject = tileGrid[x][y];
                 }
+
+                int width = (int) ((double) tileObject.getWidth() / GameObject.getStandardWidth() * zoom);
+                int height = (int) ((double) tileObject.getHeight() / GameObject.getStandardHeight() * zoom);
+                g2.drawImage(tileObject.getTextures()[0], screenX - (width - zoom), screenY - (height - zoom),
+                        width, height, this);
             }
+        }
 
-            int ovalX = getWidth() / 2 - zoom / 2;
-            int ovalY = getHeight() / 2 - zoom / 2;
-            g2.setColor(Color.RED);
-            g2.drawRect(ovalX, ovalY, zoom, zoom);
+        int ovalX = getWidth() / 2 - zoom / 2;
+        int ovalY = getHeight() / 2 - zoom / 2;
+        g2.setColor(Color.RED);
+        g2.drawRect(ovalX, ovalY, zoom, zoom);
 
-            for(int x = startX - 1; x <= endX + 1; x++) {
-                for(int y = startY - 1; y <= endY + 1; y++) {
-                    int extraX, extraY;
-                    if((getWidth() / 2 - zoom / 2) % zoom < zoom / 2) {
-                        extraX = (getWidth() / 2 - zoom / 2) % zoom;
-                    } else {
-                        extraX = ((getWidth() / 2 - zoom / 2) % zoom) - zoom;
+        for(int x = startX - 1; x <= endX + 1; x++) {
+            for(int y = startY - 1; y <= endY + 1; y++) {
+                int screenX = (int) ((x - startX) * zoom - Math.ceil((player.getX() % 1) * zoom)) + extraX;
+                int screenY = (int) ((y - startY) * zoom - Math.ceil((player.getY() % 1) * zoom)) + extraY;
+
+                WorldObject worldObject = null;
+                if(x >= 0 && x < world.getWidth() && y >= 0 && y < world.getHeight()) {
+                    if(worldGrid[x][y] != null) {
+                        worldObject = worldGrid[x][y];
                     }
+                }
 
-                    if((getHeight() / 2 - zoom / 2) % zoom < zoom / 2) {
-                        extraY = (getHeight() / 2 - zoom / 2) % zoom;
-                    } else {
-                        extraY = ((getHeight() / 2 - zoom / 2) % zoom) - zoom;
-                    }
-
-                    int screenX = (int) ((x - startX) * zoom - Math.ceil((player.getX() % 1) * zoom)) + extraX;
-                    int screenY = (int) ((y - startY) * zoom - Math.ceil((player.getY() % 1) * zoom)) + extraY;
-
-                    WorldObject worldObject = null;
-                    if(x >= 0 && x < world.getWidth() && y >= 0 && y < world.getHeight()) {
-                        if(worldGrid[x][y] != null) {
-                            worldObject = worldGrid[x][y];
-                        }
-                    }
-
-                    if(worldObject != null) {
-                        int width = (int) ((double) worldObject.getWidth() / GameObject.getStandardWidth() * zoom);
-                        int height = (int) ((double) worldObject.getHeight() / GameObject.getStandardHeight() * zoom);
-                        g2.drawImage(worldObject.getTextures()[0], screenX - (width - zoom), screenY - (height - zoom),
-                                width, height, this);
-                    }
+                if(worldObject != null) {
+                    int width = (int) ((double) worldObject.getWidth() / GameObject.getStandardWidth() * zoom);
+                    int height = (int) ((double) worldObject.getHeight() / GameObject.getStandardHeight() * zoom);
+                    g2.drawImage(worldObject.getTextures()[0], screenX - (width - zoom), screenY - (height - zoom),
+                            width, height, this);
                 }
             }
         }

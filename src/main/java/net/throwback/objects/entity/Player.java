@@ -65,103 +65,70 @@ public class Player {
     }
 
     public void update() {
-        if(world != session.getCurrentWorld()) {
-            world = session.getCurrentWorld();
+        World currentWorld = session.getCurrentWorld();
+        int worldHeight = world.getHeight();
+        int worldWidth = world.getWidth();
+
+        if(world != currentWorld) {
+            world = currentWorld;
         }
 
         if(movingUp && y > 0) {
             double newY = y - speed;
+            int floorX = (int) Math.floor(x);
+            int floorY = (int) Math.floor(newY);
+            int ceilX = (int) Math.ceil(x);
 
-            if(newY < 0) {
-                y = 0;
+            if(newY < 0 || world.getWorldGrid()[floorX][floorY] != null && world.getWorldGrid()[floorX][floorY].isSolid() ||
+                    world.getWorldGrid()[ceilX][floorY] != null && world.getWorldGrid()[ceilX][floorY].isSolid()) {
+                y = floorY + 1;
             } else {
-                int floorX = (int) Math.floor(x);
-                int floorNewY = (int) Math.floor(newY);
-                int ceilX = (int) Math.ceil(x);
-
-                boolean isSolidFloor = world.getWorldGrid()[floorX][floorNewY] != null &&
-                        world.getWorldGrid()[floorX][floorNewY].isSolid();
-                boolean isSolidCeil = world.getWorldGrid()[ceilX][floorNewY] != null &&
-                        world.getWorldGrid()[ceilX][floorNewY].isSolid();
-
-                if(!isSolidFloor && !isSolidCeil) {
-                    y = newY;
-                } else {
-                    y = floorNewY + 1;
-                }
+                y = newY;
             }
         }
 
         if(movingLeft && x > 0) {
             double newX = x - speed;
+            int floorX = (int) Math.floor(newX);
+            int floorY = (int) Math.floor(y);
+            int ceilY = (int) Math.ceil(y);
 
-            if(newX < 0) {
-                x = 0;
+            if(newX < 0 || world.getWorldGrid()[floorX][floorY] != null && world.getWorldGrid()[floorX][floorY].isSolid() ||
+                    world.getWorldGrid()[floorX][ceilY] != null && world.getWorldGrid()[floorX][ceilY].isSolid()) {
+                x = floorX + 1;
             } else {
-                int floorNewX = (int) Math.floor(newX);
-                int floorY = (int) Math.floor(y);
-                int ceilY = (int) Math.ceil(y);
-
-                boolean isSolidLeft = world.getWorldGrid()[floorNewX][floorY] != null &&
-                        world.getWorldGrid()[floorNewX][floorY].isSolid();
-                boolean isSolidRight = world.getWorldGrid()[floorNewX][ceilY] != null &&
-                        world.getWorldGrid()[floorNewX][ceilY].isSolid();
-
-                if(!isSolidLeft && !isSolidRight) {
-                    x = newX;
-                } else {
-                    x = floorNewX + 1;
-                }
+                x = newX;
             }
         }
 
-        if(movingDown && y < world.getHeight() - 1) {
+        if(movingDown && y < worldHeight - 1) {
             double newY = y + speed;
+            int floorX = (int) Math.floor(x);
+            int floorY = (int) Math.floor(newY + 1);
+            int ceilX = (int) Math.ceil(x);
 
-            if(newY > world.getHeight() - 1) {
-                y = world.getHeight() - 1;
+            if(newY > worldHeight - 1 || world.getWorldGrid()[floorX][floorY] != null && world.getWorldGrid()[floorX][floorY].isSolid() ||
+                    world.getWorldGrid()[ceilX][floorY] != null && world.getWorldGrid()[ceilX][floorY].isSolid()) {
+                y = floorY - 1;
             } else {
-                int floorX = (int) Math.floor(x);
-                int floorNewY = (int) Math.floor(newY + 1);
-                int ceilX = (int) Math.ceil(x);
-
-                boolean isSolidFloor = world.getWorldGrid()[floorX][floorNewY] != null &&
-                        world.getWorldGrid()[floorX][floorNewY].isSolid();
-                boolean isSolidCeil = world.getWorldGrid()[ceilX][floorNewY] != null &&
-                        world.getWorldGrid()[ceilX][floorNewY].isSolid();
-
-                if(!isSolidFloor && !isSolidCeil) {
-                    y = newY;
-                } else {
-                    y = floorNewY - 1;
-                }
+                y = newY;
             }
         }
 
-        if(movingRight && x < world.getWidth() - 1) {
+        if(movingRight && x < worldWidth - 1) {
             double newX = x + speed;
+            int floorX = (int) Math.floor(newX + 1);
+            int floorY = (int) Math.floor(y);
+            int ceilY = (int) Math.ceil(y);
 
-            if(newX > world.getWidth() - 1) {
-                x = world.getWidth() - 1;
+            if(newX > worldWidth - 1 || world.getWorldGrid()[floorX][floorY] != null && world.getWorldGrid()[floorX][floorY].isSolid() ||
+                    world.getWorldGrid()[floorX][ceilY] != null && world.getWorldGrid()[floorX][ceilY].isSolid()) {
+                x = floorX - 1;
             } else {
-                int floorNewX = (int) Math.floor(newX + 1);
-                int floorY = (int) Math.floor(y);
-                int ceilY = (int) Math.ceil(y);
-
-                boolean isSolidLeft = world.getWorldGrid()[floorNewX][floorY] != null &&
-                        world.getWorldGrid()[floorNewX][floorY].isSolid();
-                boolean isSolidRight = world.getWorldGrid()[floorNewX][ceilY] != null &&
-                        world.getWorldGrid()[floorNewX][ceilY].isSolid();
-
-                if(!isSolidLeft && !isSolidRight) {
-                    x = newX;
-                } else {
-                    x = floorNewX - 1;
-                }
+                x = newX;
             }
         }
     }
-
 
     public double getSize() {
         return size;
