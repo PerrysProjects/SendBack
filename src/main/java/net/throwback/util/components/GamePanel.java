@@ -42,7 +42,7 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, Componen
         lastFpsCheckTime = System.nanoTime();
         frameCount = 0;
 
-        zoom = 40;
+        zoom = 80;
 
         cameraX = -1;
         cameraY = -1;

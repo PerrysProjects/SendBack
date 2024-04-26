@@ -12,8 +12,8 @@ public abstract class GameObject {
     private final boolean solid;
     private final boolean rotateX, rotateY;
 
-    private static final int standardWidth = 16;
-    private static final int standardHeight = 16;
+    private static final int standardWidth = 32;
+    private static final int standardHeight = 32;
 
     public GameObject(int x, int y, ObjectId id) {
         this.x = x;

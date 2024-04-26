@@ -7,9 +7,9 @@ import java.awt.image.BufferedImage;
 
 public enum ObjectId {
     EXAMPLE(-1, new Image[]{new BufferedImage(6, 6, Image.SCALE_DEFAULT)}, true, false, 16, 16, true),
-    GRASS(0, new Image[]{Resources.getTileTexture("grass.png")}, true, false, 16, 16, true),
-    STONE(1, new Image[]{Resources.getTileTexture("stone.png")},true, false, 16, 16, true),
-    TREE(2, new Image[]{Resources.getTileTexture("tree.png")}, true, false, 22, 16, true);
+    GRASS(0, new Image[]{Resources.getTileTexture("grass.png")}, true, false, 32, 32, true),
+    STONE(1, new Image[]{Resources.getTileTexture("stone.png")},true, false, 32, 32, true),
+    TREE(2, new Image[]{Resources.getTileTexture("tree.png")}, true, false, 32, 40, true);
     // ("/objectImages/tree1.png")  beispiel, weil, warum nicht
 
     private final int id;
@@ -19,7 +19,7 @@ public enum ObjectId {
     private final int height, width;
     private final boolean solid;
 
-    ObjectId(int id, Image[] textures,boolean rotateX, boolean rotateY, int height, int width, boolean solid) {
+    ObjectId(int id, Image[] textures,boolean rotateX, boolean rotateY, int width, int height, boolean solid) {
         this.id = id;
         this.textures = textures;
         this.rotateX = rotateX;
