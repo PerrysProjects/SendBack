@@ -1,6 +1,6 @@
-package net.throwback.objects;
+package net.sendback.objects;
 
-import net.throwback.objects.objectId.ObjectId;
+import net.sendback.objects.objectId.ObjectId;
 
 public class InteractiveObject extends WorldObject {
     private final boolean interactable;

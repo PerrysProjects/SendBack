@@ -1,8 +1,8 @@
-package net.throwback.util;
+package net.sendback.util;
 
-import net.throwback.Main;
-import net.throwback.objects.entity.Player;
-import net.throwback.worlds.World;
+import net.sendback.Main;
+import net.sendback.objects.entity.Player;
+import net.sendback.worlds.World;
 
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -48,9 +48,9 @@ public class Session implements Runnable {
     }
 
     private void update() {
-        for(World world : worlds) {
+        /*for(World world : worlds) {
             world.update();
-        }
+        }*/
 
         player.update();
     }

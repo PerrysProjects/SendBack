@@ -1,9 +1,9 @@
-package net.throwback.worlds;
+package net.sendback.worlds;
 
-import net.throwback.objects.TileObject;
-import net.throwback.objects.WorldObject;
-import net.throwback.objects.objectId.ObjectId;
-import net.throwback.util.procedural.PerlinNoise;
+import net.sendback.objects.TileObject;
+import net.sendback.objects.WorldObject;
+import net.sendback.objects.objectId.ObjectId;
+import net.sendback.util.procedural.PerlinNoise;
 
 public class World {
     private final String name;

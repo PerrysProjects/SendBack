@@ -1,6 +1,6 @@
-package net.throwback.util;
+package net.sendback.util;
 
-import net.throwback.Main;
+import net.sendback.Main;
 
 import javax.imageio.ImageIO;
 import java.awt.*;

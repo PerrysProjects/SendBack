@@ -1,4 +1,4 @@
-package net.throwback.util;
+package net.sendback.util;
 
 public class StringUtil {
     public static String capitalize(String str) {

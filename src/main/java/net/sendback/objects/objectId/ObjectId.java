@@ -1,6 +1,6 @@
-package net.throwback.objects.objectId;
+package net.sendback.objects.objectId;
 
-import net.throwback.util.Resources;
+import net.sendback.util.Resources;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;

@@ -1,8 +1,8 @@
-package net.throwback;
+package net.sendback;
 
-import net.throwback.util.*;
-import net.throwback.util.components.Frame;
-import net.throwback.util.components.SessionListPanel;
+import net.sendback.util.*;
+import net.sendback.util.components.Frame;
+import net.sendback.util.components.SessionListPanel;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;

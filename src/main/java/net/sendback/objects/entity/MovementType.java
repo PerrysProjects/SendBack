@@ -1,4 +1,4 @@
-package net.throwback.objects.entity;
+package net.sendback.objects.entity;
 
 public enum MovementType {
     UP,

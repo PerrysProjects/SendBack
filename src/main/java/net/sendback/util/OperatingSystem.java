@@ -1,4 +1,4 @@
-package net.throwback.util;
+package net.sendback.util;
 
 public enum OperatingSystem {
     WINDOWS,

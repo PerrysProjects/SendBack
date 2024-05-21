@@ -1,6 +1,6 @@
-package net.throwback.util.components;
+package net.sendback.util.components;
 
-import net.throwback.util.Session;
+import net.sendback.util.Session;
 
 import javax.swing.*;
 

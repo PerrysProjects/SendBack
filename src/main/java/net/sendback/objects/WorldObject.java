@@ -1,6 +1,6 @@
-package net.throwback.objects;
+package net.sendback.objects;
 
-import net.throwback.objects.objectId.ObjectId;
+import net.sendback.objects.objectId.ObjectId;
 
 public class WorldObject extends GameObject {
     public WorldObject(int x, int y, ObjectId id) {

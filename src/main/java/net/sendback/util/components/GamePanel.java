@@ -1,14 +1,14 @@
-package net.throwback.util.components;
+package net.sendback.util.components;
 
-import net.throwback.objects.GameObject;
-import net.throwback.objects.TileObject;
-import net.throwback.objects.WorldObject;
-import net.throwback.objects.entity.MovementType;
-import net.throwback.objects.entity.Player;
-import net.throwback.objects.objectId.ObjectId;
-import net.throwback.util.Resources;
-import net.throwback.util.Session;
-import net.throwback.worlds.World;
+import net.sendback.objects.GameObject;
+import net.sendback.objects.TileObject;
+import net.sendback.objects.WorldObject;
+import net.sendback.objects.entity.MovementType;
+import net.sendback.objects.entity.Player;
+import net.sendback.objects.objectId.ObjectId;
+import net.sendback.util.Resources;
+import net.sendback.util.Session;
+import net.sendback.worlds.World;
 
 import javax.swing.*;
 import java.awt.*;
@@ -117,12 +117,6 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, Componen
 
         g2.setFont(Resources.getFonts()[0]);
 
-        TileObject[][] tileGrid = world.getTileGrid();
-        tileGrid[80][80] = new TileObject(80, 80, ObjectId.EXAMPLE);
-        tileGrid[80][0] = new TileObject(80, 0, ObjectId.EXAMPLE);
-
-        WorldObject[][] worldGrid = world.getWorldGrid();
-
         int startX = (int) player.getX() - (getWidth() / (2 * zoom));
         int endX = (int) player.getX() + (getWidth() / (2 * zoom)) + 1;
         int startY = (int) player.getY() - (getHeight() / (2 * zoom));
@@ -148,7 +142,7 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, Componen
 
                 TileObject tileObject = world.getBorderTile();
                 if(x >= 0 && x < world.getWidth() && y >= 0 && y < world.getHeight()) {
-                    tileObject = tileGrid[x][y];
+                    tileObject = world.getTileGrid()[x][y];
                 }
 
                 int width = (int) ((double) tileObject.getWidth() / GameObject.getStandardWidth() * zoom);
@@ -170,8 +164,8 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, Componen
 
                 WorldObject worldObject = null;
                 if(x >= 0 && x < world.getWidth() && y >= 0 && y < world.getHeight()) {
-                    if(worldGrid[x][y] != null) {
-                        worldObject = worldGrid[x][y];
+                    if(world.getWorldGrid()[x][y] != null) {
+                        worldObject = world.getWorldGrid()[x][y];
                     }
                 }
 

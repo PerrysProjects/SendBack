@@ -1,4 +1,4 @@
-package net.throwback.util.procedural;
+package net.sendback.util.procedural;
 
 public class NoodleNoise {
     private static final int[] permutation = {151, 160, 137, 91, 90, 15, 131, 13, 201,

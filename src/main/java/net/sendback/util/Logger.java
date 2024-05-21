@@ -1,4 +1,4 @@
-package net.throwback.util;
+package net.sendback.util;
 
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;

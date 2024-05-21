@@ -1,7 +1,7 @@
-package net.throwback.objects.entity;
+package net.sendback.objects.entity;
 
-import net.throwback.util.Session;
-import net.throwback.worlds.World;
+import net.sendback.util.Session;
+import net.sendback.worlds.World;
 
 public class Player {
     private double size;
