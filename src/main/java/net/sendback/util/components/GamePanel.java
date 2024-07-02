@@ -39,7 +39,7 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, Componen
         thread = new Thread(this);
         fps = 60;
         currentFps = 0;
-        lastFpsCheckTime = System.nanoTime();
+        lastFpsCheckTime = System.currentTimeMillis();
         frameCount = 0;
 
         zoom = 80;
@@ -102,8 +102,8 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, Componen
     }
 
     private void calculateFPS() {
-        long currentTime = System.nanoTime();
-        if (currentTime - lastFpsCheckTime >= 1_000_000_000) {
+        long currentTime = System.currentTimeMillis();
+        if(currentTime - lastFpsCheckTime >= 1000) {
             currentFps = frameCount;
             frameCount = 0;
             lastFpsCheckTime = currentTime;
@@ -184,14 +184,14 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, Componen
 
     @Override
     public void run() {
-        double drawInterval = (double) 1000000000 / fps;
+        double drawInterval = (double) 1000 / fps;
         double delta = 0;
-        long lastTime = System.nanoTime();
+        long lastTime = System.currentTimeMillis();
         long currentTime;
         long timer = 0;
 
         while(thread.isAlive()) {
-            currentTime = System.nanoTime();
+            currentTime = System.currentTimeMillis();
 
             delta += (currentTime - lastTime) / drawInterval;
             timer += (currentTime - lastTime);

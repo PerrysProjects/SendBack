@@ -57,14 +57,14 @@ public class Session implements Runnable {
 
     @Override
     public void run() {
-        double drawInterval = (double) 1000000000/tps;
+        double drawInterval = (double) 1000/tps;
         double delta = 0;
-        long lastTime = System.nanoTime();
+        long lastTime = System.currentTimeMillis();
         long currentTime;
         long timer = 0;
 
         while(thread.isAlive()) {
-            currentTime = System.nanoTime();
+            currentTime = System.currentTimeMillis();
 
             delta += (currentTime - lastTime) / drawInterval;
             timer += (currentTime - lastTime);
