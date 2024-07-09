@@ -116,8 +116,8 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, Componen
         int tileScreenWidth = zoom;
         int tileScreenHeight = getHeight() / tileSize;
 
-        for(int x = 0; x < tileScreenWidth; x++) {
-            for(int y = 0; y < tileScreenHeight; y++) {
+        for(int x = 0; x < tileScreenWidth + 2; x++) {
+            for(int y = 0; y < tileScreenHeight + 2; y++) {
                 int tilePosX = (int) (player.getX() - tileScreenWidth / 2 + x);
                 int tilePosY = (int) (player.getY() - tileScreenHeight / 2 + y);
 
