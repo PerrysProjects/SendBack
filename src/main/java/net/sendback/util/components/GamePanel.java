@@ -1,11 +1,8 @@
 package net.sendback.util.components;
 
-import net.sendback.objects.GameObject;
 import net.sendback.objects.TileObject;
-import net.sendback.objects.WorldObject;
 import net.sendback.objects.entity.MovementType;
 import net.sendback.objects.entity.Player;
-import net.sendback.objects.objectId.ObjectId;
 import net.sendback.util.Resources;
 import net.sendback.util.Session;
 import net.sendback.worlds.World;
@@ -42,7 +39,7 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, Componen
         lastFpsCheckTime = System.currentTimeMillis();
         frameCount = 0;
 
-        zoom = 80;
+        zoom = 14;
 
         cameraX = -1;
         cameraY = -1;
@@ -72,9 +69,6 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, Componen
         maxLeft = getWidth() / 3;
         maxRight = getWidth() - maxLeft;
 
-        //setFocusable(true);
-        //requestFocus();
-        //revalidate();
         repaint();
     }
 
@@ -117,47 +111,118 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, Componen
 
         g2.setFont(Resources.getFonts()[0]);
 
-        int startX = (int) player.getX() - (getWidth() / (2 * zoom));
-        int endX = (int) player.getX() + (getWidth() / (2 * zoom)) + 1;
-        int startY = (int) player.getY() - (getHeight() / (2 * zoom));
-        int endY = (int) player.getY() + (getHeight() / (2 * zoom)) + 1;
+        int tileSize = getWidth() / zoom;
 
-        int extraX, extraY;
-        if((getWidth() / 2 - zoom / 2) % zoom < zoom / 2) {
-            extraX = (getWidth() / 2 - zoom / 2) % zoom;
-        } else {
-            extraX = ((getWidth() / 2 - zoom / 2) % zoom) - zoom;
+        int tileScreenWidth = zoom;
+        int tileScreenHeight = getHeight() / tileSize;
+
+        for(int x = 0; x < tileScreenWidth; x++) {
+            for(int y = 0; y < tileScreenHeight; y++) {
+                int tilePosX = (int) (player.getX() - tileScreenWidth / 2 + x);
+                int tilePosY = (int) (player.getY() - tileScreenHeight / 2 + y);
+
+                TileObject tileObject = world.getBorderTile();
+                if(tilePosX >= 0 && tilePosX < world.getTileGrid().length &&
+                        tilePosY >= 0 && tilePosY < world.getTileGrid()[0].length) {
+                    tileObject = world.getTileGrid()[tilePosX][tilePosY];
+                }
+
+                double offsetX = player.getX() - (int) player.getX();
+                double offsetY = player.getY() - (int) player.getY();
+
+                int extraX = (getWidth() / 2 - tileSize / 2) % tileSize;
+                if(extraX >= tileSize / 2) {
+                    extraX -= tileSize;
+                }
+
+                int extraY = (getHeight() / 2 - tileSize / 2) % tileSize;
+                if(extraY >= tileSize / 2) {
+                    extraY -= tileSize;
+                }
+
+                int screenPosX = (int) (tileSize * x - tileSize * offsetX + extraX);
+                int screenPosY = (int) (tileSize * y - tileSize * offsetY + extraY);
+
+                int tileWidth = (int) (tileSize * tileObject.getWidth());
+                int tileHeight = (int) (tileSize * tileObject.getHeight());
+
+                int tileOffsetX = tileSize - tileWidth;
+                int tileOffsetY = tileSize - tileHeight;
+
+                //g2.setColor(new Color(new Random().nextInt(88888)));
+                //g2.fillRect(screenPosX, screenPosY, tileSize, tileSize);
+                if(tilePosX == 5 && tilePosY == 5) {
+                    g2.setColor(Color.CYAN);
+                    g2.fillRect(screenPosX, screenPosY, tileSize, tileSize);
+                } else {
+                    g2.drawImage(tileObject.getTextures()[0], screenPosX + tileOffsetX, screenPosY + tileOffsetY,
+                            tileWidth, tileHeight, this);
+                }
+            }
         }
 
-        if((getHeight() / 2 - zoom / 2) % zoom < zoom / 2) {
-            extraY = (getHeight() / 2 - zoom / 2) % zoom;
-        } else {
-            extraY = ((getHeight() / 2 - zoom / 2) % zoom) - zoom;
+        int ovalX = getWidth() / 2 - tileSize / 2;
+        int ovalY = getHeight() / 2 - tileSize / 2;
+        g2.setColor(Color.RED);
+        g2.drawRect(ovalX, ovalY, tileSize, tileSize);
+
+        /*int startX = (int) player.getX() - (getWidth() / (2 * tileSize));
+        int endX = (int) player.getX() + (getWidth() / (2 * tileSize)) + 1;
+        int startY = (int) player.getY() - (getHeight() / (2 * tileSize));
+        int endY = (int) player.getY() + (getHeight() / (2 * tileSize)) + 1;
+
+        /*int extraX = (getWidth() / 2 - tileSize / 2) % tileSize;
+        if(!((getWidth() / 2 - tileSize / 2) % tileSize < tileSize / 2)) {
+            extraX -= tileSize;
+        }
+
+        int extraY = (getHeight() / 2 - tileSize / 2) % tileSize;
+        if(!((getHeight() / 2 - tileSize / 2) % tileSize < tileSize / 2)) {
+            extraY -= tileSize;
+        }*/
+
+        /*int extraX = (getWidth() / 2 - tileSize / 2) % tileSize;
+        if(extraX >= tileSize / 2) {
+            extraX -= tileSize;
+        }
+
+        int extraY = (getHeight() / 2 - tileSize / 2) % tileSize;
+        if(extraY >= tileSize / 2) {
+            extraY -= tileSize;
         }
 
         for(int x = startX - 1; x <= endX + 1; x++) {
             for(int y = startY - 1; y <= endY + 1; y++) {
-                int screenX = (int) ((x - startX) * zoom - Math.ceil((player.getX() % 1) * zoom)) + extraX;
-                int screenY = (int) ((y - startY) * zoom - Math.ceil((player.getY() % 1) * zoom)) + extraY;
+                int screenX = (int) ((x - startX) * tileSize - Math.ceil((player.getX() % 1) * tileSize)) + extraX;
+                int screenY = (int) ((y - startY) * tileSize - Math.ceil((player.getY() % 1) * tileSize)) + extraY;
 
                 TileObject tileObject = world.getBorderTile();
                 if(x >= 0 && x < world.getWidth() && y >= 0 && y < world.getHeight()) {
                     tileObject = world.getTileGrid()[x][y];
                 }
 
-                int width = (int) ((double) tileObject.getWidth() / GameObject.getStandardWidth() * zoom);
-                int height = (int) ((double) tileObject.getHeight() / GameObject.getStandardHeight() * zoom);
-                g2.drawImage(tileObject.getTextures()[0], screenX - (width - zoom), screenY - (height - zoom),
-                        width, height, this);
+                int width = (int) (tileObject.getWidth() * tileSize);
+                int height = (int) (tileObject.getHeight() * tileSize);
+
+
+                if(x == 5 && y == 5) {
+                    g2.setColor(Color.CYAN);
+                    g2.fillRect(screenX - (width - tileSize), screenY - (height - tileSize), tileSize, tileSize);
+                } else {
+                    g2.drawImage(tileObject.getTextures()[0], screenX - (width - tileSize), screenY - (height - tileSize),
+                            width, height, this);
+                    //g2.setColor(Color.GREEN);
+                    //g2.fillRect(screenX - (width - tileSize), screenY - (height - tileSize), tileSize, tileSize);
+                }
             }
         }
 
-        int ovalX = getWidth() / 2 - zoom / 2;
-        int ovalY = getHeight() / 2 - zoom / 2;
+        int ovalX = getWidth() / 2 - tileSize / 2;
+        int ovalY = getHeight() / 2 - tileSize / 2;
         g2.setColor(Color.RED);
-        g2.drawRect(ovalX, ovalY, zoom, zoom);
+        g2.drawRect(ovalX, ovalY, tileSize, tileSize);
 
-        for(int x = startX - 1; x <= endX + 1; x++) {
+        /*for(int x = startX - 1; x <= endX + 1; x++) {
             for(int y = startY - 1; y <= endY + 1; y++) {
                 int screenX = (int) ((x - startX) * zoom - Math.ceil((player.getX() % 1) * zoom)) + extraX;
                 int screenY = (int) ((y - startY) * zoom - Math.ceil((player.getY() % 1) * zoom)) + extraY;
@@ -176,10 +241,12 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, Componen
                             width, height, this);
                 }
             }
-        }
+        }*/
 
         g2.setColor(Color.YELLOW);
         g2.drawString("FPS: " + currentFps, 50, 50);
+
+        g2.dispose();
     }
 
     @Override

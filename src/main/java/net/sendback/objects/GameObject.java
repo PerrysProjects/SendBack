@@ -8,7 +8,7 @@ public abstract class GameObject {
     private final int x, y;
     private final ObjectId id;
     private final Image[] textures;
-    private final int width, height;
+    private final double width, height;
     private final boolean solid;
     private final boolean rotateX, rotateY;
 
@@ -43,11 +43,11 @@ public abstract class GameObject {
         return textures;
     }
 
-    public int getWidth() {
+    public double getWidth() {
         return width;
     }
 
-    public int getHeight() {
+    public double getHeight() {
         return height;
     }
 

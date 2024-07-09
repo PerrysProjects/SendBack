@@ -1,32 +1,23 @@
 package net.sendback.util;
 
-import net.sendback.Main;
-
 import javax.imageio.ImageIO;
 import java.awt.*;
+import java.awt.image.BufferedImage;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Objects;
 
 public class Resources {
-    private static String resourcePath;
     private static Font[] fonts;
-    private static Map<String, Image> tileTextures;
+    private static Map<String, Image> tileTextures = new HashMap<>();
+    private static GraphicsEnvironment env = GraphicsEnvironment.getLocalGraphicsEnvironment();
+    private static GraphicsDevice device = env.getDefaultScreenDevice();
+    private static GraphicsConfiguration config = device.getDefaultConfiguration();
 
-    static {
-        try {
-            Path path = Paths.get(Objects.requireNonNull(Main.class.getResource("/")).toURI());
-            resourcePath = path.toString();
-        } catch(Exception e) {
-            Logger.log(e);
-        }
-    }
+    public static BufferedImage img;
 
     public static void init() {
         try {
@@ -37,16 +28,16 @@ public class Resources {
         } catch(FontFormatException | IOException e) {
             Logger.log(e);
         }
-        tileTextures = loadTextures("/assets/textures/tiles");
+        loadTextures("/assets/textures/tiles");
+
+
     }
 
-    private static Map<String, Image> loadTextures(String folderPath) {
-        Map<String, Image> textureFiles = new HashMap<>();
-
+    private static void loadTextures(String folderPath) {
         try(InputStream folderStream = Resources.class.getResourceAsStream(folderPath)) {
             if(folderStream == null) {
                 Logger.log("Resource folder " + folderPath + " not found.", LogType.ERROR);
-                return textureFiles;
+                return;
             }
 
             try(BufferedReader reader = new BufferedReader(new InputStreamReader(folderStream))) {
@@ -54,7 +45,15 @@ public class Resources {
                 while((fileName = reader.readLine()) != null) {
                     try(InputStream fileStream = Resources.class.getResourceAsStream(folderPath + "/" + fileName)) {
                         if(fileStream != null) {
-                            textureFiles.put(fileName, ImageIO.read(fileStream));
+                            BufferedImage unconverted = ImageIO.read(fileStream);
+
+                            BufferedImage converted = config.createCompatibleImage(unconverted.getWidth(), unconverted.getHeight(),
+                                    Transparency.TRANSLUCENT);
+                            Graphics g = converted.getGraphics();
+                            g.drawImage(unconverted, 0, 0, unconverted.getWidth(), unconverted.getHeight(), null);
+                            g.dispose();
+
+                            tileTextures.put(fileName, converted);
                         } else {
                             Logger.log("Resource file " + folderPath + "/" + fileName + " not found.", LogType.WARN);
                         }
@@ -68,7 +67,6 @@ public class Resources {
         }
 
         Logger.log("Resource folder " + folderPath + " loaded!");
-        return textureFiles;
     }
 
     public static Map<String, Image> getTileTextures() {

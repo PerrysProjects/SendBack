@@ -23,7 +23,7 @@ public class Player {
         this.x = x;
         this.y = y;
 
-        speed = 0.3;
+        speed = 0.08;
     }
 
     public void startMoving(MovementType type) {

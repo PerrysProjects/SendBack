@@ -42,10 +42,10 @@ public class World {
                     tileGrid[x][y] = new TileObject(x, y, ObjectId.STONE);
                 }
 
-                double worldValue = PerlinNoise.noise(x, y, 2.0, size, seed);
+                /*double worldValue = PerlinNoise.noise(x, y, 2.0, size, seed);
                 if(worldValue > 0.3 || worldValue < -0.3) {
                     worldGrid[x][y] = new WorldObject(x, y, ObjectId.TREE);
-                }
+                }*/
             }
         }
     }
