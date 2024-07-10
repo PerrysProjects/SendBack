@@ -1,6 +1,7 @@
 package net.sendback.util.components;
 
 import net.sendback.objects.TileObject;
+import net.sendback.objects.WorldObject;
 import net.sendback.objects.entity.MovementType;
 import net.sendback.objects.entity.Player;
 import net.sendback.util.Resources;
@@ -40,11 +41,6 @@ public class GameCanvas extends Canvas implements Runnable, KeyListener, Compone
 
         zoom = 14;
 
-        setFocusable(true);
-        requestFocus();
-        revalidate();
-        repaint();
-
         addKeyListener(this);
         addComponentListener(this);
     }
@@ -60,11 +56,11 @@ public class GameCanvas extends Canvas implements Runnable, KeyListener, Compone
         if(instance == null) {
             instance = new GameCanvas();
         }
+
         return instance;
     }
 
     private void update() {
-
         frameCount++;
 
         render();
@@ -146,7 +142,7 @@ public class GameCanvas extends Canvas implements Runnable, KeyListener, Compone
                     int tileOffsetX = tileSize - tileWidth;
                     int tileOffsetY = tileSize - tileHeight;
 
-                    if(tilePosX == 5 && tilePosY == 5) {
+                    if(tilePosX == 80 && tilePosY == 80) {
                         g2.setColor(Color.CYAN);
                         g2.fillRect(screenPosX, screenPosY, tileSize, tileSize);
                     } else {
@@ -160,6 +156,45 @@ public class GameCanvas extends Canvas implements Runnable, KeyListener, Compone
             int ovalY = getHeight() / 2 - tileSize / 2;
             g2.setColor(Color.RED);
             g2.drawRect(ovalX, ovalY, tileSize, tileSize);
+
+            for(int x = 0; x < tileScreenWidth + 2; x++) {
+                for(int y = 0; y < tileScreenHeight + 2; y++) {
+                    int tilePosX = (int) (player.getX() - tileScreenWidth / 2 + x);
+                    int tilePosY = (int) (player.getY() - tileScreenHeight / 2 + y);
+
+                    if(tilePosX >= 0 && tilePosX < world.getTileGrid().length &&
+                            tilePosY >= 0 && tilePosY < world.getTileGrid()[0].length) {
+                        WorldObject worldObject = world.getWorldGrid()[tilePosX][tilePosY];
+
+                        if(worldObject != null) {
+                            double offsetX = player.getX() - (int) player.getX();
+                            double offsetY = player.getY() - (int) player.getY();
+
+                            int extraX = (getWidth() / 2 - tileSize / 2) % tileSize;
+                            if(extraX >= tileSize / 2) {
+                                extraX -= tileSize;
+                            }
+
+                            int extraY = (getHeight() / 2 - tileSize / 2) % tileSize;
+                            if(extraY >= tileSize / 2) {
+                                extraY -= tileSize;
+                            }
+
+                            int screenPosX = (int) (tileSize * x - tileSize * offsetX + extraX);
+                            int screenPosY = (int) (tileSize * y - tileSize * offsetY + extraY);
+
+                            int tileWidth = (int) (tileSize * worldObject.getWidth());
+                            int tileHeight = (int) (tileSize * worldObject.getHeight());
+
+                            int tileOffsetX = tileSize - tileWidth;
+                            int tileOffsetY = tileSize - tileHeight;
+
+                            g2.drawImage(worldObject.getTextures()[0], screenPosX + tileOffsetX, screenPosY + tileOffsetY,
+                                    tileWidth, tileHeight, this);
+                        }
+                    }
+                }
+            }
 
             g2.setColor(Color.YELLOW);
             g2.drawString("FPS: " + currentFps, 50, 50);

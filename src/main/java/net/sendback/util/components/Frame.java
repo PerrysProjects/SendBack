@@ -39,21 +39,15 @@ public class Frame extends JFrame {
     }
 
     public void switchPanel(Component component) {
-        //remove(getContentPane());
-        //setContentPane(component);
-        //getContentPane().setFocusable(true);
-        //getContentPane().requestFocus();
-        //getContentPane().revalidate();
-        //getContentPane().repaint();
-        //pack();
-
         remove(SessionListPanel.getInstance());
         remove(GameCanvas.getInstance());
 
         add(component);
+        component.setFocusable(true);
+        component.requestFocus();
+        component.revalidate();
+        component.repaint();
 
-        setFocusable(true);
-        requestFocus();
         revalidate();
         repaint();
         pack();

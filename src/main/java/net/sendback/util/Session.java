@@ -33,7 +33,7 @@ public class Session implements Runnable {
         worlds = new World[]{new World("Test", 500, 500, 20, seed)};
         currentWorld = worlds[0];
 
-        player = new Player(this,5, 5);
+        player = new Player(this,80, 80);
 
         thread = new Thread(this, name);
         tps = 40;
