@@ -48,6 +48,24 @@ public class World {
                 }
             }
         }
+
+        for(int x = 0; x < width; x++) {
+            for(int y = 0; y < height; y++) {
+                WorldObject worldObject = worldGrid[x][y];
+
+                if(worldObject != null) {
+                    if(x - 1 > -1 && x + 1 < worldGrid.length &&
+                            worldGrid[x - 1][y] == null && worldGrid[x + 1][y] == null) {
+                        worldGrid[x][y] = null;
+                    }
+
+                    if(y - 1 > -1 && y + 1 < worldGrid[0].length &&
+                            worldGrid[x][y - 1] == null && worldGrid[x][y + 1] == null) {
+                        worldGrid[x][y] = null;
+                    }
+                }
+            }
+        }
     }
 
     public void update() {

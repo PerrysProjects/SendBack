@@ -149,6 +149,16 @@ public class GameCanvas extends Canvas implements Runnable, KeyListener, Compone
                         g2.drawImage(tileObject.getTextures()[0], screenPosX + tileOffsetX, screenPosY + tileOffsetY,
                                 tileWidth, tileHeight, this);
                     }
+
+                    if(tilePosX >= 0 && tilePosX < world.getTileGrid().length &&
+                            tilePosY >= 0 && tilePosY < world.getTileGrid()[0].length) {
+                        WorldObject worldObject = world.getWorldGrid()[tilePosX][tilePosY];
+
+                        if(worldObject != null) {
+                            g2.drawImage(worldObject.getTextures()[0], screenPosX + tileOffsetX, screenPosY + tileOffsetY,
+                                    tileWidth, tileHeight, this);
+                        }
+                    }
                 }
             }
 
@@ -157,7 +167,7 @@ public class GameCanvas extends Canvas implements Runnable, KeyListener, Compone
             g2.setColor(Color.RED);
             g2.drawRect(ovalX, ovalY, tileSize, tileSize);
 
-            for(int x = 0; x < tileScreenWidth + 2; x++) {
+            /*for(int x = 0; x < tileScreenWidth + 2; x++) {
                 for(int y = 0; y < tileScreenHeight + 2; y++) {
                     int tilePosX = (int) (player.getX() - tileScreenWidth / 2 + x);
                     int tilePosY = (int) (player.getY() - tileScreenHeight / 2 + y);
@@ -194,7 +204,7 @@ public class GameCanvas extends Canvas implements Runnable, KeyListener, Compone
                         }
                     }
                 }
-            }
+            }*/
 
             g2.setColor(Color.YELLOW);
             g2.drawString("FPS: " + currentFps, 50, 50);
