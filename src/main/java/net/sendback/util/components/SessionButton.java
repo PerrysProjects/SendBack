@@ -26,7 +26,7 @@ public class SessionButton extends JButton implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        GamePanel.getInstance().setup(session);
-        Frame.getInstance().switchPanel(GamePanel.getInstance());
+        GameCanvas.getInstance().setup(session);
+        Frame.getInstance().switchPanel(GameCanvas.getInstance());
     }
 }

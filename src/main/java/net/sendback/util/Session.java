@@ -61,13 +61,11 @@ public class Session implements Runnable {
         double delta = 0;
         long lastTime = System.currentTimeMillis();
         long currentTime;
-        long timer = 0;
 
         while(thread.isAlive()) {
             currentTime = System.currentTimeMillis();
 
             delta += (currentTime - lastTime) / drawInterval;
-            timer += (currentTime - lastTime);
             lastTime = currentTime;
 
             if(delta >= 1) {
@@ -75,8 +73,9 @@ public class Session implements Runnable {
                 delta--;
             }
 
-            if(timer >= 1000000000) {
-                timer = 0;
+
+            while(System.currentTimeMillis() - lastTime < drawInterval) {
+                Thread.yield();
             }
         }
     }

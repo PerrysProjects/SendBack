@@ -11,11 +11,19 @@ public class Frame extends JFrame {
     private Frame() {
         setTitle(Main.getName() + " | " + Main.getVersion());
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setFocusable(true);
+        //setFocusable(true);
 
-        setContentPane(SessionListPanel.getInstance());
-        getContentPane().setFocusable(true);
-        getContentPane().requestFocus();
+        //setContentPane(SessionListPanel.getInstance());
+        //getContentPane().setFocusable(true);
+        //getContentPane().requestFocus();
+        //pack();
+
+        add(SessionListPanel.getInstance());
+
+        setFocusable(true);
+        requestFocus();
+        revalidate();
+        repaint();
         pack();
 
         setSize(900, 700);
@@ -30,13 +38,24 @@ public class Frame extends JFrame {
         return instance;
     }
 
-    public void switchPanel(JPanel panel) {
-        remove(getContentPane());
-        setContentPane(panel);
-        getContentPane().setFocusable(true);
-        getContentPane().requestFocus();
-        getContentPane().revalidate();
-        getContentPane().repaint();
+    public void switchPanel(Component component) {
+        //remove(getContentPane());
+        //setContentPane(component);
+        //getContentPane().setFocusable(true);
+        //getContentPane().requestFocus();
+        //getContentPane().revalidate();
+        //getContentPane().repaint();
+        //pack();
+
+        remove(SessionListPanel.getInstance());
+        remove(GameCanvas.getInstance());
+
+        add(component);
+
+        setFocusable(true);
+        requestFocus();
+        revalidate();
+        repaint();
         pack();
     }
 }

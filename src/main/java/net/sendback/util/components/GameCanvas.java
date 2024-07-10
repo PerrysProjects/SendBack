@@ -7,15 +7,15 @@ import net.sendback.util.Resources;
 import net.sendback.util.Session;
 import net.sendback.worlds.World;
 
-import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ComponentEvent;
 import java.awt.event.ComponentListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.awt.image.BufferStrategy;
 
-public class GamePanel extends JPanel implements Runnable, KeyListener, ComponentListener {
-    private static GamePanel instance;
+public class GameCanvas extends Canvas implements Runnable, KeyListener, ComponentListener {
+    private static GameCanvas instance;
 
     private final Thread thread;
     private final int fps;
@@ -29,7 +29,9 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, Componen
     private World world;
     private Player player;
 
-    private GamePanel() {
+    private BufferStrategy bufferStrategy;
+
+    private GameCanvas() {
         thread = new Thread(this);
         fps = 60;
         currentFps = 0;
@@ -40,14 +42,23 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, Componen
 
         setFocusable(true);
         requestFocus();
+        revalidate();
+        repaint();
+
         addKeyListener(this);
         addComponentListener(this);
-        setLayout(null);
     }
 
-    public static GamePanel getInstance() {
+    @Override
+    public void addNotify() {
+        super.addNotify();
+        this.createBufferStrategy(2);
+        bufferStrategy = this.getBufferStrategy();
+    }
+
+    public static GameCanvas getInstance() {
         if(instance == null) {
-            instance = new GamePanel();
+            instance = new GameCanvas();
         }
         return instance;
     }
@@ -56,7 +67,7 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, Componen
 
         frameCount++;
 
-        repaint();
+        render();
     }
 
     public void start() {
@@ -91,70 +102,71 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, Componen
         }
     }
 
-    @Override
-    protected void paintComponent(Graphics g) {
-        super.paintComponent(g);
-        Graphics2D g2 = (Graphics2D) g;
+    private void render() {
+        if(bufferStrategy != null) {
+            Graphics2D g2 = (Graphics2D) bufferStrategy.getDrawGraphics();
 
-        g2.setFont(Resources.getFonts()[0]);
+            g2.setFont(Resources.getFonts()[0]);
 
-        int tileSize = getWidth() / zoom;
+            int tileSize = getWidth() / zoom;
 
-        int tileScreenWidth = zoom;
-        int tileScreenHeight = getHeight() / tileSize;
+            int tileScreenWidth = zoom;
+            int tileScreenHeight = getHeight() / tileSize;
 
-        for(int x = 0; x < tileScreenWidth + 2; x++) {
-            for(int y = 0; y < tileScreenHeight + 2; y++) {
-                int tilePosX = (int) (player.getX() - tileScreenWidth / 2 + x);
-                int tilePosY = (int) (player.getY() - tileScreenHeight / 2 + y);
+            for(int x = 0; x < tileScreenWidth + 2; x++) {
+                for(int y = 0; y < tileScreenHeight + 2; y++) {
+                    int tilePosX = (int) (player.getX() - tileScreenWidth / 2 + x);
+                    int tilePosY = (int) (player.getY() - tileScreenHeight / 2 + y);
 
-                TileObject tileObject = world.getBorderTile();
-                if(tilePosX >= 0 && tilePosX < world.getTileGrid().length &&
-                        tilePosY >= 0 && tilePosY < world.getTileGrid()[0].length) {
-                    tileObject = world.getTileGrid()[tilePosX][tilePosY];
-                }
+                    TileObject tileObject = world.getBorderTile();
+                    if(tilePosX >= 0 && tilePosX < world.getTileGrid().length &&
+                            tilePosY >= 0 && tilePosY < world.getTileGrid()[0].length) {
+                        tileObject = world.getTileGrid()[tilePosX][tilePosY];
+                    }
 
-                double offsetX = player.getX() - (int) player.getX();
-                double offsetY = player.getY() - (int) player.getY();
+                    double offsetX = player.getX() - (int) player.getX();
+                    double offsetY = player.getY() - (int) player.getY();
 
-                int extraX = (getWidth() / 2 - tileSize / 2) % tileSize;
-                if(extraX >= tileSize / 2) {
-                    extraX -= tileSize;
-                }
+                    int extraX = (getWidth() / 2 - tileSize / 2) % tileSize;
+                    if(extraX >= tileSize / 2) {
+                        extraX -= tileSize;
+                    }
 
-                int extraY = (getHeight() / 2 - tileSize / 2) % tileSize;
-                if(extraY >= tileSize / 2) {
-                    extraY -= tileSize;
-                }
+                    int extraY = (getHeight() / 2 - tileSize / 2) % tileSize;
+                    if(extraY >= tileSize / 2) {
+                        extraY -= tileSize;
+                    }
 
-                int screenPosX = (int) (tileSize * x - tileSize * offsetX + extraX);
-                int screenPosY = (int) (tileSize * y - tileSize * offsetY + extraY);
+                    int screenPosX = (int) (tileSize * x - tileSize * offsetX + extraX);
+                    int screenPosY = (int) (tileSize * y - tileSize * offsetY + extraY);
 
-                int tileWidth = (int) (tileSize * tileObject.getWidth());
-                int tileHeight = (int) (tileSize * tileObject.getHeight());
+                    int tileWidth = (int) (tileSize * tileObject.getWidth());
+                    int tileHeight = (int) (tileSize * tileObject.getHeight());
 
-                int tileOffsetX = tileSize - tileWidth;
-                int tileOffsetY = tileSize - tileHeight;
+                    int tileOffsetX = tileSize - tileWidth;
+                    int tileOffsetY = tileSize - tileHeight;
 
-                if(tilePosX == 5 && tilePosY == 5) {
-                    g2.setColor(Color.CYAN);
-                    g2.fillRect(screenPosX, screenPosY, tileSize, tileSize);
-                } else {
-                    g2.drawImage(tileObject.getTextures()[0], screenPosX + tileOffsetX, screenPosY + tileOffsetY,
-                            tileWidth, tileHeight, this);
+                    if(tilePosX == 5 && tilePosY == 5) {
+                        g2.setColor(Color.CYAN);
+                        g2.fillRect(screenPosX, screenPosY, tileSize, tileSize);
+                    } else {
+                        g2.drawImage(tileObject.getTextures()[0], screenPosX + tileOffsetX, screenPosY + tileOffsetY,
+                                tileWidth, tileHeight, this);
+                    }
                 }
             }
+
+            int ovalX = getWidth() / 2 - tileSize / 2;
+            int ovalY = getHeight() / 2 - tileSize / 2;
+            g2.setColor(Color.RED);
+            g2.drawRect(ovalX, ovalY, tileSize, tileSize);
+
+            g2.setColor(Color.YELLOW);
+            g2.drawString("FPS: " + currentFps, 50, 50);
+
+            g2.dispose();
+            bufferStrategy.show();
         }
-
-        int ovalX = getWidth() / 2 - tileSize / 2;
-        int ovalY = getHeight() / 2 - tileSize / 2;
-        g2.setColor(Color.RED);
-        g2.drawRect(ovalX, ovalY, tileSize, tileSize);
-
-        g2.setColor(Color.YELLOW);
-        g2.drawString("FPS: " + currentFps, 50, 50);
-
-        g2.dispose();
     }
 
     @Override
@@ -163,13 +175,10 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, Componen
         double delta = 0;
         long lastTime = System.currentTimeMillis();
         long currentTime;
-        long timer = 0;
 
         while(thread.isAlive()) {
             currentTime = System.currentTimeMillis();
-
             delta += (currentTime - lastTime) / drawInterval;
-            timer += (currentTime - lastTime);
             lastTime = currentTime;
 
             if(delta >= 1) {
@@ -179,11 +188,12 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, Componen
 
             calculateFPS();
 
-            if(timer >= 1000) {
-                timer = 0;
+            while(System.currentTimeMillis() - lastTime < drawInterval) {
+                Thread.yield();
             }
         }
     }
+
 
     @Override
     public void keyTyped(KeyEvent e) {
@@ -212,7 +222,7 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, Componen
 
     @Override
     public void componentResized(ComponentEvent e) {
-        
+
     }
 
     @Override
