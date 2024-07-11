@@ -8,16 +8,15 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.HashMap;
-import java.util.Map;
 
 public class Resources {
     private static Font[] fonts;
-    private static Map<String, Image> tileTextures = new HashMap<>();
+    private static HashMap<String, BufferedImage> tileTextures;
+    private static HashMap<String, BufferedImage> entityTextures;
+
     private static GraphicsEnvironment env = GraphicsEnvironment.getLocalGraphicsEnvironment();
     private static GraphicsDevice device = env.getDefaultScreenDevice();
     private static GraphicsConfiguration config = device.getDefaultConfiguration();
-
-    public static BufferedImage img;
 
     public static void init() {
         try {
@@ -28,16 +27,18 @@ public class Resources {
         } catch(FontFormatException | IOException e) {
             Logger.log(e);
         }
-        loadTextures("/assets/textures/tiles");
 
-
+        tileTextures = loadTextures("/assets/textures/tiles");
+        entityTextures = loadTextures("/assets/textures/entity");
     }
 
-    private static void loadTextures(String folderPath) {
+    private static HashMap<String, BufferedImage> loadTextures(String folderPath) {
+        HashMap<String, BufferedImage> textures = new HashMap<>();
+
         try(InputStream folderStream = Resources.class.getResourceAsStream(folderPath)) {
             if(folderStream == null) {
                 Logger.log("Resource folder " + folderPath + " not found.", LogType.ERROR);
-                return;
+                return textures;
             }
 
             try(BufferedReader reader = new BufferedReader(new InputStreamReader(folderStream))) {
@@ -53,7 +54,7 @@ public class Resources {
                             g.drawImage(unconverted, 0, 0, unconverted.getWidth(), unconverted.getHeight(), null);
                             g.dispose();
 
-                            tileTextures.put(fileName, converted);
+                            textures.put(fileName, converted);
                         } else {
                             Logger.log("Resource file " + folderPath + "/" + fileName + " not found.", LogType.WARN);
                         }
@@ -67,14 +68,23 @@ public class Resources {
         }
 
         Logger.log("Resource folder " + folderPath + " loaded!");
+        return textures;
     }
 
-    public static Map<String, Image> getTileTextures() {
+    public static HashMap<String, BufferedImage> getTileTextures() {
         return tileTextures;
     }
 
-    public static Image getTileTexture(String name) {
-        return getTileTextures().get(name);
+    public static BufferedImage getTileTexture(String name) {
+        return tileTextures.get(name);
+    }
+
+    public static HashMap<String, BufferedImage> getEntityTextures() {
+        return entityTextures;
+    }
+
+    public static BufferedImage getEntityTexture(String name) {
+        return entityTextures.get(name);
     }
 
     public static Font[] getFonts() {

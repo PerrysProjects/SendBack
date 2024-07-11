@@ -40,3 +40,6 @@ log/
 
 # Ignore macOS system file
 .DS_Store
+
+# Game generated files
+logs/

@@ -1,13 +1,13 @@
 package net.sendback.objects;
 
-import net.sendback.objects.objectId.ObjectId;
+import net.sendback.objects.ids.TileID;
 
-public class InteractiveObject extends WorldObject {
+public class InteractiveTile extends WorldTile {
     private final boolean interactable;
     private final int health;
     private final String message;
 
-    public InteractiveObject(int x, int y, ObjectId id, boolean interactable, int health, String message) {
+    public InteractiveTile(int x, int y, TileID id, boolean interactable, int health, String message) {
         super(x, y, id);
         this.interactable = interactable;
         this.health = health;
