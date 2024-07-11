@@ -3,6 +3,9 @@ package net.sendback;
 import net.sendback.util.*;
 import net.sendback.util.components.Frame;
 import net.sendback.util.components.SessionListPanel;
+import net.sendback.util.logging.LogType;
+import net.sendback.util.logging.Logger;
+import net.sendback.util.resources.ResourceGetter;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
@@ -63,7 +66,7 @@ public class Main {
 
         os = OperatingSystem.checkOS(System.getProperty("os.name"));
 
-        Resources.init();
+        ResourceGetter.init();
 
         SessionListPanel.setSessionList(new Session[]{new Session("Test", -673232), new Session("ztt", 111), new Session("jhk", -65445)});
 

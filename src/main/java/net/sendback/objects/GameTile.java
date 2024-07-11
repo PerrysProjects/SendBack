@@ -1,22 +1,21 @@
 package net.sendback.objects;
 
-import net.sendback.objects.ids.TileID;
-
-import java.awt.image.BufferedImage;
+import net.sendback.objects.ids.TileIDs;
+import net.sendback.util.resources.Sprites;
 
 public abstract class GameTile {
     private final int x, y;
-    private final TileID id;
-    private final BufferedImage[] textures;
+    private final TileIDs id;
+    private final Sprites textures;
     private final double width, height;
     private final boolean solid;
     private final boolean rotateX, rotateY;
 
-    public GameTile(int x, int y, TileID id) {
+    public GameTile(int x, int y, TileIDs id) {
         this.x = x;
         this.y = y;
         this.id = id;
-        textures = id.getTextures();
+        textures = id.getSprites();
         width = id.getWidth();
         height = id.getHeight();
         solid = id.isSolid();
@@ -32,11 +31,11 @@ public abstract class GameTile {
         return y;
     }
 
-    public TileID getId() {
+    public TileIDs getId() {
         return id;
     }
 
-    public BufferedImage[] getTextures() {
+    public Sprites getTextures() {
         return textures;
     }
 

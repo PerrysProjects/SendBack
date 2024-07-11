@@ -2,7 +2,7 @@ package net.sendback.worlds;
 
 import net.sendback.objects.FloorTile;
 import net.sendback.objects.WorldTile;
-import net.sendback.objects.ids.TileID;
+import net.sendback.objects.ids.TileIDs;
 import net.sendback.util.procedural.PerlinNoise;
 
 public class World {
@@ -23,7 +23,7 @@ public class World {
         this.width = width;
         this.height = height;
         tileGrid = new FloorTile[width][height];
-        borderTile = new FloorTile(-1, -1, TileID.GRASS);
+        borderTile = new FloorTile(-1, -1, TileIDs.GRASS);
         worldGrid = new WorldTile[width][height];
 
         this.size = size;
@@ -37,14 +37,14 @@ public class World {
             for(int y = 0; y < height; y++) {
                 double tileValue = PerlinNoise.noise(x, y, 0.0, size, seed);
                 if(tileValue < 0.3 && tileValue > -0.3) {
-                    tileGrid[x][y] = new FloorTile(x, y, TileID.GRASS);
+                    tileGrid[x][y] = new FloorTile(x, y, TileIDs.GRASS);
                 } else {
-                    tileGrid[x][y] = new FloorTile(x, y, TileID.STONE);
+                    tileGrid[x][y] = new FloorTile(x, y, TileIDs.STONE);
                 }
 
                 double worldValue = PerlinNoise.noise(x, y, 10.0, size, seed);
                 if(worldValue > 0.3 || worldValue < -0.3 || x < 5 || x > width - 5 || y < 5 || y > height - 5) {
-                    worldGrid[x][y] = new WorldTile(x, y, TileID.TREE);
+                    worldGrid[x][y] = new WorldTile(x, y, TileIDs.TREE);
                 }
             }
         }

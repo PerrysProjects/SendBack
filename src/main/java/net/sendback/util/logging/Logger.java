@@ -1,4 +1,4 @@
-package net.sendback.util;
+package net.sendback.util.logging;
 
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;

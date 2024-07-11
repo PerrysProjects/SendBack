@@ -1,4 +1,7 @@
-package net.sendback.util;
+package net.sendback.util.resources;
+
+import net.sendback.util.logging.LogType;
+import net.sendback.util.logging.Logger;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
@@ -9,7 +12,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.HashMap;
 
-public class Resources {
+public class ResourceGetter {
     private static Font[] fonts;
     private static HashMap<String, BufferedImage> tileTextures;
     private static HashMap<String, BufferedImage> entityTextures;
@@ -20,9 +23,9 @@ public class Resources {
 
     public static void init() {
         try {
-            fonts = new Font[]{Font.createFont(Font.TRUETYPE_FONT, Resources.class.getResourceAsStream("/assets/font/x12y16pxMaruMonica.ttf")).deriveFont(Font.PLAIN, 32F),
-                    Font.createFont(Font.TRUETYPE_FONT, Resources.class.getResourceAsStream("/assets/font/x12y16pxMaruMonica.ttf")).deriveFont(Font.BOLD, 32F),
-                    Font.createFont(Font.TRUETYPE_FONT, Resources.class.getResourceAsStream("/assets/font/x12y16pxMaruMonica.ttf")).deriveFont(Font.ITALIC, 32F)};
+            fonts = new Font[]{Font.createFont(Font.TRUETYPE_FONT, ResourceGetter.class.getResourceAsStream("/assets/font/x12y16pxMaruMonica.ttf")).deriveFont(Font.PLAIN, 32F),
+                    Font.createFont(Font.TRUETYPE_FONT, ResourceGetter.class.getResourceAsStream("/assets/font/x12y16pxMaruMonica.ttf")).deriveFont(Font.BOLD, 32F),
+                    Font.createFont(Font.TRUETYPE_FONT, ResourceGetter.class.getResourceAsStream("/assets/font/x12y16pxMaruMonica.ttf")).deriveFont(Font.ITALIC, 32F)};
             Logger.log("Font loaded!");
         } catch(FontFormatException | IOException e) {
             Logger.log(e);
@@ -35,7 +38,7 @@ public class Resources {
     private static HashMap<String, BufferedImage> loadTextures(String folderPath) {
         HashMap<String, BufferedImage> textures = new HashMap<>();
 
-        try(InputStream folderStream = Resources.class.getResourceAsStream(folderPath)) {
+        try(InputStream folderStream = ResourceGetter.class.getResourceAsStream(folderPath)) {
             if(folderStream == null) {
                 Logger.log("Resource folder " + folderPath + " not found.", LogType.ERROR);
                 return textures;
@@ -44,7 +47,7 @@ public class Resources {
             try(BufferedReader reader = new BufferedReader(new InputStreamReader(folderStream))) {
                 String fileName;
                 while((fileName = reader.readLine()) != null) {
-                    try(InputStream fileStream = Resources.class.getResourceAsStream(folderPath + "/" + fileName)) {
+                    try(InputStream fileStream = ResourceGetter.class.getResourceAsStream(folderPath + "/" + fileName)) {
                         if(fileStream != null) {
                             BufferedImage unconverted = ImageIO.read(fileStream);
 

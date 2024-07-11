@@ -1,11 +1,8 @@
-package net.sendback.objects.item;
-
-import net.sendback.util.Resources;
+package net.sendback.objects.ids;
 
 import java.awt.*;
-import java.awt.image.BufferedImage;
 
-public enum ItemId {
+public enum ItemIDs {
     STOCK(0, null, 1, 1);
     // ("/objectImages/tree1.png")  beispiel, weil, warum nicht
 
@@ -14,7 +11,7 @@ public enum ItemId {
     private final double height, width;
 
 
-    ItemId(int id, Image[] textures, double width, double height) {
+    ItemIDs(int id, Image[] textures, double width, double height) {
         this.id = id;
         this.textures = textures;
         this.width = width;

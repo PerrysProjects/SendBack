@@ -1,5 +1,7 @@
 package net.sendback.util;
 
+import net.sendback.util.logging.Logger;
+
 public enum OperatingSystem {
     WINDOWS,
     MACOS,

@@ -1,16 +1,16 @@
 package net.sendback.objects.item;
 
-import net.sendback.objects.item.ItemId;
+import net.sendback.objects.ids.ItemIDs;
 
 import java.awt.*;
 
 public class Item {
     private String name;
-    private ItemId id;
+    private ItemIDs id;
     private Image[] textures;
     private double width, height;
 
-    public Item(String name, ItemId id) {
+    public Item(String name, ItemIDs id) {
         this.name = name;
         textures = id.getTextures();
         width = id.getWidth();
