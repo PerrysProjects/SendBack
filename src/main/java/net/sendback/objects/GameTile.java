@@ -1,21 +1,18 @@
 package net.sendback.objects;
 
-import net.sendback.objects.objectId.ObjectId;
+import net.sendback.objects.ids.TileID;
 
-import java.awt.*;
+import java.awt.image.BufferedImage;
 
-public abstract class GameObject {
+public abstract class GameTile {
     private final int x, y;
-    private final ObjectId id;
-    private final Image[] textures;
+    private final TileID id;
+    private final BufferedImage[] textures;
     private final double width, height;
     private final boolean solid;
     private final boolean rotateX, rotateY;
 
-    private static final int standardWidth = 32;
-    private static final int standardHeight = 32;
-
-    public GameObject(int x, int y, ObjectId id) {
+    public GameTile(int x, int y, TileID id) {
         this.x = x;
         this.y = y;
         this.id = id;
@@ -35,11 +32,11 @@ public abstract class GameObject {
         return y;
     }
 
-    public ObjectId getId() {
+    public TileID getId() {
         return id;
     }
 
-    public Image[] getTextures() {
+    public BufferedImage[] getTextures() {
         return textures;
     }
 
@@ -61,13 +58,5 @@ public abstract class GameObject {
 
     public boolean isRotateY() {
         return rotateY;
-    }
-
-    public static int getStandardWidth() {
-        return standardWidth;
-    }
-
-    public static int getStandardHeight() {
-        return standardHeight;
     }
 }

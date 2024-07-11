@@ -1,9 +1,9 @@
 package net.sendback.objects;
 
-import net.sendback.objects.objectId.ObjectId;
+import net.sendback.objects.ids.TileID;
 
-public class WorldObject extends GameObject {
-    public WorldObject(int x, int y, ObjectId id) {
+public class WorldTile extends GameTile {
+    public WorldTile(int x, int y, TileID id) {
         super(x, y, id);
     }
 

@@ -1,7 +1,7 @@
 package net.sendback.util.components;
 
-import net.sendback.objects.TileObject;
-import net.sendback.objects.WorldObject;
+import net.sendback.objects.FloorTile;
+import net.sendback.objects.WorldTile;
 import net.sendback.objects.entity.MovementType;
 import net.sendback.objects.entity.Player;
 import net.sendback.util.Resources;
@@ -14,6 +14,7 @@ import java.awt.event.ComponentListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.image.BufferStrategy;
+import java.awt.image.BufferedImage;
 
 public class GameCanvas extends Canvas implements Runnable, KeyListener, ComponentListener {
     private static GameCanvas instance;
@@ -114,10 +115,10 @@ public class GameCanvas extends Canvas implements Runnable, KeyListener, Compone
                     int tilePosX = (int) (player.getX() - tileScreenWidth / 2 + x);
                     int tilePosY = (int) (player.getY() - tileScreenHeight / 2 + y);
 
-                    TileObject tileObject = world.getBorderTile();
-                    if(tilePosX >= 0 && tilePosX < world.getTileGrid().length &&
-                            tilePosY >= 0 && tilePosY < world.getTileGrid()[0].length) {
-                        tileObject = world.getTileGrid()[tilePosX][tilePosY];
+                    FloorTile floorTile = world.getBorderTile();
+                    if(tilePosX >= 0 && tilePosX < world.getWidth() &&
+                            tilePosY >= 0 && tilePosY < world.getHeight()) {
+                        floorTile = world.getTileGrid()[tilePosX][tilePosY];
                     }
 
                     double offsetX = player.getX() - (int) player.getX();
@@ -136,8 +137,8 @@ public class GameCanvas extends Canvas implements Runnable, KeyListener, Compone
                     int screenPosX = (int) (tileSize * x - tileSize * offsetX + extraX);
                     int screenPosY = (int) (tileSize * y - tileSize * offsetY + extraY);
 
-                    int tileWidth = (int) (tileSize * tileObject.getWidth());
-                    int tileHeight = (int) (tileSize * tileObject.getHeight());
+                    int tileWidth = (int) (tileSize * floorTile.getWidth());
+                    int tileHeight = (int) (tileSize * floorTile.getHeight());
 
                     int tileOffsetX = tileSize - tileWidth;
                     int tileOffsetY = tileSize - tileHeight;
@@ -146,16 +147,70 @@ public class GameCanvas extends Canvas implements Runnable, KeyListener, Compone
                         g2.setColor(Color.CYAN);
                         g2.fillRect(screenPosX, screenPosY, tileSize, tileSize);
                     } else {
-                        g2.drawImage(tileObject.getTextures()[0], screenPosX + tileOffsetX, screenPosY + tileOffsetY,
+                        g2.drawImage(floorTile.getTextures()[0], screenPosX + tileOffsetX, screenPosY + tileOffsetY,
                                 tileWidth, tileHeight, this);
                     }
 
-                    if(tilePosX >= 0 && tilePosX < world.getTileGrid().length &&
-                            tilePosY >= 0 && tilePosY < world.getTileGrid()[0].length) {
-                        WorldObject worldObject = world.getWorldGrid()[tilePosX][tilePosY];
+                    if(tilePosX >= 0 && tilePosX < world.getWidth() &&
+                            tilePosY >= 0 && tilePosY < world.getHeight()) {
+                        WorldTile worldTile = world.getWorldGrid()[tilePosX][tilePosY];
 
-                        if(worldObject != null) {
-                            g2.drawImage(worldObject.getTextures()[0], screenPosX + tileOffsetX, screenPosY + tileOffsetY,
+                        if(worldTile != null) {
+                            BufferedImage texture = worldTile.getTextures()[0];
+                            if(tilePosX > 0 && tilePosX < world.getWidth() - 1 &&
+                                    tilePosY > 0 && tilePosY < world.getHeight() - 1) {
+                                if(world.getWorldGrid()[tilePosX - 1][tilePosY] == null &&
+                                        world.getWorldGrid()[tilePosX - 1][tilePosY - 1] == null &&
+                                        world.getWorldGrid()[tilePosX][tilePosY - 1] == null) {
+                                    texture = Resources.getTileTexture("tree_corner_up_left.png");
+                                } else if(world.getWorldGrid()[tilePosX - 1][tilePosY] != null &&
+                                        world.getWorldGrid()[tilePosX][tilePosY - 1] == null &&
+                                        world.getWorldGrid()[tilePosX + 1][tilePosY] != null) {
+                                    texture = Resources.getTileTexture("tree_up.png");
+                                } else if(world.getWorldGrid()[tilePosX + 1][tilePosY] == null &&
+                                        world.getWorldGrid()[tilePosX + 1][tilePosY - 1] == null &&
+                                        world.getWorldGrid()[tilePosX][tilePosY - 1] == null) {
+                                    texture = Resources.getTileTexture("tree_corner_up_right.png");
+                                } else if(world.getWorldGrid()[tilePosX][tilePosY - 1] != null &&
+                                        world.getWorldGrid()[tilePosX + 1][tilePosY] == null &&
+                                        world.getWorldGrid()[tilePosX][tilePosY + 1] != null) {
+                                    texture = Resources.getTileTexture("tree_right.png");
+                                } else if(world.getWorldGrid()[tilePosX + 1][tilePosY] == null &&
+                                        world.getWorldGrid()[tilePosX + 1][tilePosY + 1] == null &&
+                                        world.getWorldGrid()[tilePosX][tilePosY + 1] == null) {
+                                    texture = Resources.getTileTexture("tree_corner_down_right.png");
+                                } else if(world.getWorldGrid()[tilePosX - 1][tilePosY] != null &&
+                                        world.getWorldGrid()[tilePosX][tilePosY + 1] == null &&
+                                        world.getWorldGrid()[tilePosX + 1][tilePosY] != null) {
+                                    texture = Resources.getTileTexture("tree_down.png");
+                                } else if(world.getWorldGrid()[tilePosX - 1][tilePosY] == null &&
+                                        world.getWorldGrid()[tilePosX - 1][tilePosY + 1] == null &&
+                                        world.getWorldGrid()[tilePosX][tilePosY + 1] == null) {
+                                    texture = Resources.getTileTexture("tree_corner_down_left.png");
+                                } else if(world.getWorldGrid()[tilePosX][tilePosY - 1] != null &&
+                                        world.getWorldGrid()[tilePosX - 1][tilePosY] == null &&
+                                        world.getWorldGrid()[tilePosX][tilePosY + 1] != null) {
+                                    texture = Resources.getTileTexture("tree_left.png");
+                                } else if(world.getWorldGrid()[tilePosX][tilePosY - 1] != null &&
+                                        world.getWorldGrid()[tilePosX - 1][tilePosY - 1] == null &&
+                                        world.getWorldGrid()[tilePosX - 1][tilePosY] != null) {
+                                    texture = Resources.getTileTexture("tree_inverted_down_right.png");
+                                } else if(world.getWorldGrid()[tilePosX][tilePosY - 1] != null &&
+                                        world.getWorldGrid()[tilePosX + 1][tilePosY - 1] == null &&
+                                        world.getWorldGrid()[tilePosX + 1][tilePosY] != null) {
+                                    texture = Resources.getTileTexture("tree_inverted_down_left.png");
+                                } else if(world.getWorldGrid()[tilePosX][tilePosY + 1] != null &&
+                                        world.getWorldGrid()[tilePosX - 1][tilePosY + 1] == null &&
+                                        world.getWorldGrid()[tilePosX - 1][tilePosY] != null) {
+                                    texture = Resources.getTileTexture("tree_inverted_up_right.png");
+                                } else if(world.getWorldGrid()[tilePosX][tilePosY + 1] != null &&
+                                        world.getWorldGrid()[tilePosX + 1][tilePosY + 1] == null &&
+                                        world.getWorldGrid()[tilePosX + 1][tilePosY] != null) {
+                                    texture = Resources.getTileTexture("tree_inverted_up_left.png");
+                                }
+                            }
+
+                            g2.drawImage(texture, screenPosX + tileOffsetX, screenPosY + tileOffsetY,
                                     tileWidth, tileHeight, this);
                         }
                     }
@@ -164,47 +219,9 @@ public class GameCanvas extends Canvas implements Runnable, KeyListener, Compone
 
             int ovalX = getWidth() / 2 - tileSize / 2;
             int ovalY = getHeight() / 2 - tileSize / 2;
-            g2.setColor(Color.RED);
-            g2.drawRect(ovalX, ovalY, tileSize, tileSize);
-
-            /*for(int x = 0; x < tileScreenWidth + 2; x++) {
-                for(int y = 0; y < tileScreenHeight + 2; y++) {
-                    int tilePosX = (int) (player.getX() - tileScreenWidth / 2 + x);
-                    int tilePosY = (int) (player.getY() - tileScreenHeight / 2 + y);
-
-                    if(tilePosX >= 0 && tilePosX < world.getTileGrid().length &&
-                            tilePosY >= 0 && tilePosY < world.getTileGrid()[0].length) {
-                        WorldObject worldObject = world.getWorldGrid()[tilePosX][tilePosY];
-
-                        if(worldObject != null) {
-                            double offsetX = player.getX() - (int) player.getX();
-                            double offsetY = player.getY() - (int) player.getY();
-
-                            int extraX = (getWidth() / 2 - tileSize / 2) % tileSize;
-                            if(extraX >= tileSize / 2) {
-                                extraX -= tileSize;
-                            }
-
-                            int extraY = (getHeight() / 2 - tileSize / 2) % tileSize;
-                            if(extraY >= tileSize / 2) {
-                                extraY -= tileSize;
-                            }
-
-                            int screenPosX = (int) (tileSize * x - tileSize * offsetX + extraX);
-                            int screenPosY = (int) (tileSize * y - tileSize * offsetY + extraY);
-
-                            int tileWidth = (int) (tileSize * worldObject.getWidth());
-                            int tileHeight = (int) (tileSize * worldObject.getHeight());
-
-                            int tileOffsetX = tileSize - tileWidth;
-                            int tileOffsetY = tileSize - tileHeight;
-
-                            g2.drawImage(worldObject.getTextures()[0], screenPosX + tileOffsetX, screenPosY + tileOffsetY,
-                                    tileWidth, tileHeight, this);
-                        }
-                    }
-                }
-            }*/
+            //g2.setColor(Color.RED);
+            //g2.drawRect(ovalX, ovalY, tileSize, tileSize);
+            g2.drawImage(Resources.getEntityTexture("leon.png"), ovalX, ovalY, tileSize, tileSize, this);
 
             g2.setColor(Color.YELLOW);
             g2.drawString("FPS: " + currentFps, 50, 50);
