@@ -1,8 +1,15 @@
-public static void saveGame();
+public static void saveGame(saveData){}
+
+String[] saveData;
 
 try {
-BufferedWriter savemaker = new BufferedWriter(new FileWriter("save1.txt"))
-savemaker.write("Placeholder");
+BufferedWriter savemaker = new BufferedWriter(new FileWriter("save.properties"))
+
+for (String data : saveData){
+savemaker.write("\n" + data);
+}
+
+
 savemaker.close();
 } catch (IOException e) {
     e.printStackTrace();
