@@ -217,11 +217,11 @@ public class GameCanvas extends Canvas implements Runnable, KeyListener, Compone
                 }
             }
 
-            int ovalX = getWidth() / 2 - tileSize / 2;
-            int ovalY = getHeight() / 2 - tileSize / 2;
+            int playerX = getWidth() / 2 - tileSize / 2;
+            int playerY = getHeight() / 2 - tileSize / 2;
             //g2.setColor(Color.RED);
             //g2.drawRect(ovalX, ovalY, tileSize, tileSize);
-            g2.drawImage(Resources.getEntityTexture("leon.png"), ovalX, ovalY, tileSize, tileSize, this);
+            g2.drawImage(Resources.getEntityTexture("prof_noGlasses.png"), playerX, playerY, tileSize, tileSize, this);
 
             g2.setColor(Color.YELLOW);
             g2.drawString("FPS: " + currentFps, 50, 50);
