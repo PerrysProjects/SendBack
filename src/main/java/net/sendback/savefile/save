@@ -1,0 +1,9 @@
+public static void saveGame();
+
+try {
+BufferedWriter savemaker = new BufferedWriter(new FileWriter("save1.txt"))
+savemaker.write("Placeholder");
+savemaker.close();
+} catch (IOException e) {
+    e.printStackTrace();
+}
