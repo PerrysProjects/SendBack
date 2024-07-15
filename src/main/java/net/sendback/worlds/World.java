@@ -13,6 +13,7 @@ public class World {
     private final FloorTile[][] tileGrid;
     private final FloorTile borderTile;
     private final WorldTile[][] worldGrid;
+    private final WorldTile borderWorldTile;
 
     private final int size;
     private final int seed;
@@ -25,14 +26,15 @@ public class World {
         tileGrid = new FloorTile[width][height];
         borderTile = new FloorTile(-1, -1, TileIDs.GRASS);
         worldGrid = new WorldTile[width][height];
+        borderWorldTile = new WorldTile(-1, -1, TileIDs.TREE);
 
         this.size = size;
         this.seed = seed;
 
-        generateWorld();
+        generate();
     }
 
-    private void generateWorld() {
+    private void generate() {
         for(int x = 0; x < width; x++) {
             for(int y = 0; y < height; y++) {
                 double tileValue = PerlinNoise.noise(x, y, 0.0, size, seed);
@@ -49,44 +51,74 @@ public class World {
             }
         }
 
-        for(int x = 0; x < width; x++) {
-            for(int y = 0; y < height; y++) {
+        for(int x = 1; x < width - 1; x++) {
+            for(int y = 1; y < height - 1; y++) {
                 WorldTile worldObject = worldGrid[x][y];
-                WorldTile leftTile = null;
-                WorldTile rightTile = null;
-                WorldTile bottomTile = null;
-                WorldTile topTile = null;
+                WorldTile leftTopTile = worldGrid[x - 1][y - 1];
+                WorldTile rightTopTile  = worldGrid[x + 1][y - 1];
+                WorldTile leftBottomTile = worldGrid[x - 1][y + 1];
+                WorldTile rightBottomTile = worldGrid[x + 1][y + 1];
 
-                if(x - 1 > -1 && x + 1 < width && y - 1 > -1 && y + 1 < height) {
-                    leftTile = worldGrid[x - 1][y];
-                    rightTile = worldGrid[x + 1][y];
-                    bottomTile = worldGrid[x][y - 1];
-                    topTile = worldGrid[x][y + 1];
+                if(worldObject != null) {
+                    if(leftTopTile == null && rightBottomTile == null) {
+                        worldGrid[x][y] = null;
+                    } else if(rightTopTile == null && leftBottomTile == null) {
+                        worldGrid[x][y] = null;
+                    }
                 }
+            }
+        }
+
+        for(int x = 1; x < width - 1; x++) {
+            for(int y = 1; y < height - 1; y++) {
+                WorldTile worldObject = worldGrid[x][y];
+                WorldTile leftTile = worldGrid[x - 1][y];
+                WorldTile rightTile = worldGrid[x + 1][y];
+                WorldTile topTile = worldGrid[x][y - 1];
+                WorldTile bottomTile = worldGrid[x][y + 1];
+
+                if(worldObject != null) {
+                    if(leftTile == null && rightTile == null) {
+                        worldGrid[x][y] = null;
+                    } else if(topTile == null && bottomTile == null) {
+                        worldGrid[x][y] = null;
+                    }
+                }
+            }
+        }
+
+        for(int x = 1; x < width - 1; x++) {
+            for(int y = 1; y < height - 1; y++) {
+                WorldTile worldObject = worldGrid[x][y];
+                WorldTile leftTile = worldGrid[x - 1][y];
+                WorldTile rightTile  = worldGrid[x + 1][y];
+                WorldTile topTile = worldGrid[x][y - 1];
+                WorldTile bottomTile = worldGrid[x][y + 1];
 
                 if(worldObject == null) {
                     if(leftTile != null && rightTile != null && leftTile.getId().equals(rightTile.getId())) {
-                        worldGrid[x][y] = leftTile;
+                        worldGrid[x][y] = new WorldTile(x, y, leftTile.getId());
+                    } else if(topTile != null && bottomTile != null && bottomTile.getId().equals(topTile.getId())) {
+                        worldGrid[x][y] = new WorldTile(x, y, bottomTile.getId());
                     }
+                }
+            }
+        }
 
-                    if(bottomTile != null && topTile != null && bottomTile.getId().equals(topTile.getId())) {
-                        worldGrid[x][y] = bottomTile;
-                    }
-                } else {
+        for(int x = 1; x < width - 1; x++) {
+            for(int y = 1; y < height - 1; y++) {
+                WorldTile worldObject = worldGrid[x][y];
+                WorldTile leftTile = worldGrid[x - 1][y];
+                WorldTile rightTile = worldGrid[x + 1][y];
+                WorldTile topTile = worldGrid[x][y - 1];
+                WorldTile bottomTile = worldGrid[x][y + 1];
+
+                if(worldObject != null) {
                     if(leftTile == null && rightTile == null) {
                         worldGrid[x][y] = null;
-                    }
-
-                    if(bottomTile == null && topTile == null) {
+                    } else if(topTile == null && bottomTile == null) {
                         worldGrid[x][y] = null;
                     }
-
-                    /*if(x - 2 > -1 && x + 1 < width && worldGrid[x - 2][y] == null &&
-                            worldGrid[x + 1][y].getId().equals(worldObject.getId()) &&
-                            worldGrid[x - 1][y].getId().equals(worldObject.getId())) {
-                        worldGrid[x][y] = null;
-                    }*/
-
                 }
             }
         }
@@ -118,6 +150,10 @@ public class World {
 
     public WorldTile[][] getWorldGrid() {
         return worldGrid;
+    }
+
+    public WorldTile getBorderWorldTile() {
+        return borderWorldTile;
     }
 
     public int getSeed() {

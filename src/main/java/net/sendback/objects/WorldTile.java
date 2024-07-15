@@ -2,7 +2,7 @@ package net.sendback.objects;
 
 import net.sendback.objects.ids.TileIDs;
 
-public class WorldTile extends GameTile {
+public class WorldTile extends Tile {
     public WorldTile(int x, int y, TileIDs id) {
         super(x, y, id);
     }

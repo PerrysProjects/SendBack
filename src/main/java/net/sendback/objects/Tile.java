@@ -3,7 +3,7 @@ package net.sendback.objects;
 import net.sendback.objects.ids.TileIDs;
 import net.sendback.util.resources.Sprites;
 
-public abstract class GameTile {
+public abstract class Tile {
     private final int x, y;
     private final TileIDs id;
     private final Sprites textures;
@@ -11,7 +11,7 @@ public abstract class GameTile {
     private final boolean solid;
     private final boolean rotateX, rotateY;
 
-    public GameTile(int x, int y, TileIDs id) {
+    public Tile(int x, int y, TileIDs id) {
         this.x = x;
         this.y = y;
         this.id = id;
