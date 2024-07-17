@@ -48,7 +48,7 @@ Special thanks to **[alksily](https://github.com/alksily)**, who developed a [Pe
 
 ## Connect with Us
 
-Stay updated on ThrowBack's development and future releases by following us on social media:
+Stay updated on SendBack's development and future releases by following us on social media:
 
 - Coming soon
 

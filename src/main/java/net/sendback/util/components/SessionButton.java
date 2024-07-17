@@ -8,7 +8,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 public class SessionButton extends JButton implements ActionListener {
-    private Session session;
+    private final Session session;
 
     public SessionButton(Session session) {
         this.session = session;

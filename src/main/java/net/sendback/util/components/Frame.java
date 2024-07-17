@@ -4,8 +4,10 @@ import net.sendback.Main;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowStateListener;
 
-public class Frame extends JFrame {
+public class Frame extends JFrame implements WindowStateListener {
     private static Frame instance;
 
     private Frame() {
@@ -25,6 +27,8 @@ public class Frame extends JFrame {
         revalidate();
         repaint();
         pack();
+
+        addWindowStateListener(this);
 
         setSize(900, 700);
         setMinimumSize(new Dimension(900, 700));
@@ -51,5 +55,16 @@ public class Frame extends JFrame {
         revalidate();
         repaint();
         pack();
+    }
+
+    @Override
+    public void windowStateChanged(WindowEvent e) {
+        if(GameCanvas.getInstance().getSession() != null) {
+            if((e.getNewState() & Frame.ICONIFIED) == Frame.ICONIFIED) {
+                GameCanvas.getInstance().pause();
+            } else if((e.getNewState() == Frame.NORMAL)) {
+                GameCanvas.getInstance().resume();
+            }
+        }
     }
 }

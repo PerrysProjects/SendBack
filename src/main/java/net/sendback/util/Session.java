@@ -23,6 +23,9 @@ public class Session implements Runnable {
     private final Thread thread;
     private final int tps;
 
+    private boolean paused;
+    private final Object lock = new Object();
+
     public Session(String name, int seed) {
         this.name = name;
         path = Paths.get(Main.getPath() + "/" + name);
@@ -33,18 +36,10 @@ public class Session implements Runnable {
         worlds = new World[]{new World("Test", 500, 500, 20, seed)};
         currentWorld = worlds[0];
 
-        player = new Player(this,80, 80);
+        player = new Player(this, 80, 80);
 
         thread = new Thread(this, name);
         tps = 40;
-    }
-
-    public void start() {
-        thread.start();
-    }
-
-    public void stop() {
-        thread.interrupt();
     }
 
     private void update() {
@@ -55,16 +50,49 @@ public class Session implements Runnable {
         player.update();
     }
 
+    public void start() {
+        if(paused) {
+            resume();
+        } else if(!thread.isAlive()) {
+            thread.start();
+        }
+    }
+
+    public void stop() {
+        thread.interrupt();
+    }
+
+    public void pause() {
+        paused = true;
+    }
+
+    public void resume() {
+        synchronized(lock) {
+            paused = false;
+            lock.notify();
+        }
+    }
+
     @Override
     public void run() {
-        double drawInterval = (double) 1000/tps;
+        double drawInterval = (double) 1000 / tps;
         double delta = 0;
         long lastTime = System.currentTimeMillis();
         long currentTime;
 
-        while(thread.isAlive()) {
-            currentTime = System.currentTimeMillis();
+        while(!Thread.currentThread().isInterrupted()) {
+            synchronized(lock) {
+                while(paused) {
+                    try {
+                        lock.wait();
+                    } catch(InterruptedException e) {
+                        Thread.currentThread().interrupt();
+                        break;
+                    }
+                }
+            }
 
+            currentTime = System.currentTimeMillis();
             delta += (currentTime - lastTime) / drawInterval;
             lastTime = currentTime;
 
@@ -72,7 +100,6 @@ public class Session implements Runnable {
                 update();
                 delta--;
             }
-
 
             while(System.currentTimeMillis() - lastTime < drawInterval) {
                 Thread.yield();

@@ -15,7 +15,7 @@ import java.awt.event.KeyListener;
 import java.awt.image.BufferStrategy;
 import java.awt.image.BufferedImage;
 
-public class GameCanvas extends Canvas implements Runnable, KeyListener, ComponentListener {
+public class GameCanvas extends Canvas implements Runnable, KeyListener {
     private static GameCanvas instance;
 
     private final Thread thread;
@@ -32,6 +32,9 @@ public class GameCanvas extends Canvas implements Runnable, KeyListener, Compone
 
     private BufferStrategy bufferStrategy;
 
+    private boolean paused;
+    private final Object lock = new Object();
+
     private GameCanvas() {
         thread = new Thread(this);
         fps = 60;
@@ -42,7 +45,6 @@ public class GameCanvas extends Canvas implements Runnable, KeyListener, Compone
         zoom = 14;
 
         addKeyListener(this);
-        addComponentListener(this);
     }
 
     @Override
@@ -68,14 +70,29 @@ public class GameCanvas extends Canvas implements Runnable, KeyListener, Compone
 
     public void start() {
         if(session != null) {
-            thread.start();
-            session.start();
+            if(paused) {
+                resume();
+            } else if(!thread.isAlive()) {
+                thread.start();
+                session.start();
+            }
         }
     }
 
     public void stop() {
         thread.interrupt();
         session.stop();
+    }
+
+    public void pause() {
+        paused = true;
+    }
+
+    public void resume() {
+        synchronized(lock) {
+            paused = false;
+            lock.notify();
+        }
     }
 
     public void setup(Session session) {
@@ -188,6 +205,11 @@ public class GameCanvas extends Canvas implements Runnable, KeyListener, Compone
         if(bufferStrategy != null) {
             Graphics2D g2 = (Graphics2D) bufferStrategy.getDrawGraphics();
 
+            g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+            g2.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_LCD_HRGB);
+            g2.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
+
+
             g2.setFont(ResourceGetter.getFonts()[0]);
 
             int tileSize = 0;
@@ -219,7 +241,7 @@ public class GameCanvas extends Canvas implements Runnable, KeyListener, Compone
                     int screenPosX = (int) (tileSize * x - tileSize * offsetX + extraX);
                     int screenPosY = (int) (tileSize * y - tileSize * offsetY + extraY);
 
-                    drawTile(g2, world.getTileGrid(), world.getBorderTile(),  tilePosX, tilePosY, screenPosX, screenPosY, tileSize);
+                    drawTile(g2, world.getTileGrid(), world.getBorderTile(), tilePosX, tilePosY, screenPosX, screenPosY, tileSize);
                     drawTile(g2, world.getWorldGrid(), world.getBorderWorldTile(), tilePosX, tilePosY, screenPosX, screenPosY, tileSize);
 
                     if(tilePosX == 0 && tilePosY == 0) {
@@ -231,12 +253,11 @@ public class GameCanvas extends Canvas implements Runnable, KeyListener, Compone
 
             int playerX = getWidth() / 2 - tileSize / 2;
             int playerY = getHeight() / 2 - tileSize / 2;
-            //g2.setColor(Color.RED);
-            //g2.drawRect(ovalX, ovalY, tileSize, tileSize);
             g2.drawImage(ResourceGetter.getEntityTexture("prof_noGlasses.png"), playerX, playerY, tileSize, tileSize, this);
 
             g2.setColor(Color.YELLOW);
             g2.drawString("FPS: " + currentFps, 50, 50);
+            System.out.println(currentFps);
 
             g2.dispose();
             bufferStrategy.show();
@@ -250,7 +271,18 @@ public class GameCanvas extends Canvas implements Runnable, KeyListener, Compone
         long lastTime = System.currentTimeMillis();
         long currentTime;
 
-        while(thread.isAlive()) {
+        while(!Thread.currentThread().isInterrupted()) {
+            synchronized(lock) {
+                while(paused) {
+                    try {
+                        lock.wait();
+                    } catch(InterruptedException e) {
+                        Thread.currentThread().interrupt();
+                        break;
+                    }
+                }
+            }
+
             currentTime = System.currentTimeMillis();
             delta += (currentTime - lastTime) / drawInterval;
             lastTime = currentTime;
@@ -267,7 +299,6 @@ public class GameCanvas extends Canvas implements Runnable, KeyListener, Compone
             }
         }
     }
-
 
     @Override
     public void keyTyped(KeyEvent e) {
@@ -294,23 +325,11 @@ public class GameCanvas extends Canvas implements Runnable, KeyListener, Compone
         }
     }
 
-    @Override
-    public void componentResized(ComponentEvent e) {
-
+    public Session getSession() {
+        return session;
     }
 
-    @Override
-    public void componentMoved(ComponentEvent e) {
-
-    }
-
-    @Override
-    public void componentShown(ComponentEvent e) {
-
-    }
-
-    @Override
-    public void componentHidden(ComponentEvent e) {
-
+    public void setSession(Session session) {
+        this.session = session;
     }
 }
