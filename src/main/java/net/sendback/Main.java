@@ -11,10 +11,13 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
+import javax.swing.*;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
+import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.URISyntaxException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -23,7 +26,6 @@ public class Main {
     private static String name;
     private static String version;
     private static Path path;
-    private static OperatingSystem os;
 
     public static void main(String[] args) {
         initialize();
@@ -36,7 +38,15 @@ public class Main {
         try {
             DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
             DocumentBuilder builder = factory.newDocumentBuilder();
-            Document doc = builder.parse("pom.xml");
+            Document doc;
+
+            InputStream pomIs = Main.class.getClassLoader().getResourceAsStream("META-INF/maven/net.sendback/SendBack/pom.xml");
+            if(pomIs != null) {
+                doc = builder.parse(pomIs);
+            } else {
+                doc = builder.parse("pom.xml");
+            }
+
 
             NodeList projectNodes = doc.getElementsByTagName("project");
             if(projectNodes.getLength() > 0) {
@@ -64,13 +74,16 @@ public class Main {
             Logger.log(e);
         }
 
-        os = OperatingSystem.checkOS(System.getProperty("os.name"));
+        Settings.init();
+
+        JVM.init();
 
         ResourceGetter.init();
 
         SessionListPanel.setSessionList(new Session[]{new Session("Test", -673232), new Session("ztt", 111), new Session("jhk", -65445)});
 
-        Frame.getInstance().setVisible(true);
+        SwingUtilities.invokeLater(() -> Frame.getInstance().setVisible(true));
+
     }
 
     public static String getName() {
@@ -83,9 +96,5 @@ public class Main {
 
     public static Path getPath() {
         return path;
-    }
-
-    public static OperatingSystem getOs() {
-        return os;
     }
 }

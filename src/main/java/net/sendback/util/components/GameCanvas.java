@@ -4,6 +4,7 @@ import net.sendback.objects.Tile;
 import net.sendback.objects.entity.MovementType;
 import net.sendback.objects.entity.Player;
 import net.sendback.util.Session;
+import net.sendback.util.Settings;
 import net.sendback.util.resources.ResourceGetter;
 import net.sendback.worlds.World;
 
@@ -24,8 +25,6 @@ public class GameCanvas extends Canvas implements Runnable, KeyListener {
     private long lastFpsCheckTime;
     private int frameCount;
 
-    private final int zoom;
-
     private Session session;
     private World world;
     private Player player;
@@ -41,8 +40,6 @@ public class GameCanvas extends Canvas implements Runnable, KeyListener {
         currentFps = 0;
         lastFpsCheckTime = System.currentTimeMillis();
         frameCount = 0;
-
-        zoom = 14;
 
         addKeyListener(this);
     }
@@ -212,6 +209,8 @@ public class GameCanvas extends Canvas implements Runnable, KeyListener {
 
             g2.setFont(ResourceGetter.getFonts()[0]);
 
+            int zoom = (int) Settings.getSetting("zoom");
+
             int tileSize = 0;
             while(tileSize == 0) {
                 tileSize = getWidth() / zoom;
@@ -257,7 +256,6 @@ public class GameCanvas extends Canvas implements Runnable, KeyListener {
 
             g2.setColor(Color.YELLOW);
             g2.drawString("FPS: " + currentFps, 50, 50);
-            System.out.println(currentFps);
 
             g2.dispose();
             bufferStrategy.show();
@@ -307,21 +305,41 @@ public class GameCanvas extends Canvas implements Runnable, KeyListener {
 
     @Override
     public void keyPressed(KeyEvent e) {
-        switch(e.getKeyCode()) {
-            case KeyEvent.VK_W -> player.startMoving(MovementType.UP);
-            case KeyEvent.VK_A -> player.startMoving(MovementType.LEFT);
-            case KeyEvent.VK_S -> player.startMoving(MovementType.DOWN);
-            case KeyEvent.VK_D -> player.startMoving(MovementType.RIGHT);
+        char key = KeyEvent.getKeyText(e.getKeyCode()).toLowerCase().charAt(0);
+
+        char forward = (char) Settings.getSetting("forward");
+        char left = (char) Settings.getSetting("left");
+        char backward = (char) Settings.getSetting("backward");
+        char right = (char) Settings.getSetting("right");
+
+        if(key == forward) {
+            player.startMoving(MovementType.UP);
+        } else if(key == left) {
+            player.startMoving(MovementType.LEFT);
+        } else if(key == backward) {
+            player.startMoving(MovementType.DOWN);
+        } else if(key == right) {
+            player.startMoving(MovementType.RIGHT);
         }
     }
 
     @Override
     public void keyReleased(KeyEvent e) {
-        switch(e.getKeyCode()) {
-            case KeyEvent.VK_W -> player.stopMoving(MovementType.UP);
-            case KeyEvent.VK_A -> player.stopMoving(MovementType.LEFT);
-            case KeyEvent.VK_S -> player.stopMoving(MovementType.DOWN);
-            case KeyEvent.VK_D -> player.stopMoving(MovementType.RIGHT);
+        char key = KeyEvent.getKeyText(e.getKeyCode()).toLowerCase().charAt(0);
+
+        char forward = (char) Settings.getSetting("forward");
+        char left = (char) Settings.getSetting("left");
+        char backward = (char) Settings.getSetting("backward");
+        char right = (char) Settings.getSetting("right");
+
+        if(key == forward) {
+            player.stopMoving(MovementType.UP);
+        } else if(key == left) {
+            player.stopMoving(MovementType.LEFT);
+        } else if(key == backward) {
+            player.stopMoving(MovementType.DOWN);
+        } else if(key == right) {
+            player.stopMoving(MovementType.RIGHT);
         }
     }
 

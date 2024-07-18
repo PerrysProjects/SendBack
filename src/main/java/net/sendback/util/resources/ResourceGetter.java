@@ -6,71 +6,96 @@ import net.sendback.util.logging.Logger;
 import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.image.BufferedImage;
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
+import java.io.*;
+import java.net.JarURLConnection;
+import java.net.URL;
+import java.util.Enumeration;
 import java.util.HashMap;
+import java.util.jar.JarEntry;
+import java.util.jar.JarFile;
 
 public class ResourceGetter {
     private static Font[] fonts;
     private static HashMap<String, BufferedImage> tileTextures;
     private static HashMap<String, BufferedImage> entityTextures;
 
-    private static GraphicsEnvironment env = GraphicsEnvironment.getLocalGraphicsEnvironment();
-    private static GraphicsDevice device = env.getDefaultScreenDevice();
-    private static GraphicsConfiguration config = device.getDefaultConfiguration();
+    private static final GraphicsEnvironment env = GraphicsEnvironment.getLocalGraphicsEnvironment();
+    private static final GraphicsDevice device = env.getDefaultScreenDevice();
+    private static final GraphicsConfiguration config = device.getDefaultConfiguration();
 
     public static void init() {
         try {
-            fonts = new Font[]{Font.createFont(Font.TRUETYPE_FONT, ResourceGetter.class.getResourceAsStream("/assets/font/x12y16pxMaruMonica.ttf")).deriveFont(Font.PLAIN, 32F),
-                    Font.createFont(Font.TRUETYPE_FONT, ResourceGetter.class.getResourceAsStream("/assets/font/x12y16pxMaruMonica.ttf")).deriveFont(Font.BOLD, 32F),
-                    Font.createFont(Font.TRUETYPE_FONT, ResourceGetter.class.getResourceAsStream("/assets/font/x12y16pxMaruMonica.ttf")).deriveFont(Font.ITALIC, 32F)};
-            Logger.log("Font loaded!");
+            fonts = new Font[]{Font.createFont(Font.TRUETYPE_FONT, ResourceGetter.class.getClassLoader().getResourceAsStream("assets/font/x12y16pxMaruMonica.ttf")).deriveFont(Font.PLAIN, 32F),
+                    Font.createFont(Font.TRUETYPE_FONT, ResourceGetter.class.getClassLoader().getResourceAsStream("assets/font/x12y16pxMaruMonica.ttf")).deriveFont(Font.BOLD, 32F),
+                    Font.createFont(Font.TRUETYPE_FONT, ResourceGetter.class.getClassLoader().getResourceAsStream("assets/font/x12y16pxMaruMonica.ttf")).deriveFont(Font.ITALIC, 32F)};
+            Logger.log("Font loaded");
         } catch(FontFormatException | IOException e) {
             Logger.log(e);
         }
 
-        tileTextures = loadTextures("/assets/textures/tiles");
-        entityTextures = loadTextures("/assets/textures/entity");
+        tileTextures = loadTextures("assets/textures/tiles");
+        entityTextures = loadTextures("assets/textures/entity");
     }
 
     private static HashMap<String, BufferedImage> loadTextures(String folderPath) {
         HashMap<String, BufferedImage> textures = new HashMap<>();
+        URL url = ResourceGetter.class.getClassLoader().getResource(folderPath);
 
-        try(InputStream folderStream = ResourceGetter.class.getResourceAsStream(folderPath)) {
-            if(folderStream == null) {
-                Logger.log("Resource folder " + folderPath + " not found.", LogType.ERROR);
-                return textures;
-            }
+        if(url == null) {
+            Logger.log("Resource folder " + folderPath + " not found", LogType.ERROR);
+            return textures;
+        }
 
-            try(BufferedReader reader = new BufferedReader(new InputStreamReader(folderStream))) {
-                String fileName;
-                while((fileName = reader.readLine()) != null) {
-                    try(InputStream fileStream = ResourceGetter.class.getResourceAsStream(folderPath + "/" + fileName)) {
-                        if(fileStream != null) {
+        try {
+            if(url.getProtocol().equals("jar")) {
+                JarURLConnection jarURLConnection = (JarURLConnection) url.openConnection();
+                try(JarFile jarFile = jarURLConnection.getJarFile()) {
+                    Enumeration<JarEntry> entries = jarFile.entries();
+                    while(entries.hasMoreElements()) {
+                        JarEntry entry = entries.nextElement();
+                        String name = entry.getName();
+                        if(name.startsWith(folderPath) && !entry.isDirectory()) {
+                            try(InputStream fileStream = ResourceGetter.class.getClassLoader().getResourceAsStream(name)) {
+                                if(fileStream != null) {
+                                    BufferedImage unconverted = ImageIO.read(fileStream);
+                                    BufferedImage converted = config.createCompatibleImage(unconverted.getWidth(), unconverted.getHeight(), Transparency.TRANSLUCENT);
+                                    Graphics g = converted.getGraphics();
+                                    g.drawImage(unconverted, 0, 0, unconverted.getWidth(), unconverted.getHeight(), null);
+                                    g.dispose();
+                                    textures.put(name.substring(folderPath.length() + 1), converted);
+                                    Logger.log("Resource file " + name + " loaded");
+                                } else {
+                                    Logger.log("Resource file " + name + " not found", LogType.WARN);
+                                }
+                            } catch(IOException e) {
+                                Logger.log(e);
+                            }
+                        }
+                    }
+                }
+            } else {
+                File folder = new File(url.toURI());
+                for(File file : folder.listFiles()) {
+                    if(file.isFile()) {
+                        try(InputStream fileStream = new FileInputStream(file)) {
                             BufferedImage unconverted = ImageIO.read(fileStream);
-
-                            BufferedImage converted = config.createCompatibleImage(unconverted.getWidth(), unconverted.getHeight(),
-                                    Transparency.TRANSLUCENT);
+                            BufferedImage converted = config.createCompatibleImage(unconverted.getWidth(), unconverted.getHeight(), Transparency.TRANSLUCENT);
                             Graphics g = converted.getGraphics();
                             g.drawImage(unconverted, 0, 0, unconverted.getWidth(), unconverted.getHeight(), null);
                             g.dispose();
-
-                            textures.put(fileName, converted);
-                        } else {
-                            Logger.log("Resource file " + folderPath + "/" + fileName + " not found.", LogType.WARN);
+                            textures.put(file.getName(), converted);
+                            Logger.log("Resource file " + file.getName() + " loaded");
+                        } catch(IOException e) {
+                            Logger.log(e);
                         }
-                    } catch(IOException e) {
-                        e.printStackTrace();
                     }
                 }
             }
-        } catch(IOException e) {
+        } catch(Exception e) {
             Logger.log(e);
         }
 
-        Logger.log("Resource folder " + folderPath + " loaded!");
+        Logger.log("Resource folder " + folderPath + " loaded");
         return textures;
     }
 

@@ -1,6 +1,7 @@
 package net.sendback.util.components;
 
 import net.sendback.Main;
+import net.sendback.util.resources.ResourceGetter;
 
 import javax.swing.*;
 import java.awt.*;
@@ -21,6 +22,8 @@ public class Frame extends JFrame implements WindowStateListener {
         //pack();
 
         add(SessionListPanel.getInstance());
+
+        setIconImage(ResourceGetter.getTileTexture("grass.png"));
 
         setFocusable(true);
         requestFocus();
