@@ -18,6 +18,7 @@ public class ResourceGetter {
     private static Font[] fonts;
     private static HashMap<String, BufferedImage> tileTextures;
     private static HashMap<String, BufferedImage> entityTextures;
+    private static HashMap<String, BufferedImage> iconTextures;
 
     private static final GraphicsEnvironment env = GraphicsEnvironment.getLocalGraphicsEnvironment();
     private static final GraphicsDevice device = env.getDefaultScreenDevice();
@@ -35,6 +36,7 @@ public class ResourceGetter {
 
         tileTextures = loadTextures("assets/textures/tiles");
         entityTextures = loadTextures("assets/textures/entity");
+        iconTextures = loadTextures("assets/textures/icons");
     }
 
     private static HashMap<String, BufferedImage> loadTextures(String folderPath) {
@@ -113,6 +115,14 @@ public class ResourceGetter {
 
     public static BufferedImage getEntityTexture(String name) {
         return entityTextures.get(name);
+    }
+
+    public static HashMap<String, BufferedImage> getIconTextures() {
+        return iconTextures;
+    }
+
+    public static BufferedImage getIconTexture(String name) {
+        return iconTextures.get(name);
     }
 
     public static Font[] getFonts() {

@@ -23,7 +23,7 @@ public class Frame extends JFrame implements WindowStateListener {
 
         add(SessionListPanel.getInstance());
 
-        setIconImage(ResourceGetter.getTileTexture("grass.png"));
+        setIconImage(ResourceGetter.getIconTexture("clock_icon.png"));
 
         setFocusable(true);
         requestFocus();
