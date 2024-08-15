@@ -29,6 +29,10 @@ public class GameCanvas extends Canvas implements Runnable, KeyListener {
     private World world;
     private Player player;
 
+    private double centerX;
+    private double centerY;
+    private int resetTimer;
+
     private BufferStrategy bufferStrategy;
 
     private boolean paused;
@@ -99,6 +103,9 @@ public class GameCanvas extends Canvas implements Runnable, KeyListener {
         this.session = session;
         world = session.getWorlds()[0];
         player = session.getPlayer();
+
+        centerX = player.getX();
+        centerY = player.getY();
 
         start();
     }
@@ -219,9 +226,28 @@ public class GameCanvas extends Canvas implements Runnable, KeyListener {
             int tileScreenWidth = zoom;
             int tileScreenHeight = getHeight() / tileSize;
 
+            double offsetX = player.getX() - (int) player.getX();
+            double offsetY = player.getY() - (int) player.getY();
+
             for(int x = 0; x < tileScreenWidth + 2; x++) {
                 for(int y = 0; y < tileScreenHeight + 2; y++) {
-                    int tilePosX = (int) (player.getX() - tileScreenWidth / 2 + x);
+                    int tilePosX = (int) (centerX - tileScreenWidth / 2 + x);
+                    int tilePosY = (int) (centerY - tileScreenHeight / 2 + y);
+
+                    int extraX = (getWidth() / 2 - tileSize / 2) % tileSize;
+                    if(extraX >= tileSize / 2) {
+                        extraX -= tileSize;
+                    }
+
+                    int extraY = (getHeight() / 2 - tileSize / 2) % tileSize;
+                    if(extraY >= tileSize / 2) {
+                        extraY -= tileSize;
+                    }
+
+                    int screenPosX = tileSize * x + extraX;
+                    int screenPosY = tileSize * y + extraY;
+
+                    /*int tilePosX = (int) (player.getX() - tileScreenWidth / 2 + x);
                     int tilePosY = (int) (player.getY() - tileScreenHeight / 2 + y);
 
                     double offsetX = player.getX() - (int) player.getX();
@@ -238,20 +264,58 @@ public class GameCanvas extends Canvas implements Runnable, KeyListener {
                     }
 
                     int screenPosX = (int) (tileSize * x - tileSize * offsetX + extraX);
-                    int screenPosY = (int) (tileSize * y - tileSize * offsetY + extraY);
+                    int screenPosY = (int) (tileSize * y - tileSize * offsetY + extraY);*/
 
-                    drawTile(g2, world.getTileGrid(), world.getBorderTile(), tilePosX, tilePosY, screenPosX, screenPosY, tileSize);
-                    drawTile(g2, world.getWorldGrid(), world.getBorderWorldTile(), tilePosX, tilePosY, screenPosX, screenPosY, tileSize);
+                    //drawTile(g2, world.getTileGrid(), world.getBorderTile(), tilePosX, tilePosY, screenPosX, screenPosY, tileSize);
+                    //drawTile(g2, world.getWorldGrid(), world.getBorderWorldTile(), tilePosX, tilePosY, screenPosX, screenPosY, tileSize);
 
-                    if(tilePosX == 0 && tilePosY == 0) {
+                    g2.drawImage(world.getTileGrid()[tilePosX][tilePosY].getTextures().getTexture(), screenPosX, screenPosY, tileSize, tileSize, this);
+                    if(world.getWorldGrid()[tilePosX][tilePosY] != null) {
+                        g2.drawImage(world.getWorldGrid()[tilePosX][tilePosY].getTextures().getTexture(), screenPosX, screenPosY, tileSize, tileSize, this);
+                    }
+
+                    if(tilePosX == 80 && tilePosY == 80 || tilePosX == 82 && tilePosY == 80 || tilePosX == 84 && tilePosY == 80 || tilePosX == 86 && tilePosY == 80) {
                         g2.setColor(Color.CYAN);
                         g2.fillRect(screenPosX, screenPosY, tileSize, tileSize);
                     }
                 }
             }
 
-            int playerX = getWidth() / 2 - tileSize / 2;
-            int playerY = getHeight() / 2 - tileSize / 2;
+            //int playerX = (int) (getWidth() / 2 - tileSize / 2 + (int) (player.getX() - centerX) * tileSize + tileSize * offsetX);
+
+            if(!player.isMoving(MovementType.UP) && !player.isMoving(MovementType.LEFT) &&
+                    !player.isMoving(MovementType.DOWN) && !player.isMoving(MovementType.RIGHT)) {
+                resetTimer++;
+                if(resetTimer >= fps * 3) {
+                    centerX = player.getX();
+                    centerY = player.getY();
+                }
+            } else {
+                resetTimer = 0;
+            }
+
+            int centerOffsetX = (int) Math.floor(player.getX() - centerX);
+            int centerOffsetY = (int) Math.floor(player.getY() - centerY);
+
+            if(centerOffsetX > 3) {
+                centerX++;
+                centerOffsetX = 3;
+            } else if(centerOffsetX < -3) {
+                centerX--;
+                centerOffsetX = 3;
+            }
+
+            if(centerOffsetY > 3) {
+                centerY++;
+                centerOffsetY = 3;
+            } else if(centerOffsetY < -3) {
+                centerY--;
+                centerOffsetY = 3;
+            }
+
+            int playerX = (int) (getWidth() / 2 - tileSize / 2 + centerOffsetX * tileSize + offsetX * tileSize);
+            System.out.println(player.isMoving(MovementType.DOWN));
+            int playerY = (int) (getHeight() / 2 - tileSize / 2 + centerOffsetY * tileSize + offsetY * tileSize);
             g2.drawImage(ResourceGetter.getEntityTexture("prof_noGlasses.png"), playerX, playerY, tileSize, tileSize, this);
 
             g2.setColor(Color.YELLOW);

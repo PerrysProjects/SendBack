@@ -23,15 +23,63 @@ public class Player {
         this.x = x;
         this.y = y;
 
-        speed = 0.1;
+        speed = 0.05;
     }
 
     public void startMoving(MovementType type) {
+        World currentWorld = session.getCurrentWorld();
+        int worldHeight = world.getHeight();
+        int worldWidth = world.getWidth();
+
+        if(world != currentWorld) {
+            world = currentWorld;
+        }
+
         switch(type) {
-            case UP -> movingUp = true;
-            case LEFT -> movingLeft = true;
-            case DOWN -> movingDown = true;
-            case RIGHT -> movingRight = true;
+            case UP -> {
+                if(y > 0) {
+                    double newY = y - speed;
+                    int floorX = (int) Math.floor(x);
+                    int floorY = (int) Math.floor(newY);
+                    int ceilX = (int) Math.ceil(x);
+
+                    movingUp = !(newY < 0) && (world.getWorldGrid()[floorX][floorY] == null || !world.getWorldGrid()[floorX][floorY].isSolid()) &&
+                            (world.getWorldGrid()[ceilX][floorY] == null || !world.getWorldGrid()[ceilX][floorY].isSolid());
+                }
+            }
+            case LEFT -> {
+                if(x > 0) {
+                    double newX = x - speed;
+                    int floorX = (int) Math.floor(newX);
+                    int floorY = (int) Math.floor(y);
+                    int ceilY = (int) Math.ceil(y);
+
+                    movingLeft = !(newX < 0) && (world.getWorldGrid()[floorX][floorY] == null || !world.getWorldGrid()[floorX][floorY].isSolid()) &&
+                            (world.getWorldGrid()[floorX][ceilY] == null || !world.getWorldGrid()[floorX][ceilY].isSolid());
+                }
+            }
+            case DOWN -> {
+                if(y < worldHeight - 1) {
+                    double newY = y + speed;
+                    int floorX = (int) Math.floor(x);
+                    int floorY = (int) Math.floor(newY + 1);
+                    int ceilX = (int) Math.ceil(x);
+
+                    movingDown = !(newY > worldHeight - 1) && (world.getWorldGrid()[floorX][floorY] == null || !world.getWorldGrid()[floorX][floorY].isSolid()) &&
+                            (world.getWorldGrid()[ceilX][floorY] == null || !world.getWorldGrid()[ceilX][floorY].isSolid());
+                }
+            }
+            case RIGHT -> {
+                if(x < worldWidth - 1) {
+                    double newX = x + speed;
+                    int floorX = (int) Math.floor(newX + 1);
+                    int floorY = (int) Math.floor(y);
+                    int ceilY = (int) Math.ceil(y);
+
+                    movingRight = !(newX > worldWidth - 1) && (world.getWorldGrid()[floorX][floorY] == null || !world.getWorldGrid()[floorX][floorY].isSolid()) &&
+                            (world.getWorldGrid()[floorX][ceilY] == null || !world.getWorldGrid()[floorX][ceilY].isSolid());
+                }
+            }
         }
     }
 
