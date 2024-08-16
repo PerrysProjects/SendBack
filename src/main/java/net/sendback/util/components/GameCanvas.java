@@ -1,13 +1,16 @@
 package net.sendback.util.components;
 
+
 import net.sendback.objects.Tile;
 import net.sendback.objects.entity.MovementType;
 import net.sendback.objects.entity.Player;
 import net.sendback.util.Session;
 import net.sendback.util.Settings;
+
 import net.sendback.util.resources.ResourceGetter;
 import net.sendback.worlds.World;
 
+import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ComponentEvent;
 import java.awt.event.ComponentListener;
@@ -29,8 +32,14 @@ public class GameCanvas extends Canvas implements Runnable, KeyListener {
     private World world;
     private Player player;
 
+    public int zoom = 80; //
     private double centerX;
     private double centerY;
+    private int maxTop, maxBottom, maxLeft, maxRight;
+    private Session session;
+    private World world;
+    private Player player; //
+
     private int resetTimer;
 
     private BufferStrategy bufferStrategy;
@@ -44,6 +53,17 @@ public class GameCanvas extends Canvas implements Runnable, KeyListener {
         currentFps = 0;
         lastFpsCheckTime = System.currentTimeMillis();
         frameCount = 0;
+
+        zoom = 80;
+
+        cameraX = -1;
+        cameraY = -1;
+
+        setFocusable(true);
+        requestFocus();
+        addKeyListener(this);
+        addComponentListener(this);
+        setLayout(null);
 
         addKeyListener(this);
     }
@@ -65,6 +85,18 @@ public class GameCanvas extends Canvas implements Runnable, KeyListener {
 
     private void update() {
         frameCount++;
+
+        if(cameraX == -1 && cameraY == -1) {
+            cameraX = getWidth() / 2;
+            cameraY = getHeight() / 2;
+        }
+
+        maxTop = getHeight() / 3;
+        maxBottom = getHeight() - maxTop;
+        maxLeft = getWidth() / 3;
+        maxRight = getWidth() - maxLeft;
+
+        repaint();
 
         render();
     }

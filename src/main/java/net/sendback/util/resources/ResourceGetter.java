@@ -37,6 +37,7 @@ public class ResourceGetter {
         tileTextures = loadTextures("assets/textures/tiles");
         entityTextures = loadTextures("assets/textures/entity");
         iconTextures = loadTextures("assets/textures/icons");
+        //menuTextures = loadTextures()
     }
 
     private static HashMap<String, BufferedImage> loadTextures(String folderPath) {
