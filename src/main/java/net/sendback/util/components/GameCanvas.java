@@ -31,6 +31,9 @@ public class GameCanvas extends Canvas implements Runnable, KeyListener {
 
     private double centerX;
     private double centerY;
+    private double savedOffsetX;
+    private double savedOffsetY;
+
     private int resetTimer;
 
     private BufferStrategy bufferStrategy;
@@ -106,6 +109,8 @@ public class GameCanvas extends Canvas implements Runnable, KeyListener {
 
         centerX = player.getX();
         centerY = player.getY();
+        savedOffsetX = 0;
+        savedOffsetY = 0;
 
         start();
     }
@@ -209,10 +214,11 @@ public class GameCanvas extends Canvas implements Runnable, KeyListener {
         if(bufferStrategy != null) {
             Graphics2D g2 = (Graphics2D) bufferStrategy.getDrawGraphics();
 
+            g2.clearRect(0, 0, getWidth(), getHeight());
+
             g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
             g2.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_LCD_HRGB);
             g2.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
-
 
             g2.setFont(ResourceGetter.getFonts()[0]);
 
@@ -228,6 +234,38 @@ public class GameCanvas extends Canvas implements Runnable, KeyListener {
 
             double offsetX = player.getX() - (int) player.getX();
             double offsetY = player.getY() - (int) player.getY();
+
+            if(!player.isMoving(MovementType.UP) && !player.isMoving(MovementType.LEFT) &&
+                    !player.isMoving(MovementType.DOWN) && !player.isMoving(MovementType.RIGHT)) {
+                resetTimer++;
+                if(resetTimer >= fps * 3) {
+                    centerX = player.getX();
+                    centerY = player.getY();
+                    savedOffsetX = offsetX;
+                    savedOffsetY = offsetY;
+                }
+            } else {
+                resetTimer = 0;
+            }
+
+            int centerOffsetX = (int) (player.getX() - centerX);
+            int centerOffsetY = (int) (player.getY() - centerY);
+
+            if(centerOffsetX > 3) {
+                centerX++;
+                centerOffsetX = 3;
+            } else if(centerOffsetX < -3) {
+                centerX--;
+                centerOffsetX = 3;
+            }
+
+            if(centerOffsetY > 3) {
+                centerY++;
+                centerOffsetY = 3;
+            } else if(centerOffsetY < -3) {
+                centerY--;
+                centerOffsetY = 3;
+            }
 
             for(int x = 0; x < tileScreenWidth + 2; x++) {
                 for(int y = 0; y < tileScreenHeight + 2; y++) {
@@ -245,7 +283,18 @@ public class GameCanvas extends Canvas implements Runnable, KeyListener {
                     }
 
                     int screenPosX = tileSize * x + extraX;
+                    if(centerOffsetX == 3 && player.isMoving(MovementType.RIGHT)) {
+                        screenPosX -= (int) (offsetX * tileSize);
+                    } else if(centerOffsetX == -3 && player.isMoving(MovementType.LEFT)) {
+                        screenPosX += (int) (offsetX * tileSize);
+                    }
+
                     int screenPosY = tileSize * y + extraY;
+                    /*if(centerOffsetY == -3 && player.isMoving(MovementType.UP)) {
+                        screenPosY -= (int) (offsetY * tileSize);
+                    } else if(centerOffsetY == 3 && player.isMoving(MovementType.DOWN)) {
+                        screenPosY += (int) (offsetY * tileSize);
+                    }*/
 
                     /*int tilePosX = (int) (player.getX() - tileScreenWidth / 2 + x);
                     int tilePosY = (int) (player.getY() - tileScreenHeight / 2 + y);
@@ -281,41 +330,28 @@ public class GameCanvas extends Canvas implements Runnable, KeyListener {
                 }
             }
 
-            //int playerX = (int) (getWidth() / 2 - tileSize / 2 + (int) (player.getX() - centerX) * tileSize + tileSize * offsetX);
-
-            if(!player.isMoving(MovementType.UP) && !player.isMoving(MovementType.LEFT) &&
-                    !player.isMoving(MovementType.DOWN) && !player.isMoving(MovementType.RIGHT)) {
-                resetTimer++;
-                if(resetTimer >= fps * 3) {
-                    centerX = player.getX();
-                    centerY = player.getY();
+            if(centerX != (int) centerX) {
+                if(offsetX < 0.5 && offsetX < savedOffsetX) {
+                    offsetX++;
+                } else if(offsetX > 0.5 && offsetX < savedOffsetX) {
+                    offsetX++;
                 }
-            } else {
-                resetTimer = 0;
             }
 
-            int centerOffsetX = (int) Math.floor(player.getX() - centerX);
-            int centerOffsetY = (int) Math.floor(player.getY() - centerY);
-
-            if(centerOffsetX > 3) {
-                centerX++;
-                centerOffsetX = 3;
-            } else if(centerOffsetX < -3) {
-                centerX--;
-                centerOffsetX = 3;
-            }
-
-            if(centerOffsetY > 3) {
-                centerY++;
-                centerOffsetY = 3;
-            } else if(centerOffsetY < -3) {
-                centerY--;
-                centerOffsetY = 3;
-            }
+            /*if(centerY != (int) centerY) {
+                if(offsetY < 0.5 && offsetY < savedOffsetY) {
+                    offsetY++;
+                } else if(offsetY > 0.5 && offsetY < savedOffsetY) {
+                    offsetY++;
+                }
+            }*/
 
             int playerX = (int) (getWidth() / 2 - tileSize / 2 + centerOffsetX * tileSize + offsetX * tileSize);
-            System.out.println(player.isMoving(MovementType.DOWN));
-            int playerY = (int) (getHeight() / 2 - tileSize / 2 + centerOffsetY * tileSize + offsetY * tileSize);
+
+            if(player.isMoving(MovementType.RIGHT))
+                System.out.println(playerX);
+
+            int playerY = (int) ((double) getHeight() / 2 - (double) tileSize / 2 + centerOffsetY * tileSize + offsetY * tileSize);
             g2.drawImage(ResourceGetter.getEntityTexture("prof_noGlasses.png"), playerX, playerY, tileSize, tileSize, this);
 
             g2.setColor(Color.YELLOW);
