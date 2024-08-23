@@ -1,7 +1,7 @@
 package net.sendback.util.components;
 
-import net.sendback.util.Resources;
 import net.sendback.util.Session;
+import net.sendback.util.resources.ResourceGetter;
 
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -15,7 +15,7 @@ public class SessionButton extends RoundButton implements ActionListener {
         this.session = session;
 
         RoundButton sessionButton = new RoundButton(session.getName());
-        sessionButton.setFont(Resources.getFonts()[0]);
+        sessionButton.setFont(ResourceGetter.getFonts()[0]);
         sessionButton.setPreferredSize(new Dimension(200, 50));
 
         setFocusable(true);

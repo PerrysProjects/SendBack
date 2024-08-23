@@ -36,9 +36,6 @@ public class GameCanvas extends Canvas implements Runnable, KeyListener {
     private double centerX;
     private double centerY;
     private int maxTop, maxBottom, maxLeft, maxRight;
-    private Session session;
-    private World world;
-    private Player player; //
 
     private int resetTimer;
 
@@ -56,14 +53,9 @@ public class GameCanvas extends Canvas implements Runnable, KeyListener {
 
         zoom = 80;
 
-        cameraX = -1;
-        cameraY = -1;
-
         setFocusable(true);
         requestFocus();
         addKeyListener(this);
-        addComponentListener(this);
-        setLayout(null);
 
         addKeyListener(this);
     }
@@ -85,11 +77,6 @@ public class GameCanvas extends Canvas implements Runnable, KeyListener {
 
     private void update() {
         frameCount++;
-
-        if(cameraX == -1 && cameraY == -1) {
-            cameraX = getWidth() / 2;
-            cameraY = getHeight() / 2;
-        }
 
         maxTop = getHeight() / 3;
         maxBottom = getHeight() - maxTop;

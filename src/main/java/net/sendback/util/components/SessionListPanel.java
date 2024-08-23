@@ -27,6 +27,7 @@ public class SessionListPanel extends JPanel {
     }
 
     private void update() {
+        removeAll();
         for(Session session : sessionList) {
             add(new SessionButton(session));
         }

@@ -1,6 +1,6 @@
 package net.sendback.util.components;
 
-import net.sendback.util.Resources;
+import net.sendback.util.resources.ResourceGetter;
 
 import javax.swing.*;
 import java.awt.*;
@@ -23,10 +23,10 @@ public class MainMenuPanel extends JPanel {
         GridBagConstraints c = new GridBagConstraints();
 
         // Load background image
-        backgroundImage = new ImageIcon("C:\\Users\\bader\\Downloads\\GTS_PRojekt\\src\\main\\resources\\assets\\textures\\tiles\\Menu\\Screenshot_2024-06-17_at_2.52.48_AM.png").getImage();
+        backgroundImage = ResourceGetter.getTileTexture("grass.png");
 
         RoundButton startGameButton = new RoundButton("Start Game");
-        startGameButton.setFont(Resources.getFonts()[0]);
+        startGameButton.setFont(ResourceGetter.getFonts()[0]);
         startGameButton.setPreferredSize(new Dimension(buttonWidth, buttonHeight));
         startGameButton.setOpaque(false);
         startGameButton.updateUI();
@@ -45,7 +45,7 @@ public class MainMenuPanel extends JPanel {
         add(startGameButton, c);
 
         RoundButton optionsButton = new RoundButton("Options");
-        optionsButton.setFont(Resources.getFonts()[0]);
+        optionsButton.setFont(ResourceGetter.getFonts()[0]);
         optionsButton.setPreferredSize(new Dimension(buttonWidth, buttonHeight));
         optionsButton.setOpaque(false);
         optionsButton.updateUI();
@@ -56,7 +56,7 @@ public class MainMenuPanel extends JPanel {
         add(optionsButton, c);
 
         RoundButton exitButton = new RoundButton("Exit");
-        exitButton.setFont(Resources.getFonts()[0]);
+        exitButton.setFont(ResourceGetter.getFonts()[0]);
         exitButton.setPreferredSize(new Dimension(buttonWidth, buttonHeight));
         exitButton.setOpaque(false);
         exitButton.updateUI();

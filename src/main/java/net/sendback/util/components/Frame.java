@@ -21,7 +21,7 @@ public class Frame extends JFrame implements WindowStateListener {
         //getContentPane().requestFocus();
         //pack();
 
-        add(SessionListPanel.getInstance());
+        add(MainMenuPanel.getInstance());
 
         setIconImage(ResourceGetter.getIconTexture("clock_icon.png"));
 
@@ -46,6 +46,7 @@ public class Frame extends JFrame implements WindowStateListener {
     }
 
     public void switchPanel(Component component) {
+        remove(MainMenuPanel.getInstance());
         remove(SessionListPanel.getInstance());
         remove(GameCanvas.getInstance());
 
