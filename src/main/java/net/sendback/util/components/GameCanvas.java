@@ -239,7 +239,7 @@ public class GameCanvas extends Canvas implements Runnable, KeyListener {
             int playerX = getWidth() / 2 - tileSize / 2;
             int playerY = getHeight() / 2 - tileSize / 2;
 
-            g2.drawImage(ResourceGetter.getEntityTexture("prof_noGlasses.png"), playerX, playerY, tileSize, tileSize, this);
+            g2.drawImage(ResourceGetter.getEntityTexture("professor_down.png"), playerX, playerY, tileSize, tileSize, this);
 
             g2.setColor(Color.YELLOW);
             g2.drawString("FPS: " + currentFps, 50, 50);
