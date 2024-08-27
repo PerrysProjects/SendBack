@@ -2,12 +2,13 @@ package net.sendback.objects.ids;
 
 import net.sendback.util.resources.ResourceGetter;
 import net.sendback.util.resources.Sprites;
+import net.sendback.util.resources.TileSprites;
 
 public enum TileIDs {
     //EXAMPLE(-1, new BufferedImage[]{new BufferedImage(6, 6, Image.SCALE_DEFAULT)}, true, false, 16, 16, true),
-    GRASS(0, new Sprites(ResourceGetter.getTileTexture("grass.png")), true, false, 1, 1, true),
-    STONE(1, new Sprites(ResourceGetter.getTileTexture("stone.png")), true, false, 1, 1, true),
-    TREE(2, new Sprites(ResourceGetter.getTileTexture("tree.png"),
+    GRASS(0, new TileSprites(ResourceGetter.getTileTexture("grass.png")), true, false, 1, 1, true),
+    STONE(1, new TileSprites(ResourceGetter.getTileTexture("stone.png")), true, false, 1, 1, true),
+    TREE(2, new TileSprites(ResourceGetter.getTileTexture("tree.png"),
             ResourceGetter.getTileTexture("tree_left.png"),
             ResourceGetter.getTileTexture("tree_right.png"),
             ResourceGetter.getTileTexture("tree_up.png"),
@@ -23,13 +24,13 @@ public enum TileIDs {
             true, false, 1, 1, true);
 
     private final int id;
-    private final Sprites sprites;
+    private final TileSprites sprites;
     private final boolean rotateX, rotateY;
 
     private final double height, width;
     private final boolean solid;
 
-    TileIDs(int id, Sprites sprites, boolean rotateX, boolean rotateY, double width, double height, boolean solid) {
+    TileIDs(int id, TileSprites sprites, boolean rotateX, boolean rotateY, double width, double height, boolean solid) {
         this.id = id;
         this.sprites = sprites;
         this.rotateX = rotateX;
@@ -43,7 +44,7 @@ public enum TileIDs {
         return id;
     }
 
-    public Sprites getSprites() {
+    public TileSprites getSprites() {
         return sprites;
     }
 

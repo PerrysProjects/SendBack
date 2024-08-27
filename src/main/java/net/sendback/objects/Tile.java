@@ -2,11 +2,12 @@ package net.sendback.objects;
 
 import net.sendback.objects.ids.TileIDs;
 import net.sendback.util.resources.Sprites;
+import net.sendback.util.resources.TileSprites;
 
 public abstract class Tile {
     private final int x, y;
     private final TileIDs id;
-    private final Sprites textures;
+    private final TileSprites textures;
     private final double width, height;
     private final boolean solid;
     private final boolean rotateX, rotateY;
@@ -35,7 +36,7 @@ public abstract class Tile {
         return id;
     }
 
-    public Sprites getTextures() {
+    public TileSprites getTextures() {
         return textures;
     }
 
