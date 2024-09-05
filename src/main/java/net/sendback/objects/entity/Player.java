@@ -1,10 +1,15 @@
 package net.sendback.objects.entity;
 
 import net.sendback.util.Session;
+import net.sendback.util.resources.EntitySprite;
+import net.sendback.util.resources.ResourceGetter;
 import net.sendback.worlds.World;
+
+import java.awt.image.BufferedImage;
 
 public class Player {
     private double size;
+    private EntitySprite sprite;
 
     private Session session;
     private World world;
@@ -16,6 +21,10 @@ public class Player {
 
     public Player(Session session, double x, double y) {
         size = 1;
+        sprite = new EntitySprite(ResourceGetter.getEntityTexture("professor_down.png"),
+                ResourceGetter.getEntityTexture("professor_left.png"),
+                ResourceGetter.getEntityTexture("professor_right.png"),
+                ResourceGetter.getEntityTexture("professor_up.png"));
 
         this.session = session;
         world = session.getCurrentWorld();
@@ -231,6 +240,22 @@ public class Player {
 
     public double getSize() {
         return size;
+    }
+
+    public EntitySprite getSprite() {
+        return sprite;
+    }
+
+    public BufferedImage getTexture() {
+        if (movingUp) {
+            return sprite.getUpTexture();
+        } else if (movingLeft) {
+            return sprite.getLeftTexture();
+        } else if (movingRight) {
+            return sprite.getRightTexture();
+        } else {
+            return sprite.getTexture();
+        }
     }
 
     public Session getSession() {
