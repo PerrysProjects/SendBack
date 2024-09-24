@@ -24,7 +24,11 @@ public class Player {
         sprite = new EntitySprite(ResourceGetter.getEntityTexture("professor_down.png"),
                 ResourceGetter.getEntityTexture("professor_left.png"),
                 ResourceGetter.getEntityTexture("professor_right.png"),
-                ResourceGetter.getEntityTexture("professor_up.png"));
+                ResourceGetter.getEntityTexture("professor_up.png"),
+                ResourceGetter.getEntityTexture("professor_up_left.png"),
+                ResourceGetter.getEntityTexture("professor_up_right.png"),
+                ResourceGetter.getEntityTexture("professor_down_left.png"),
+                ResourceGetter.getEntityTexture("professor_down_right.png"));
 
         this.session = session;
         world = session.getCurrentWorld();
@@ -247,16 +251,27 @@ public class Player {
     }
 
     public BufferedImage getTexture() {
-        if (movingUp) {
+        if(movingUp && movingLeft && !movingRight && !movingDown) {
+            return sprite.getUpLeftTexture();
+        } else if(movingUp && movingRight && !movingLeft && !movingDown) {
+            return sprite.getUpRightTexture();
+        } else if(movingDown && movingLeft && !movingRight && !movingUp) {
+            return sprite.getDownLeftTexture();
+        } else if(movingDown && movingRight && !movingLeft && !movingUp) {
+            return sprite.getDownRightTexture();
+        } else if(movingUp && !movingDown) {
             return sprite.getUpTexture();
-        } else if (movingLeft) {
+        } else if(movingLeft && !movingRight) {
             return sprite.getLeftTexture();
-        } else if (movingRight) {
+        } else if(movingRight && !movingLeft) {
             return sprite.getRightTexture();
         } else {
             return sprite.getTexture();
         }
     }
+
+
+
 
     public Session getSession() {
         return session;
