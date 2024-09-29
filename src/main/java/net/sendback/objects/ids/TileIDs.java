@@ -17,10 +17,10 @@ public enum TileIDs {
             ResourceGetter.getTileTexture("tree_up_right.png"),
             ResourceGetter.getTileTexture("tree_down_left.png"),
             ResourceGetter.getTileTexture("tree_down_right.png"),
-            ResourceGetter.getTileTexture("tree_inverted_top_left_corner.png"),
-            ResourceGetter.getTileTexture("tree_inverted_top_right_corner.png"),
-            ResourceGetter.getTileTexture("tree_inverted_bottom_left_corner.png"),
-            ResourceGetter.getTileTexture("tree_inverted_bottom_right_corner.png")),
+            ResourceGetter.getTileTexture("tree_inverted_up_left.png"),
+            ResourceGetter.getTileTexture("tree_inverted_up_right.png"),
+            ResourceGetter.getTileTexture("tree_inverted_down_left.png"),
+            ResourceGetter.getTileTexture("tree_inverted_down_right.png")),
             true, false, 1, 1, true);
 
     private final int id;
