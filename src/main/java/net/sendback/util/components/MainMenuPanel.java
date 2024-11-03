@@ -56,7 +56,12 @@ public class MainMenuPanel extends JPanel {
         optionsButton.setOpaque(false);
         optionsButton.updateUI();
         optionsButton.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {System.exit(0);};
+            public void actionPerformed(ActionEvent e) {
+                Frame.getInstance().getContentPane().removeAll();
+                Frame.getInstance().add(OptionsPanel.getInstance());
+                Frame.getInstance().revalidate();
+                Frame.getInstance().repaint();
+            }
         });
         c.gridy = 1;
         add(optionsButton, c);
