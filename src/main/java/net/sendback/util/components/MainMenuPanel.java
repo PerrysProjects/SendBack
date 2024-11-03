@@ -36,9 +36,7 @@ public class MainMenuPanel extends JPanel {
         startGameButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                /*SessionListPanel sessionPanel = SessionListPanel.getInstance();
-              //  sessionPanel.setZoom(zoom);  // Set zoom level to SessionListPanel
-                Frame.getInstance().switchPanel(sessionPanel);*/
+
                 Frame.getInstance().getContentPane().removeAll();
                 Frame.getInstance().add(SessionListPanel.getInstance());
                 Frame.getInstance().revalidate();

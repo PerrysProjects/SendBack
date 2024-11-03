@@ -9,6 +9,7 @@ import java.awt.image.BufferedImage;
 
 public class SessionListPanel extends JPanel {
     private static SessionListPanel instance;
+    private Image backgroundImage;
 
     private static Session[] sessionList;
 
@@ -17,6 +18,16 @@ public class SessionListPanel extends JPanel {
         setFocusable(true);
         requestFocus();
 
+        setLayout(new GridBagLayout());
+        GridBagConstraints c = new GridBagConstraints();
+        c.insets = new Insets(10, 10, 10, 10); // Abstand zwischen den Komponenten
+        c.fill = GridBagConstraints.HORIZONTAL; // Fülle die gesamte Breite der Zelle
+
+        c.gridx = 0;
+        c.weightx = 1.0;
+        c.anchor = GridBagConstraints.CENTER;
+
+/*
         //setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
         setLayout(new GridBagLayout());
 
@@ -24,9 +35,9 @@ public class SessionListPanel extends JPanel {
         int buttonHeight = 50;
 
         GridBagConstraints c = new GridBagConstraints();
+*/
+        backgroundImage = ResourceGetter.getMenusTexture("menu.png");
 
-
-        BufferedImage backgroundImage = ResourceGetter.getMenusTexture("menu.png");
     }
 
     public static SessionListPanel getInstance() {
