@@ -13,6 +13,8 @@ public class Settings {
         settings.put("backward", 's');
         settings.put("right", 'd');
 
+        settings.put("volume", 1.0);
+
         settings.put("minMemory", 3072);
         settings.put("maxMemory", 4096);
 

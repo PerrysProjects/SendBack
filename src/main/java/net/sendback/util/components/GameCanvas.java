@@ -5,12 +5,11 @@ import net.sendback.objects.entity.MovementType;
 import net.sendback.objects.entity.Player;
 import net.sendback.util.Session;
 import net.sendback.util.Settings;
+import net.sendback.util.SoundManager;
 import net.sendback.util.resources.ResourceGetter;
 import net.sendback.worlds.World;
 
 import java.awt.*;
-import java.awt.event.ComponentEvent;
-import java.awt.event.ComponentListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.image.BufferStrategy;
@@ -29,6 +28,8 @@ public class GameCanvas extends Canvas implements Runnable, KeyListener {
     private World world;
     private Player player;
 
+    private final SoundManager backgroundMusic;
+
     private BufferStrategy bufferStrategy;
 
     private boolean paused;
@@ -40,6 +41,9 @@ public class GameCanvas extends Canvas implements Runnable, KeyListener {
         currentFps = 0;
         lastFpsCheckTime = System.currentTimeMillis();
         frameCount = 0;
+
+        backgroundMusic = new SoundManager(ResourceGetter.getBackgroundMusic());
+        backgroundMusic.setVolume(Float.parseFloat(String.valueOf(Settings.getSetting("volume"))));
 
         addKeyListener(this);
     }
@@ -73,22 +77,29 @@ public class GameCanvas extends Canvas implements Runnable, KeyListener {
                 thread.start();
                 session.start();
             }
+
+            backgroundMusic.start(true);
         }
     }
 
     public void stop() {
+        backgroundMusic.stop();
         thread.interrupt();
         session.stop();
     }
 
     public void pause() {
         paused = true;
+
+        backgroundMusic.pause();
     }
 
     public void resume() {
         synchronized(lock) {
             paused = false;
             lock.notify();
+
+            backgroundMusic.resume();
         }
     }
 
