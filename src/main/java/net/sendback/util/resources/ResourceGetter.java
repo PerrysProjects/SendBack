@@ -20,6 +20,7 @@ public class ResourceGetter {
     private static HashMap<String, BufferedImage> tileTextures;
     private static HashMap<String, BufferedImage> entityTextures;
     private static HashMap<String, BufferedImage> iconTextures;
+    private static HashMap<String, BufferedImage> menusTextures;
 
     private static HashMap<String, Clip> backgroundMusic;
 
@@ -40,6 +41,7 @@ public class ResourceGetter {
         tileTextures = loadTextures("assets/textures/tiles");
         entityTextures = loadTextures("assets/textures/entity");
         iconTextures = loadTextures("assets/textures/icons");
+        menusTextures = loadTextures("assets/textures/menus");
 
         backgroundMusic = loadClips("assets/sound/backgroundMusic");
     }
@@ -191,6 +193,14 @@ public class ResourceGetter {
     public static BufferedImage getIconTexture(String name) {
         return iconTextures.get(name);
     }
+    public static HashMap<String, BufferedImage> getMenusTextures() {
+        return menusTextures;
+    }
+
+    public static BufferedImage getMenusTexture(String name) {
+        return menusTextures.get(name);
+    }
+
 
     public static HashMap<String, Clip> getBackgroundMusic() {
         return backgroundMusic;

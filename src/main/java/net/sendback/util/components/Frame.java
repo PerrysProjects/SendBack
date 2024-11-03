@@ -14,14 +14,23 @@ public class Frame extends JFrame implements WindowStateListener {
     private Frame() {
         setTitle(Main.getName() + " | " + Main.getVersion());
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        //setFocusable(true);
+        setFocusable(true);
 
-        //setContentPane(SessionListPanel.getInstance());
-        //getContentPane().setFocusable(true);
-        //getContentPane().requestFocus();
-        //pack();
+        add(MainMenuPanel.getInstance());
+ /*
+        setContentPane(MainMenuPanel.getInstance());
+        getContentPane().setFocusable(true);
+        getContentPane().requestFocus();
+        pack();
 
-        add(SessionListPanel.getInstance());
+
+        setContentPane(SessionListPanel.getInstance());
+        getContentPane().setFocusable(true);
+        getContentPane().requestFocus();
+        pack();
+        */
+
+        //add(SessionListPanel.getInstance());
 
         setIconImage(ResourceGetter.getIconTexture("clock_icon.png"));
 
@@ -58,6 +67,7 @@ public class Frame extends JFrame implements WindowStateListener {
         revalidate();
         repaint();
         pack();
+
     }
 
     @Override
