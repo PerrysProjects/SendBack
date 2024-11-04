@@ -23,6 +23,7 @@ public class ResourceGetter {
     private static HashMap<String, BufferedImage> menusTextures;
 
     private static HashMap<String, Clip> backgroundMusic;
+    private static HashMap<String, Clip> entityWalkSounds;
 
     private static final GraphicsEnvironment env = GraphicsEnvironment.getLocalGraphicsEnvironment();
     private static final GraphicsDevice device = env.getDefaultScreenDevice();
@@ -43,7 +44,8 @@ public class ResourceGetter {
         iconTextures = loadTextures("assets/textures/icons");
         menusTextures = loadTextures("assets/textures/menus");
 
-        backgroundMusic = loadClips("assets/sound/backgroundMusic");
+        backgroundMusic = loadClips("assets/sounds/music/background");
+        entityWalkSounds = loadClips("assets/sounds/entity/walk");
     }
 
     private static HashMap<String, BufferedImage> loadTextures(String folderPath) {
@@ -165,8 +167,24 @@ public class ResourceGetter {
     private static Clip loadClipFromStream(InputStream stream) throws UnsupportedAudioFileException, IOException, LineUnavailableException {
         BufferedInputStream bufferedStream = new BufferedInputStream(stream);
         AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(bufferedStream);
+
+        // Get the original format of the audio stream
+        AudioFormat baseFormat = audioInputStream.getFormat();
+        AudioFormat decodedFormat = new AudioFormat(
+                AudioFormat.Encoding.PCM_SIGNED,
+                baseFormat.getSampleRate(),
+                16, // Change to 16-bit to ensure compatibility
+                baseFormat.getChannels(),
+                baseFormat.getChannels() * 2, // 16-bit stereo -> 2 bytes per channel
+                baseFormat.getSampleRate(),
+                false // Little-endian
+        );
+
+        // Decode the stream if the format is unsupported
+        AudioInputStream decodedAudioInputStream = AudioSystem.getAudioInputStream(decodedFormat, audioInputStream);
         Clip clip = AudioSystem.getClip();
-        clip.open(audioInputStream);
+        clip.open(decodedAudioInputStream);
+
         return clip;
     }
 
@@ -208,6 +226,14 @@ public class ResourceGetter {
 
     public static Clip getBackgroundMusic(String name) {
         return backgroundMusic.get(name);
+    }
+
+    public static HashMap<String, Clip> getEntityWalkSounds() {
+        return entityWalkSounds;
+    }
+
+    public static Clip getEntityWalkSound(String name) {
+        return entityWalkSounds.get(name);
     }
 
     public static Font[] getFonts() {

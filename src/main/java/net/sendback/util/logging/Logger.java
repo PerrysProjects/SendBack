@@ -20,7 +20,7 @@ public class Logger {
         String formattedLog = formatLog(message, type);
         logs.add(formattedLog);
         System.out.println(formattedLog);
-       logfile.appendLine(formattedLog);
+        logfile.appendLine(formattedLog);
     }
 
     public static void log(Exception error) {

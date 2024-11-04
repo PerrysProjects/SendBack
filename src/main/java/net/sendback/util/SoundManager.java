@@ -3,160 +3,137 @@ package net.sendback.util;
 import net.sendback.util.logging.LogType;
 import net.sendback.util.logging.Logger;
 
-import javax.sound.sampled.*;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Random;
+import javax.sound.sampled.Clip;
+import javax.sound.sampled.FloatControl;
+import javax.sound.sampled.LineEvent;
+import javax.sound.sampled.LineListener;
+import java.util.*;
 
 public class SoundManager {
     private final HashMap<String, Clip> clips;
-    private final List<String> names;
+    private final Queue<Clip> queue;
 
-    private int currentClipIndex;
-    private int lastPlayedIndex;
-
-    private boolean randomOrder;
-    private final Random random;
-
+    private boolean randomized;
     private boolean isPaused;
-    private final Map<String, Integer> pausedPositions;
-
-    private final Map<String, LineListener> lineListeners;
+    private FloatControl volumeControl;
 
     public SoundManager(HashMap<String, Clip> clips) {
-        this.clips = new HashMap<>(clips);
-        names = new ArrayList<>(clips.keySet());
+        this.clips = clips;
+        this.queue = new LinkedList<>();
+        this.randomized = false;
+        this.isPaused = false;
 
-        currentClipIndex = 0;
-        lastPlayedIndex = -1;
-
-        randomOrder = false;
-        random = new Random();
-
-        isPaused = false;
-        pausedPositions = new HashMap<>();
-
-        lineListeners = new HashMap<>();
-    }
-
-    public void start(boolean randomOrder) {
-        this.randomOrder = randomOrder;
-        if(!clips.isEmpty()) {
-            playClip(currentClipIndex);
-        }
-    }
-
-    private void playClip(int index) {
-        if(index < names.size()) {
-            String name = names.get(index);
-            Clip clip = clips.get(name);
-            if(clip != null) {
-                clip.setFramePosition(0);
-
-                if(lineListeners.containsKey(name)) {
-                    clip.removeLineListener(lineListeners.get(name));
-                }
-
-                LineListener listener = event -> {
-                    if(event.getType() == LineEvent.Type.STOP && !isPaused) {
-                        clip.stop();
-                        clip.setFramePosition(0);
-
-                        if(randomOrder) {
-                            currentClipIndex = getRandomIndexExcludingLast();
-                        } else {
-                            currentClipIndex = (currentClipIndex + 1) % names.size();
-                        }
-
-                        lastPlayedIndex = currentClipIndex;
-                        playClip(currentClipIndex);
-                    }
-                };
-                lineListeners.put(name, listener);
-                clip.addLineListener(listener);
-
-                clip.start();
-            }
-        }
-    }
-
-    private int getRandomIndexExcludingLast() {
-        int newIndex;
-        do {
-            newIndex = random.nextInt(names.size());
-        } while(newIndex == lastPlayedIndex);
-        return newIndex;
-    }
-
-    public void stop() {
         for(Clip clip : clips.values()) {
-            if(clip.isRunning()) {
-                clip.stop();
+            if(clip != null) {
+                queue.add(clip);
             }
-            clip.setFramePosition(0);
         }
-        isPaused = false;
-        pausedPositions.clear();
-        lineListeners.clear();
     }
+
+    public void setRandomized(boolean randomized) {
+        this.randomized = randomized;
+    }
+
+    public void shuffle() {
+        List<Clip> clipList = new ArrayList<>(clips.values());
+        Collections.shuffle(clipList);
+        queue.clear();
+        queue.addAll(clipList);
+    }
+
+    public void play() {
+        if(isPaused) {
+            isPaused = false;
+            playNextClip();
+            return;
+        }
+
+        if(queue.isEmpty()) {
+            return;
+        }
+        playNextClip();
+    }
+
+    private void playNextClip() {
+        if(isPaused) {
+            return;
+        }
+
+        if(queue.isEmpty()) {
+            if(randomized) {
+                shuffle();
+            } else {
+                return;
+            }
+        }
+
+        Clip clip = queue.poll();
+        if(clip != null) {
+            try {
+                clip.setFramePosition(0);
+                clip.start();
+                clip.removeLineListener(lineListener);
+                clip.addLineListener(lineListener);
+            } catch(Exception e) {
+                Logger.log("Error playing clip: " + e.getMessage(), LogType.ERROR);
+            }
+        }
+    }
+
+    private final LineListener lineListener = event -> {
+        if(event.getType() == LineEvent.Type.STOP) {
+            playNextClip();
+        }
+    };
 
     public void pause() {
         if(!isPaused) {
             isPaused = true;
-            for(Map.Entry<String, Clip> entry : clips.entrySet()) {
-                Clip clip = entry.getValue();
+            for(Clip clip : clips.values()) {
                 if(clip.isRunning()) {
-                    pausedPositions.put(entry.getKey(), clip.getFramePosition());
                     clip.stop();
-                    if(lineListeners.containsKey(entry.getKey())) {
-                        clip.removeLineListener(lineListeners.get(entry.getKey()));
-                    }
                 }
             }
-        }
-    }
-
-    public void resume() {
-        if(isPaused) {
-            for(Map.Entry<String, Clip> entry : clips.entrySet()) {
-                String name = entry.getKey();
-                Clip clip = entry.getValue();
-                if(pausedPositions.containsKey(name)) {
-                    int position = pausedPositions.get(name);
-                    clip.setFramePosition(position);
-                    clip.start();
-
-                    LineListener listener = lineListeners.get(name);
-                    if(listener != null) {
-                        clip.addLineListener(listener);
-                    }
-                }
-            }
-            isPaused = false;
-            pausedPositions.clear();
-        } else {
-            playClip(currentClipIndex);
         }
     }
 
     public void setVolume(float volume) {
         if(volume < 0.0f || volume > 1.0f) {
-            Logger.log("Volume must be between 0.0 and 1.0", LogType.WARN);
+            Logger.log("Volume must be between 0.0 (silent) and 1.0 (max volume).", LogType.WARN);
             return;
         }
 
+        // Define the minimum dB level as allowed by the FloatControl
+        float minDb = -80.0f;
+        float maxDb = 0.0f; // Typically, 0 dB is the maximum for MASTER_GAIN
+        float dbVolume;
+
+        if(volume == 0.0f) {
+            dbVolume = minDb;  // Silent
+        } else {
+            // Convert linear scale (0.0 to 1.0) to decibel scale for perceived loudness
+            dbVolume = 20.0f * (float) Math.log10(volume);
+
+            // Ensure the dbVolume is within the allowed range
+            dbVolume = Math.max(dbVolume, minDb); // Clamp to minDb if below
+            dbVolume = Math.min(dbVolume, maxDb); // Clamp to maxDb if above
+        }
+
         for(Clip clip : clips.values()) {
-            if(clip.isOpen()) {
+            if(clip.isControlSupported(FloatControl.Type.MASTER_GAIN)) {
                 FloatControl volumeControl = (FloatControl) clip.getControl(FloatControl.Type.MASTER_GAIN);
-
-                float min = volumeControl.getMinimum();
-                float max = volumeControl.getMaximum();
-                float dB = min + (max - min) * volume;
-
-                volumeControl.setValue(dB);
+                volumeControl.setValue(dbVolume);
+            } else {
+                Logger.log("Volume control not supported for this clip.", LogType.WARN);
             }
         }
+    }
+
+    public void stopAll() {
+        for(Clip clip : clips.values()) {
+            clip.stop();
+            clip.close();
+        }
+        queue.clear();
     }
 }

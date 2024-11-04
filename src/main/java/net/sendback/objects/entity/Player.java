@@ -1,6 +1,8 @@
 package net.sendback.objects.entity;
 
 import net.sendback.util.Session;
+import net.sendback.util.Settings;
+import net.sendback.util.SoundManager;
 import net.sendback.util.resources.EntitySprite;
 import net.sendback.util.resources.ResourceGetter;
 import net.sendback.worlds.World;
@@ -8,14 +10,16 @@ import net.sendback.worlds.World;
 import java.awt.image.BufferedImage;
 
 public class Player {
-    private double size;
-    private EntitySprite sprite;
+    private final double size;
+    private final EntitySprite sprite;
 
-    private Session session;
+    private final SoundManager walkSounds;
+
+    private final Session session;
     private World world;
 
     private double x, y;
-    private boolean movingUp, movingLeft, movingDown, movingRight;
+    private boolean isMoving, isMovingUp, isMovingLeft, isMovingDown, isMovingRight;
 
     private double speed;
 
@@ -29,6 +33,10 @@ public class Player {
                 ResourceGetter.getEntityTexture("professor_up_right.png"),
                 ResourceGetter.getEntityTexture("professor_down_left.png"),
                 ResourceGetter.getEntityTexture("professor_down_right.png"));
+
+        walkSounds = new SoundManager(ResourceGetter.getEntityWalkSounds());
+        walkSounds.setRandomized(true);
+        walkSounds.setVolume(Float.parseFloat(String.valueOf(Settings.getSetting("playerVolume"))));
 
         this.session = session;
         world = session.getCurrentWorld();
@@ -56,7 +64,7 @@ public class Player {
                     int floorY = (int) Math.floor(newY);
                     int ceilX = (int) Math.ceil(x);
 
-                    movingUp = !(newY < 0) && (world.getWorldGrid()[floorX][floorY] == null || !world.getWorldGrid()[floorX][floorY].isSolid()) &&
+                    isMovingUp = !(newY < 0) && (world.getWorldGrid()[floorX][floorY] == null || !world.getWorldGrid()[floorX][floorY].isSolid()) &&
                             (world.getWorldGrid()[ceilX][floorY] == null || !world.getWorldGrid()[ceilX][floorY].isSolid());
                 }
             }
@@ -67,7 +75,7 @@ public class Player {
                     int floorY = (int) Math.floor(y);
                     int ceilY = (int) Math.ceil(y);
 
-                    movingLeft = !(newX < 0) && (world.getWorldGrid()[floorX][floorY] == null || !world.getWorldGrid()[floorX][floorY].isSolid()) &&
+                    isMovingLeft = !(newX < 0) && (world.getWorldGrid()[floorX][floorY] == null || !world.getWorldGrid()[floorX][floorY].isSolid()) &&
                             (world.getWorldGrid()[floorX][ceilY] == null || !world.getWorldGrid()[floorX][ceilY].isSolid());
                 }
             }
@@ -78,7 +86,7 @@ public class Player {
                     int floorY = (int) Math.floor(newY + 1);
                     int ceilX = (int) Math.ceil(x);
 
-                    movingDown = !(newY > worldHeight - 1) && (world.getWorldGrid()[floorX][floorY] == null || !world.getWorldGrid()[floorX][floorY].isSolid()) &&
+                    isMovingDown = !(newY > worldHeight - 1) && (world.getWorldGrid()[floorX][floorY] == null || !world.getWorldGrid()[floorX][floorY].isSolid()) &&
                             (world.getWorldGrid()[ceilX][floorY] == null || !world.getWorldGrid()[ceilX][floorY].isSolid());
                 }
             }
@@ -89,7 +97,7 @@ public class Player {
                     int floorY = (int) Math.floor(y);
                     int ceilY = (int) Math.ceil(y);
 
-                    movingRight = !(newX > worldWidth - 1) && (world.getWorldGrid()[floorX][floorY] == null || !world.getWorldGrid()[floorX][floorY].isSolid()) &&
+                    isMovingRight = !(newX > worldWidth - 1) && (world.getWorldGrid()[floorX][floorY] == null || !world.getWorldGrid()[floorX][floorY].isSolid()) &&
                             (world.getWorldGrid()[floorX][ceilY] == null || !world.getWorldGrid()[floorX][ceilY].isSolid());
                 }
             }
@@ -98,26 +106,26 @@ public class Player {
 
     public void stopMoving(MovementType type) {
         switch(type) {
-            case UP -> movingUp = false;
-            case LEFT -> movingLeft = false;
-            case DOWN -> movingDown = false;
-            case RIGHT -> movingRight = false;
+            case UP -> isMovingUp = false;
+            case LEFT -> isMovingLeft = false;
+            case DOWN -> isMovingDown = false;
+            case RIGHT -> isMovingRight = false;
         }
     }
 
     public boolean isMoving(MovementType type) {
         switch(type) {
             case UP -> {
-                return movingUp;
+                return isMovingUp;
             }
             case LEFT -> {
-                return movingLeft;
+                return isMovingLeft;
             }
             case DOWN -> {
-                return movingDown;
+                return isMovingDown;
             }
             case RIGHT -> {
-                return movingRight;
+                return isMovingRight;
             }
             default -> {
                 return false;
@@ -138,7 +146,7 @@ public class Player {
         }
 
         if(y > 0) {
-            if(movingUp) {
+            if(isMovingUp) {
                 double newY = y - speed;
                 int floorX = (int) Math.floor(x);
                 int floorY = (int) Math.floor(newY);
@@ -150,7 +158,7 @@ public class Player {
                 } else {
                     y = newY;
                 }
-            } else if(y != Math.floor(y) && !movingDown) {
+            } else if(y != Math.floor(y) && !isMovingDown) {
                 double newY = y - speed;
                 int floorX = (int) Math.floor(x);
                 int floorY = (int) Math.floor(newY);
@@ -164,7 +172,7 @@ public class Player {
         }
 
         if(x > 0) {
-            if(movingLeft) {
+            if(isMovingLeft) {
                 double newX = x - speed;
                 int floorX = (int) Math.floor(newX);
                 int floorY = (int) Math.floor(y);
@@ -176,7 +184,7 @@ public class Player {
                 } else {
                     x = newX;
                 }
-            } else if(x != Math.floor(x) && !movingRight) {
+            } else if(x != Math.floor(x) && !isMovingRight) {
                 double newX = x - speed;
                 int floorX = (int) Math.floor(newX);
                 int floorY = (int) Math.floor(y);
@@ -190,7 +198,7 @@ public class Player {
         }
 
         if(y < worldHeight - 1) {
-            if(movingDown) {
+            if(isMovingDown) {
                 double newY = y + speed;
                 int floorX = (int) Math.floor(x);
                 int floorY = (int) Math.floor(newY + 1);
@@ -202,7 +210,7 @@ public class Player {
                 } else {
                     y = newY;
                 }
-            } else if(y != Math.floor(y) && !movingUp) {
+            } else if(y != Math.floor(y) && !isMovingUp) {
                 double newY = y + speed;
                 int floorX = (int) Math.floor(x);
                 int floorY = (int) Math.floor(newY + 1);
@@ -216,7 +224,7 @@ public class Player {
         }
 
         if(x < worldWidth - 1) {
-            if(movingRight) {
+            if(isMovingRight) {
                 double newX = x + speed;
                 int floorX = (int) Math.floor(newX + 1);
                 int floorY = (int) Math.floor(y);
@@ -228,7 +236,7 @@ public class Player {
                 } else {
                     x = newX;
                 }
-            } else if(x != Math.floor(x) && !movingLeft) {
+            } else if(x != Math.floor(x) && !isMovingLeft) {
                 double newX = x + speed;
                 int floorX = (int) Math.floor(newX + 1);
                 int floorY = (int) Math.floor(y);
@@ -239,6 +247,14 @@ public class Player {
                     x = floorX - 1;
                 }
             }
+        }
+
+        isMoving = isMovingUp || isMovingLeft || isMovingDown || isMovingRight;
+
+        if(isMoving) {
+            walkSounds.play();
+        } else {
+            walkSounds.pause();
         }
     }
 
@@ -251,27 +267,28 @@ public class Player {
     }
 
     public BufferedImage getTexture() {
-        if(movingUp && movingLeft && !movingRight && !movingDown) {
+        if(isMovingUp && isMovingLeft && !isMovingRight && !isMovingDown) {
             return sprite.getUpLeftTexture();
-        } else if(movingUp && movingRight && !movingLeft && !movingDown) {
+        } else if(isMovingUp && isMovingRight && !isMovingLeft && !isMovingDown) {
             return sprite.getUpRightTexture();
-        } else if(movingDown && movingLeft && !movingRight && !movingUp) {
+        } else if(isMovingDown && isMovingLeft && !isMovingRight && !isMovingUp) {
             return sprite.getDownLeftTexture();
-        } else if(movingDown && movingRight && !movingLeft && !movingUp) {
+        } else if(isMovingDown && isMovingRight && !isMovingLeft && !isMovingUp) {
             return sprite.getDownRightTexture();
-        } else if(movingUp && !movingDown) {
+        } else if(isMovingUp && !isMovingDown) {
             return sprite.getUpTexture();
-        } else if(movingLeft && !movingRight) {
+        } else if(isMovingLeft && !isMovingRight) {
             return sprite.getLeftTexture();
-        } else if(movingRight && !movingLeft) {
+        } else if(isMovingRight && !isMovingLeft) {
             return sprite.getRightTexture();
         } else {
             return sprite.getTexture();
         }
     }
 
-
-
+    public SoundManager getWalkSounds() {
+        return walkSounds;
+    }
 
     public Session getSession() {
         return session;
@@ -281,15 +298,31 @@ public class Player {
         return world;
     }
 
+    public void setWorld(World world) {
+        this.world = world;
+    }
+
     public double getX() {
         return x;
+    }
+
+    public void setX(double x) {
+        this.x = x;
     }
 
     public double getY() {
         return y;
     }
 
+    public void setY(double y) {
+        this.y = y;
+    }
+
     public double getSpeed() {
         return speed;
+    }
+
+    public void setSpeed(double speed) {
+        this.speed = speed;
     }
 }
