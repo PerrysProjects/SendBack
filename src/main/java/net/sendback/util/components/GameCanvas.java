@@ -6,6 +6,7 @@ import net.sendback.objects.entity.Player;
 import net.sendback.util.Session;
 import net.sendback.util.Settings;
 import net.sendback.util.SoundManager;
+import net.sendback.util.SystemStats;
 import net.sendback.util.resources.ResourceGetter;
 import net.sendback.worlds.World;
 
@@ -37,13 +38,13 @@ public class GameCanvas extends Canvas implements Runnable, KeyListener {
 
     private GameCanvas() {
         thread = new Thread(this);
-        fps = 60;
+        fps = Settings.getInt("screen.fps");
         currentFps = 0;
         lastFpsCheckTime = System.currentTimeMillis();
         frameCount = 0;
 
         backgroundMusic = new SoundManager(ResourceGetter.getBackgroundMusic());
-        backgroundMusic.setVolume(Float.parseFloat(String.valueOf(Settings.getSetting("musicVolume"))));
+        backgroundMusic.setVolume(Settings.getFloat("volume.music"));
 
         addKeyListener(this);
     }
@@ -196,7 +197,7 @@ public class GameCanvas extends Canvas implements Runnable, KeyListener {
 
             g2.setFont(ResourceGetter.getFonts()[0]);
 
-            int zoom = (int) Settings.getSetting("zoom");
+            int zoom = Settings.getInt("screen.zoom");
 
             int tileSize = 0;
             while(tileSize == 0) {
@@ -252,8 +253,16 @@ public class GameCanvas extends Canvas implements Runnable, KeyListener {
 
             g2.drawImage(player.getTexture(), playerX, playerY, tileSize, tileSize, this);
 
-            g2.setColor(Color.YELLOW);
-            g2.drawString("FPS: " + currentFps, 50, 50);
+            if(Settings.getBoolean("devScreen")) {
+                g2.setColor(Color.YELLOW);
+                g2.drawString("FPS: " + currentFps, 50, 50);
+
+                g2.setColor(Color.CYAN);
+                g2.drawString(SystemStats.getMemoryUsage(), 50, 80);
+
+                g2.setColor(Color.CYAN);
+                g2.drawString(SystemStats.getCpuUsage(), 50, 110);
+            }
 
             g2.dispose();
             bufferStrategy.show();

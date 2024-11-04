@@ -31,9 +31,9 @@ public class ResourceGetter {
 
     public static void init() {
         try {
-            fonts = new Font[]{Font.createFont(Font.TRUETYPE_FONT, ResourceGetter.class.getClassLoader().getResourceAsStream("assets/font/x12y16pxMaruMonica.ttf")).deriveFont(Font.PLAIN, 32F),
-                    Font.createFont(Font.TRUETYPE_FONT, ResourceGetter.class.getClassLoader().getResourceAsStream("assets/font/x12y16pxMaruMonica.ttf")).deriveFont(Font.BOLD, 32F),
-                    Font.createFont(Font.TRUETYPE_FONT, ResourceGetter.class.getClassLoader().getResourceAsStream("assets/font/x12y16pxMaruMonica.ttf")).deriveFont(Font.ITALIC, 32F)};
+            fonts = new Font[]{Font.createFont(Font.TRUETYPE_FONT, ResourceGetter.class.getClassLoader().getResourceAsStream("assets/font/MaruMonica.ttf")).deriveFont(Font.PLAIN, 32F),
+                    Font.createFont(Font.TRUETYPE_FONT, ResourceGetter.class.getClassLoader().getResourceAsStream("assets/font/MaruMonica.ttf")).deriveFont(Font.BOLD, 32F),
+                    Font.createFont(Font.TRUETYPE_FONT, ResourceGetter.class.getClassLoader().getResourceAsStream("assets/font/MaruMonica.ttf")).deriveFont(Font.ITALIC, 32F)};
             Logger.log("Font loaded");
         } catch(FontFormatException | IOException e) {
             Logger.log(e);

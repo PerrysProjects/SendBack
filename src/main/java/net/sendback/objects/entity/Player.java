@@ -36,7 +36,7 @@ public class Player {
 
         walkSounds = new SoundManager(ResourceGetter.getEntityWalkSounds());
         walkSounds.setRandomized(true);
-        walkSounds.setVolume(Float.parseFloat(String.valueOf(Settings.getSetting("playerVolume"))));
+        walkSounds.setVolume(Settings.getFloat("volume.player"));
 
         this.session = session;
         world = session.getCurrentWorld();
