@@ -36,12 +36,19 @@ public class Main {
         version = "Version";
 
         try {
+            Path pathToJar = Paths.get(Main.class.getProtectionDomain().getCodeSource().getLocation().toURI());
+            path = pathToJar.getParent();
+        } catch (URISyntaxException e) {
+            Logger.log(e);
+        }
+
+        try {
             DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
             DocumentBuilder builder = factory.newDocumentBuilder();
             Document doc;
 
             InputStream pomIs = Main.class.getClassLoader().getResourceAsStream("META-INF/maven/net.sendback/SendBack/pom.xml");
-            if(pomIs != null) {
+            if (pomIs != null) {
                 doc = builder.parse(pomIs);
             } else {
                 doc = builder.parse("pom.xml");
@@ -49,30 +56,24 @@ public class Main {
 
 
             NodeList projectNodes = doc.getElementsByTagName("project");
-            if(projectNodes.getLength() > 0) {
+            if (projectNodes.getLength() > 0) {
                 Node projectNode = projectNodes.item(0);
                 NodeList children = projectNode.getChildNodes();
-                for(int i = 0; i < children.getLength(); i++) {
+                for (int i = 0; i < children.getLength(); i++) {
                     Node child = children.item(i);
-                    if(child.getNodeName().equals("name")) {
+                    if (child.getNodeName().equals("name")) {
                         name = child.getTextContent().trim();
-                    } else if(child.getNodeName().equals("version")) {
+                    } else if (child.getNodeName().equals("version")) {
                         version = child.getTextContent().trim();
                     }
                 }
             }
 
             Logger.log("Starting " + name + " version " + version + "!");
-        } catch(ParserConfigurationException | IOException | SAXException e) {
+        } catch (ParserConfigurationException | IOException | SAXException e) {
             Logger.log("Failed getting pom.xml, still staring game with error: " + Logger.buildStackTrace(e), LogType.WARN);
         }
 
-        try {
-            Path pathToJar = Paths.get(Main.class.getProtectionDomain().getCodeSource().getLocation().toURI());
-            path = pathToJar.getParent();
-        } catch(URISyntaxException e) {
-            Logger.log(e);
-        }
 
         Settings.init();
 

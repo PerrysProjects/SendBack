@@ -1,11 +1,16 @@
 package net.sendback.util.logging;
 
+import net.sendback.Main;
+import net.sendback.util.files.FileWriterUtil;
+
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 
 public class Logger {
     private static final ArrayList<String> logs = new ArrayList<>();
+
+    private static final FileWriterUtil logfile = new FileWriterUtil(Main.getPath().toString() + "/logs/latest.log");
 
     public static void log(String message) {
         log(message, LogType.INFO);
@@ -15,6 +20,7 @@ public class Logger {
         String formattedLog = formatLog(message, type);
         logs.add(formattedLog);
         System.out.println(formattedLog);
+       logfile.appendLine(formattedLog);
     }
 
     public static void log(Exception error) {
@@ -22,6 +28,7 @@ public class Logger {
         String formattedLog = formatLog(stacktrace, LogType.ERROR);
         logs.add(formattedLog);
         System.out.println(formattedLog);
+        logfile.appendLine(formattedLog);
     }
 
     private static String formatLog(String message, LogType type) {
