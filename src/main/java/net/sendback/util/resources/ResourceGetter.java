@@ -18,7 +18,7 @@ import java.util.jar.JarFile;
 public class ResourceGetter {
     private static Font[] fonts;
     private static HashMap<String, BufferedImage> tileTextures;
-    private static HashMap<String, BufferedImage> entityTextures;
+    private static HashMap<String, BufferedImage> playerTextures;
     private static HashMap<String, BufferedImage> iconTextures;
     private static HashMap<String, BufferedImage> menusTextures;
 
@@ -40,7 +40,7 @@ public class ResourceGetter {
         }
 
         tileTextures = loadTextures("assets/textures/tiles");
-        entityTextures = loadTextures("assets/textures/entity");
+        playerTextures = loadTextures("assets/textures/entity/player");
         iconTextures = loadTextures("assets/textures/icons");
         menusTextures = loadTextures("assets/textures/menus");
 
@@ -196,12 +196,12 @@ public class ResourceGetter {
         return tileTextures.get(name);
     }
 
-    public static HashMap<String, BufferedImage> getEntityTextures() {
-        return entityTextures;
+    public static HashMap<String, BufferedImage> getPlayerTextures() {
+        return playerTextures;
     }
 
-    public static BufferedImage getEntityTexture(String name) {
-        return entityTextures.get(name);
+    public static BufferedImage getPlayerTexture(String name) {
+        return playerTextures.get(name);
     }
 
     public static HashMap<String, BufferedImage> getIconTextures() {

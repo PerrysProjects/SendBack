@@ -11,7 +11,7 @@ public class Settings {
     public static void init() {
         settings.put("screen.fps", 60);
         settings.put("screen.zoom", 14);
-        settings.put("screen.dev", true);
+        settings.put("screen.devOverlay", false);
 
         settings.put("keyBind.forward", 'w');
         settings.put("keyBind.left", 'a');

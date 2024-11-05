@@ -1,5 +1,7 @@
 package net.sendback.util.components;
 
+import net.sendback.util.Settings;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -11,6 +13,7 @@ public class OptionsPanel extends JPanel {
     private JSlider gammaSlider;
     private JSlider volumeSlider;
     private JCheckBox fullscreenCheckBox;
+    private JCheckBox devOverlay;
 
     private OptionsPanel() {
         setLayout(new GridBagLayout());
@@ -73,6 +76,19 @@ public class OptionsPanel extends JPanel {
         });
         c.gridx = 1;
         add(fullscreenCheckBox, c);
+
+        c.gridx = 0;
+        c.gridy++;
+        devOverlay = new JCheckBox();
+        devOverlay.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                boolean isDevOverlay = devOverlay.isSelected();
+                Settings.setBoolean("screen.devOverlay", isDevOverlay);
+            }
+        });
+        c.gridx = 1;
+        add(devOverlay, c);
 
         // Zurück-Button zum Hauptmenü
         c.gridx = 0;

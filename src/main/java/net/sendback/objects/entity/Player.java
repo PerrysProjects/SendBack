@@ -25,14 +25,14 @@ public class Player {
 
     public Player(Session session, double x, double y) {
         size = 1;
-        sprite = new EntitySprite(ResourceGetter.getEntityTexture("professor_down.png"),
-                ResourceGetter.getEntityTexture("professor_left.png"),
-                ResourceGetter.getEntityTexture("professor_right.png"),
-                ResourceGetter.getEntityTexture("professor_up.png"),
-                ResourceGetter.getEntityTexture("professor_up_left.png"),
-                ResourceGetter.getEntityTexture("professor_up_right.png"),
-                ResourceGetter.getEntityTexture("professor_down_left.png"),
-                ResourceGetter.getEntityTexture("professor_down_right.png"));
+        sprite = new EntitySprite(ResourceGetter.getPlayerTexture("professor_down.png"),
+                ResourceGetter.getPlayerTexture("professor_left.png"),
+                ResourceGetter.getPlayerTexture("professor_right.png"),
+                ResourceGetter.getPlayerTexture("professor_up.png"),
+                ResourceGetter.getPlayerTexture("professor_up_left.png"),
+                ResourceGetter.getPlayerTexture("professor_up_right.png"),
+                ResourceGetter.getPlayerTexture("professor_down_left.png"),
+                ResourceGetter.getPlayerTexture("professor_down_right.png"));
 
         walkSounds = new SoundManager(ResourceGetter.getEntityWalkSounds());
         walkSounds.setRandomized(true);

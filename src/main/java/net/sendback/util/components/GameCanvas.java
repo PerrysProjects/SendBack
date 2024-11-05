@@ -126,7 +126,7 @@ public class GameCanvas extends Canvas implements Runnable, KeyListener {
 
     private BufferedImage getTexture(Tile[][] tileGrid, int tx, int ty) {
         Tile tile = tileGrid[tx][ty];
-        if(tile.getTextures().getLeftSideTexture() != null) {
+        if(tile.getTextures().getLeftSideTexture() != null && tx > 0 && tx < tileGrid.length - 1 && ty > 0 && ty < tileGrid.length - 1){
             if(tileGrid[tx - 1][ty] == null &&
                     tileGrid[tx - 1][ty - 1] == null &&
                     tileGrid[tx][ty - 1] == null) {
@@ -231,7 +231,7 @@ public class GameCanvas extends Canvas implements Runnable, KeyListener {
                     //drawTile(g2, world.getTileGrid(), world.getBorderTile(), tilePosX, tilePosY, screenPosX, screenPosY, tileSize);
                     //drawTile(g2, world.getWorldGrid(), world.getBorderWorldTile(), tilePosX, tilePosY, screenPosX, screenPosY, tileSize);
 
-                    BufferedImage texture = world.getBorderTile().getTextures().getTexture();
+                    BufferedImage texture = world.getBorderWorldTile().getTextures().getTexture();
                     if(tilePosX >= 0 && tilePosX < world.getWidth() && tilePosY >= 0 && tilePosY < world.getHeight()) {
                         if(world.getTileGrid()[tilePosX][tilePosY] != null) {
                             texture = getTexture(world.getTileGrid(), tilePosX, tilePosY);
@@ -253,7 +253,7 @@ public class GameCanvas extends Canvas implements Runnable, KeyListener {
 
             g2.drawImage(player.getTexture(), playerX, playerY, tileSize, tileSize, this);
 
-            if(Settings.getBoolean("devScreen")) {
+            if(Settings.getBoolean("screen.devOverlay")) {
                 g2.setColor(Color.YELLOW);
                 g2.drawString("FPS: " + currentFps, 50, 50);
 
@@ -314,10 +314,10 @@ public class GameCanvas extends Canvas implements Runnable, KeyListener {
     public void keyPressed(KeyEvent e) {
         char key = KeyEvent.getKeyText(e.getKeyCode()).toLowerCase().charAt(0);
 
-        char forward = (char) Settings.getSetting("forward");
-        char left = (char) Settings.getSetting("left");
-        char backward = (char) Settings.getSetting("backward");
-        char right = (char) Settings.getSetting("right");
+        char forward = Settings.getChar("keyBind.forward");
+        char left = Settings.getChar("keyBind.left");
+        char backward = Settings.getChar("keyBind.backward");
+        char right = Settings.getChar("keyBind.right");
 
         if(key == forward) {
             player.startMoving(MovementType.UP);
@@ -334,10 +334,10 @@ public class GameCanvas extends Canvas implements Runnable, KeyListener {
     public void keyReleased(KeyEvent e) {
         char key = KeyEvent.getKeyText(e.getKeyCode()).toLowerCase().charAt(0);
 
-        char forward = (char) Settings.getSetting("forward");
-        char left = (char) Settings.getSetting("left");
-        char backward = (char) Settings.getSetting("backward");
-        char right = (char) Settings.getSetting("right");
+        char forward = Settings.getChar("keyBind.forward");
+        char left = Settings.getChar("keyBind.left");
+        char backward = Settings.getChar("keyBind.backward");
+        char right = Settings.getChar("keyBind.right");
 
         if(key == forward) {
             player.stopMoving(MovementType.UP);
