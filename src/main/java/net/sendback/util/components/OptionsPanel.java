@@ -9,9 +9,9 @@ import java.awt.event.ActionListener;
 
 public class OptionsPanel extends JPanel {
     private static OptionsPanel instance;
-    private JSlider brightnessSlider;
-    private JSlider gammaSlider;
-    private JSlider volumeSlider;
+    private JSlider playervolumeSlider;
+    private JSlider backgroundvolumeSlider;
+    private JSlider objectvolumeSlider;
     private JCheckBox fullscreenCheckBox;
     private JCheckBox devOverlay;
 
@@ -23,47 +23,47 @@ public class OptionsPanel extends JPanel {
         c.gridy = 0;
         c.anchor = GridBagConstraints.WEST;
 
-        // Helligkeit-Regler
-        JLabel brightnessLabel = new JLabel("Brightness:");
-        add(brightnessLabel, c);
 
-        brightnessSlider = new JSlider(0, 100, 50); // 50 als Standardwert
-        brightnessSlider.setMajorTickSpacing(25);
-        brightnessSlider.setPaintTicks(true);
-        brightnessSlider.setPaintLabels(true);
+        JLabel playervolumeLabel = new JLabel("player volume: ");
+        add(playervolumeLabel, c);
+
+        playervolumeSlider = new JSlider(0, 100, 50); // 50 als Standardwert
+        playervolumeSlider.setMajorTickSpacing(25);
+        playervolumeSlider.setPaintTicks(true);
+        playervolumeSlider.setPaintLabels(true);
         c.gridx = 1;
-        add(brightnessSlider, c);
+        add(playervolumeSlider, c);
 
-        // Gamma-Regler
+
         c.gridx = 0;
         c.gridy++;
-        JLabel gammaLabel = new JLabel("Gamma:");
-        add(gammaLabel, c);
+        JLabel backgroundvolumeLabel = new JLabel("background volume:");
+        add(backgroundvolumeLabel, c);
 
-        gammaSlider = new JSlider(0, 100, 50);
-        gammaSlider.setMajorTickSpacing(25);
-        gammaSlider.setPaintTicks(true);
-        gammaSlider.setPaintLabels(true);
+        backgroundvolumeSlider = new JSlider(0, 100, 50);
+        backgroundvolumeSlider.setMajorTickSpacing(25);
+        backgroundvolumeSlider.setPaintTicks(true);
+        backgroundvolumeSlider.setPaintLabels(true);
         c.gridx = 1;
-        add(gammaSlider, c);
+        add(backgroundvolumeSlider, c);
 
         // Lautstärke-Regler
         c.gridx = 0;
         c.gridy++;
-        JLabel volumeLabel = new JLabel("volume:");
-        add(volumeLabel, c);
+        JLabel objectvolumeLabel = new JLabel("object volume:");
+        add(objectvolumeLabel, c);
 
-        volumeSlider = new JSlider(0, 100, 50);
-        volumeSlider.setMajorTickSpacing(25);
-        volumeSlider.setPaintTicks(true);
-        volumeSlider.setPaintLabels(true);
+        objectvolumeSlider = new JSlider(0, 100, 50);
+        objectvolumeSlider.setMajorTickSpacing(25);
+        objectvolumeSlider.setPaintTicks(true);
+        objectvolumeSlider.setPaintLabels(true);
         c.gridx = 1;
-        add(volumeSlider, c);
+        add(objectvolumeSlider, c);
 
         // Vollbild-Umschaltung
         c.gridx = 0;
         c.gridy++;
-        JLabel fullscreenLabel = new JLabel("Full screen mode:");
+        JLabel fullscreenLabel = new JLabel("Fullscreen mode:");
         add(fullscreenLabel, c);
 
         fullscreenCheckBox = new JCheckBox();
@@ -79,6 +79,9 @@ public class OptionsPanel extends JPanel {
 
         c.gridx = 0;
         c.gridy++;
+        JLabel devmodeCheckBox = new JLabel("dev mode:");
+        add(devmodeCheckBox, c);
+
         devOverlay = new JCheckBox();
         devOverlay.addActionListener(new ActionListener() {
             @Override
@@ -90,10 +93,10 @@ public class OptionsPanel extends JPanel {
         c.gridx = 1;
         add(devOverlay, c);
 
-        // Zurück-Button zum Hauptmenü
+        // Zurück zum Hauptmenü
         c.gridx = 0;
         c.gridy++;
-        JButton backButton = new JButton("go back");
+        JButton backButton = new JButton("GO BACK");
         backButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -123,16 +126,16 @@ public class OptionsPanel extends JPanel {
         frame.setVisible(true);
     }
 
-    public int getBrightness() {
-        return brightnessSlider.getValue();
+    public int getplayerVolume() {
+        return playervolumeSlider.getValue();
     }
 
-    public int getGamma() {
-        return gammaSlider.getValue();
+    public int getbackgroundVolume() {
+        return backgroundvolumeSlider.getValue();
     }
 
-    public int getVolume() {
-        return volumeSlider.getValue();
+    public int getobjectVolume() {
+        return objectvolumeSlider.getValue();
     }
 
     public boolean isFullscreen() {
