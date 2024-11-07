@@ -4,7 +4,6 @@ import net.sendback.Main;
 import net.sendback.util.components.listener.MouseHandler;
 import net.sendback.util.components.menus.GameCanvas;
 import net.sendback.util.components.menus.MainMenuPanel;
-import net.sendback.util.components.menus.SessionListPanel;
 import net.sendback.util.resources.ResourceGetter;
 
 import javax.swing.*;
@@ -26,9 +25,9 @@ public class Frame extends JFrame implements WindowStateListener {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setFocusable(true);
 
-        add(MainMenuPanel.getInstance());
-
         setIconImage(ResourceGetter.getIconTexture("clock.png"));
+
+        add(MainMenuPanel.getInstance());
 
         setCursor(MouseHandler.getDefaultCursor());
         addMouseListener(new MouseHandler());
@@ -54,8 +53,7 @@ public class Frame extends JFrame implements WindowStateListener {
     }
 
     public void switchPanel(Component component) {
-        remove(SessionListPanel.getInstance());
-        remove(GameCanvas.getInstance());
+        getContentPane().removeAll();
 
         add(component);
         component.setFocusable(true);

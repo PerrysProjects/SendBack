@@ -2,24 +2,22 @@ package net.sendback.util.components.menus;
 
 
 import net.sendback.util.components.Frame;
-import net.sendback.util.components.RoundButton;
 import net.sendback.util.components.TexturedButton;
 import net.sendback.util.components.listener.MouseHandler;
 import net.sendback.util.resources.ResourceGetter;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
 public class MainMenuPanel extends JPanel {
     private static MainMenuPanel instance;
     private final int buttonWidth;
     private final int buttonHeight;
     private Image backgroundImage;
-    private int zoom = 1; // Initial zoom level
+    private int zoom = 1;
 
     private MainMenuPanel() {
+        setBackground(Color.decode("#0A111B"));
         setLayout(new GridBagLayout());
 
         buttonWidth = 250;
@@ -27,7 +25,6 @@ public class MainMenuPanel extends JPanel {
 
         GridBagConstraints c = new GridBagConstraints();
 
-        // Load background image
         backgroundImage = ResourceGetter.getMenusTexture("menu.png");
 
         TexturedButton startGameButton = new TexturedButton(ResourceGetter.getIconTexture("button.png"), "Start Game");
@@ -39,10 +36,7 @@ public class MainMenuPanel extends JPanel {
         startGameButton.setPreferredSize(new Dimension(buttonWidth, buttonHeight));
         startGameButton.addActionListener(e -> {
             Timer timer = new Timer(MouseHandler.getHoldTime(), event -> {
-                Frame.getInstance().getContentPane().removeAll();
-                Frame.getInstance().add(SessionListPanel.getInstance());
-                Frame.getInstance().revalidate();
-                Frame.getInstance().repaint();
+                Frame.getInstance().switchPanel(SessionListPanel.getInstance());
 
                 ((Timer) event.getSource()).stop();
             });
@@ -54,33 +48,25 @@ public class MainMenuPanel extends JPanel {
         c.insets = new Insets(10, 0, 10, 0);
         add(startGameButton, c);
 
-        RoundButton optionsButton = new RoundButton("Options");
+        TexturedButton optionsButton = new TexturedButton(ResourceGetter.getIconTexture("button.png"), "Options");
+        optionsButton.setClickedTexture(ResourceGetter.getIconTexture("clicked_button.png"));
         optionsButton.setFont(ResourceGetter.getBold());
+        optionsButton.setFontOffset(-10);
+        optionsButton.setForeground(Color.decode("#4D6385"));
+        optionsButton.setClickedForeground(Color.decode("#7790B5"));
         optionsButton.setPreferredSize(new Dimension(buttonWidth, buttonHeight));
-        optionsButton.setOpaque(false);
-        optionsButton.updateUI();
-        optionsButton.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                net.sendback.util.components.Frame.getInstance().getContentPane().removeAll();
-                net.sendback.util.components.Frame.getInstance().add(OptionsPanel.getInstance());
-                net.sendback.util.components.Frame.getInstance().revalidate();
-                Frame.getInstance().repaint();
-            }
-        });
+        optionsButton.addActionListener(e -> Frame.getInstance().switchPanel(OptionsPanel.getInstance()));
         c.gridy = 1;
         add(optionsButton, c);
 
-        RoundButton exitButton = new RoundButton("Exit");
+        TexturedButton exitButton = new TexturedButton(ResourceGetter.getIconTexture("button.png"), "Exit");
+        exitButton.setClickedTexture(ResourceGetter.getIconTexture("clicked_button.png"));
         exitButton.setFont(ResourceGetter.getBold());
+        exitButton.setFontOffset(-10);
+        exitButton.setForeground(Color.decode("#4D6385"));
+        exitButton.setClickedForeground(Color.decode("#7790B5"));
         exitButton.setPreferredSize(new Dimension(buttonWidth, buttonHeight));
-        exitButton.setOpaque(false);
-        exitButton.updateUI();
-        exitButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                System.exit(0);
-            }
-        });
+        exitButton.addActionListener(e -> System.exit(0));
         c.gridy = 2;
         add(exitButton, c);
     }
@@ -97,10 +83,9 @@ public class MainMenuPanel extends JPanel {
         super.paintComponent(g);
         Graphics2D g2 = (Graphics2D) g;
 
-        // Draw background image with zoom level
-        int width = getWidth() * zoom;
+        /*int width = getWidth() * zoom;
         int height = getHeight() * zoom;
-        g2.drawImage(backgroundImage, 0, 0, width, height, this);
+        g2.drawImage(backgroundImage, 0, 0, width, height, this);*/
     }
 
     public void setZoom(int zoom) {

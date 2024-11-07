@@ -171,16 +171,15 @@ public class ResourceGetter {
         BufferedInputStream bufferedStream = new BufferedInputStream(stream);
         AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(bufferedStream);
 
-        // Get the original format of the audio stream
         AudioFormat baseFormat = audioInputStream.getFormat();
         AudioFormat decodedFormat = new AudioFormat(
                 AudioFormat.Encoding.PCM_SIGNED,
                 baseFormat.getSampleRate(),
-                16, // Change to 16-bit to ensure compatibility
+                16,
                 baseFormat.getChannels(),
-                baseFormat.getChannels() * 2, // 16-bit stereo -> 2 bytes per channel
+                baseFormat.getChannels() * 2,
                 baseFormat.getSampleRate(),
-                false // Little-endian
+                false
         );
 
         // Decode the stream if the format is unsupported

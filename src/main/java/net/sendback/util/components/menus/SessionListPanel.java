@@ -14,14 +14,15 @@ public class SessionListPanel extends JPanel {
     private static Session[] sessionList;
 
     private SessionListPanel() {
+        setBackground(Color.decode("#0A111B"));
 
         setFocusable(true);
         requestFocus();
 
         setLayout(new GridBagLayout());
         GridBagConstraints c = new GridBagConstraints();
-        c.insets = new Insets(10, 10, 10, 10); // Abstand zwischen den Komponenten
-        c.fill = GridBagConstraints.HORIZONTAL; // Fülle die gesamte Breite der Zelle
+        c.insets = new Insets(10, 10, 10, 10);
+        c.fill = GridBagConstraints.HORIZONTAL;
 
         c.gridx = 0;
         c.weightx = 1.0;

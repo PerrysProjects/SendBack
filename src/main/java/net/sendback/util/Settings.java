@@ -20,6 +20,7 @@ public class Settings {
 
         settings.put("volume.music", 1.0F);
         settings.put("volume.player", 1.0F);
+        settings.put("volume.entity", 1.0F);
         settings.put("volume.object", 1.0F);
 
         settings.put("system.minMemory", 3072);
@@ -41,7 +42,7 @@ public class Settings {
     }
 
     public static Object setSetting(String setting, Object value) {
-        return settings.put(setting, value);
+        return settings.replace(setting, value);
     }
 
     public static int getInt(String setting) {
