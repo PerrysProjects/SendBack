@@ -8,6 +8,9 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
+
 public class OptionsPanel extends JPanel {
     private static OptionsPanel instance;
     private JSlider playervolumeSlider;
@@ -24,7 +27,7 @@ public class OptionsPanel extends JPanel {
         c.gridy = 0;
         c.anchor = GridBagConstraints.WEST;
 
-
+/*
         JLabel playervolumeLabel = new JLabel("player volume: ");
         add(playervolumeLabel, c);
 
@@ -34,32 +37,62 @@ public class OptionsPanel extends JPanel {
         playervolumeSlider.setPaintLabels(true);
         c.gridx = 1;
         add(playervolumeSlider, c);
+*/
+        JLabel playervolumeLabel = new JLabel("Player Volume:");
+        add(playervolumeLabel, c);
+
+        playervolumeSlider = new JSlider(0, 100, (int)(Settings.getFloat("volume.player") * 100)); // Lädt initialen Wert aus Settings
+        playervolumeSlider.setMajorTickSpacing(25);
+        playervolumeSlider.setPaintTicks(true);
+        playervolumeSlider.setPaintLabels(true);
+        playervolumeSlider.addChangeListener(new ChangeListener() {
+            @Override
+            public void stateChanged(ChangeEvent e) {
+                Settings.setFloat("volume.player", playervolumeSlider.getValue() / 100.0f); // Speichert Wert in Settings
+            }
+        });
+        c.gridx = 1;
+        add(playervolumeSlider, c);
 
 
         c.gridx = 0;
         c.gridy++;
-        JLabel backgroundvolumeLabel = new JLabel("background volume:");
+        JLabel backgroundvolumeLabel = new JLabel("Background Volume:");
         add(backgroundvolumeLabel, c);
 
-        backgroundvolumeSlider = new JSlider(0, 100, 50);
+        backgroundvolumeSlider = new JSlider(0, 100, (int)(Settings.getFloat("volume.music") * 100));
         backgroundvolumeSlider.setMajorTickSpacing(25);
         backgroundvolumeSlider.setPaintTicks(true);
         backgroundvolumeSlider.setPaintLabels(true);
+        backgroundvolumeSlider.addChangeListener(new ChangeListener() {
+            @Override
+            public void stateChanged(ChangeEvent e) {
+                Settings.setFloat("volume.music", backgroundvolumeSlider.getValue() / 100.0f);
+            }
+        });
         c.gridx = 1;
         add(backgroundvolumeSlider, c);
 
-        // Lautstärke-Regler
+
+        // Objektlautstärke
         c.gridx = 0;
         c.gridy++;
-        JLabel objectvolumeLabel = new JLabel("object volume:");
+        JLabel objectvolumeLabel = new JLabel("Object Volume:");
         add(objectvolumeLabel, c);
 
-        objectvolumeSlider = new JSlider(0, 100, 50);
+        objectvolumeSlider = new JSlider(0, 100, (int)(Settings.getFloat("volume.object") * 100)); 
         objectvolumeSlider.setMajorTickSpacing(25);
         objectvolumeSlider.setPaintTicks(true);
         objectvolumeSlider.setPaintLabels(true);
+        objectvolumeSlider.addChangeListener(new ChangeListener() {
+            @Override
+            public void stateChanged(ChangeEvent e) {
+                Settings.setFloat("volume.objects", objectvolumeSlider.getValue() / 100.0f);
+            }
+        });
         c.gridx = 1;
         add(objectvolumeSlider, c);
+
 
         // Vollbild-Umschaltung
         c.gridx = 0;
