@@ -20,6 +20,7 @@ public class Settings {
 
         settings.put("volume.music", 1.0F);
         settings.put("volume.player", 1.0F);
+        settings.put("volume.object", 1.0F);
 
         settings.put("system.minMemory", 3072);
         settings.put("system.maxMemory", 4096);
