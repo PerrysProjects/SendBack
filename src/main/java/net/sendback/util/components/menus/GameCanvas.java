@@ -1,4 +1,4 @@
-package net.sendback.util.components;
+package net.sendback.util.components.menus;
 
 import net.sendback.objects.Tile;
 import net.sendback.objects.entity.MovementType;
@@ -195,7 +195,7 @@ public class GameCanvas extends Canvas implements Runnable, KeyListener {
             g2.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
 
 
-            g2.setFont(ResourceGetter.getFonts()[0]);
+            g2.setFont(ResourceGetter.getBold());
 
             int zoom = Settings.getInt("screen.zoom");
 

@@ -16,7 +16,10 @@ import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 
 public class ResourceGetter {
-    private static Font[] fonts;
+    private static Font plain;
+    private static Font bold;
+    private static Font italic;
+
     private static HashMap<String, BufferedImage> tileTextures;
     private static HashMap<String, BufferedImage> playerTextures;
     private static HashMap<String, BufferedImage> iconTextures;
@@ -31,9 +34,9 @@ public class ResourceGetter {
 
     public static void init() {
         try {
-            fonts = new Font[]{Font.createFont(Font.TRUETYPE_FONT, ResourceGetter.class.getClassLoader().getResourceAsStream("assets/font/MaruMonica.ttf")).deriveFont(Font.PLAIN, 32F),
-                    Font.createFont(Font.TRUETYPE_FONT, ResourceGetter.class.getClassLoader().getResourceAsStream("assets/font/MaruMonica.ttf")).deriveFont(Font.BOLD, 32F),
-                    Font.createFont(Font.TRUETYPE_FONT, ResourceGetter.class.getClassLoader().getResourceAsStream("assets/font/MaruMonica.ttf")).deriveFont(Font.ITALIC, 32F)};
+            plain = Font.createFont(Font.TRUETYPE_FONT, ResourceGetter.class.getClassLoader().getResourceAsStream("assets/font/MaruMonica.ttf")).deriveFont(Font.PLAIN, 32F);
+            bold = Font.createFont(Font.TRUETYPE_FONT, ResourceGetter.class.getClassLoader().getResourceAsStream("assets/font/MaruMonica.ttf")).deriveFont(Font.BOLD, 32F);
+            italic = Font.createFont(Font.TRUETYPE_FONT, ResourceGetter.class.getClassLoader().getResourceAsStream("assets/font/MaruMonica.ttf")).deriveFont(Font.ITALIC, 32F);
             Logger.log("Font loaded");
         } catch(FontFormatException | IOException e) {
             Logger.log(e);
@@ -188,6 +191,18 @@ public class ResourceGetter {
         return clip;
     }
 
+    public static Font getPlain() {
+        return plain;
+    }
+
+    public static Font getBold() {
+        return bold;
+    }
+
+    public static Font getItalic() {
+        return italic;
+    }
+
     public static HashMap<String, BufferedImage> getTileTextures() {
         return tileTextures;
     }
@@ -219,7 +234,6 @@ public class ResourceGetter {
         return menusTextures.get(name);
     }
 
-
     public static HashMap<String, Clip> getBackgroundMusic() {
         return backgroundMusic;
     }
@@ -234,9 +248,5 @@ public class ResourceGetter {
 
     public static Clip getEntityWalkSound(String name) {
         return entityWalkSounds.get(name);
-    }
-
-    public static Font[] getFonts() {
-        return fonts;
     }
 }

@@ -1,11 +1,11 @@
-package net.sendback.util.components;
+package net.sendback.util.components.menus;
 
 import net.sendback.util.Session;
+import net.sendback.util.components.SessionButton;
 import net.sendback.util.resources.ResourceGetter;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.image.BufferedImage;
 
 public class SessionListPanel extends JPanel {
     private static SessionListPanel instance;

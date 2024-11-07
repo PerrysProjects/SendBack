@@ -1,14 +1,12 @@
 package net.sendback.util.components;
 
 import net.sendback.util.Session;
-import net.sendback.util.resources.ResourceGetter;
+import net.sendback.util.components.menus.GameCanvas;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-
-import static net.sendback.util.resources.ResourceGetter.getFonts;
 
 public class SessionButton extends JButton implements ActionListener {
     private final Session session;

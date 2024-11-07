@@ -1,14 +1,16 @@
-package net.sendback.util.components;
+package net.sendback.util.components.menus;
 
 
+import net.sendback.util.components.Frame;
+import net.sendback.util.components.RoundButton;
+import net.sendback.util.components.TexturedButton;
+import net.sendback.util.components.listener.MouseHandler;
 import net.sendback.util.resources.ResourceGetter;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-
-import static net.sendback.util.resources.ResourceGetter.getFonts;
 
 public class MainMenuPanel extends JPanel {
     private static MainMenuPanel instance;
@@ -20,28 +22,32 @@ public class MainMenuPanel extends JPanel {
     private MainMenuPanel() {
         setLayout(new GridBagLayout());
 
-        buttonWidth = 200;
-        buttonHeight = 50;
+        buttonWidth = 400;
+        buttonHeight = 100;
 
         GridBagConstraints c = new GridBagConstraints();
 
         // Load background image
         backgroundImage = ResourceGetter.getMenusTexture("menu.png");
 
-        RoundButton startGameButton = new RoundButton("Start Game");
-        startGameButton.setFont(getFonts()[0]);
+        TexturedButton startGameButton = new TexturedButton(ResourceGetter.getIconTexture("button.png"), "Start Game");
+        startGameButton.setClickedTexture(ResourceGetter.getIconTexture("clicked_button.png"));
+        startGameButton.setFont(ResourceGetter.getBold());
+        startGameButton.setFontOffset(-10);
+        startGameButton.setForeground(Color.decode("#4D6385"));
+        startGameButton.setClickedForeground(Color.decode("#7790B5"));
         startGameButton.setPreferredSize(new Dimension(buttonWidth, buttonHeight));
-        startGameButton.setOpaque(false);
-        startGameButton.updateUI();
-        startGameButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-
+        startGameButton.addActionListener(e -> {
+            Timer timer = new Timer(MouseHandler.getHoldTime(), event -> {
                 Frame.getInstance().getContentPane().removeAll();
                 Frame.getInstance().add(SessionListPanel.getInstance());
                 Frame.getInstance().revalidate();
                 Frame.getInstance().repaint();
-            }
+
+                ((Timer) event.getSource()).stop();
+            });
+
+            timer.start();
         });
         c.gridx = 0;
         c.gridy = 0;
@@ -49,15 +55,15 @@ public class MainMenuPanel extends JPanel {
         add(startGameButton, c);
 
         RoundButton optionsButton = new RoundButton("Options");
-        optionsButton.setFont(getFonts()[0]);
+        optionsButton.setFont(ResourceGetter.getBold());
         optionsButton.setPreferredSize(new Dimension(buttonWidth, buttonHeight));
         optionsButton.setOpaque(false);
         optionsButton.updateUI();
         optionsButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                Frame.getInstance().getContentPane().removeAll();
-                Frame.getInstance().add(OptionsPanel.getInstance());
-                Frame.getInstance().revalidate();
+                net.sendback.util.components.Frame.getInstance().getContentPane().removeAll();
+                net.sendback.util.components.Frame.getInstance().add(OptionsPanel.getInstance());
+                net.sendback.util.components.Frame.getInstance().revalidate();
                 Frame.getInstance().repaint();
             }
         });
@@ -65,7 +71,7 @@ public class MainMenuPanel extends JPanel {
         add(optionsButton, c);
 
         RoundButton exitButton = new RoundButton("Exit");
-        exitButton.setFont(getFonts()[0]);
+        exitButton.setFont(ResourceGetter.getBold());
         exitButton.setPreferredSize(new Dimension(buttonWidth, buttonHeight));
         exitButton.setOpaque(false);
         exitButton.updateUI();

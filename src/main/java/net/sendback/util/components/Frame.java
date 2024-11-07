@@ -1,6 +1,10 @@
 package net.sendback.util.components;
 
 import net.sendback.Main;
+import net.sendback.util.components.listener.MouseHandler;
+import net.sendback.util.components.menus.GameCanvas;
+import net.sendback.util.components.menus.MainMenuPanel;
+import net.sendback.util.components.menus.SessionListPanel;
 import net.sendback.util.resources.ResourceGetter;
 
 import javax.swing.*;
@@ -17,22 +21,11 @@ public class Frame extends JFrame implements WindowStateListener {
         setFocusable(true);
 
         add(MainMenuPanel.getInstance());
- /*
-        setContentPane(MainMenuPanel.getInstance());
-        getContentPane().setFocusable(true);
-        getContentPane().requestFocus();
-        pack();
 
+        setIconImage(ResourceGetter.getIconTexture("clock.png"));
 
-        setContentPane(SessionListPanel.getInstance());
-        getContentPane().setFocusable(true);
-        getContentPane().requestFocus();
-        pack();
-        */
-
-        //add(SessionListPanel.getInstance());
-
-        setIconImage(ResourceGetter.getIconTexture("clock_icon.png"));
+        setCursor(MouseHandler.getDefaultCursor());
+        addMouseListener(new MouseHandler());
 
         setFocusable(true);
         requestFocus();
@@ -67,7 +60,6 @@ public class Frame extends JFrame implements WindowStateListener {
         revalidate();
         repaint();
         pack();
-
     }
 
     @Override

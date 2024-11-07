@@ -1,6 +1,7 @@
-package net.sendback.util.components;
+package net.sendback.util.components.menus;
 
 import net.sendback.util.Settings;
+import net.sendback.util.components.Frame;
 
 import javax.swing.*;
 import java.awt.*;
@@ -100,10 +101,10 @@ public class OptionsPanel extends JPanel {
         backButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                Frame.getInstance().getContentPane().removeAll();
-                Frame.getInstance().add(MainMenuPanel.getInstance());
-                Frame.getInstance().revalidate();
-                Frame.getInstance().repaint();
+                net.sendback.util.components.Frame.getInstance().getContentPane().removeAll();
+                net.sendback.util.components.Frame.getInstance().add(MainMenuPanel.getInstance());
+                net.sendback.util.components.Frame.getInstance().revalidate();
+                net.sendback.util.components.Frame.getInstance().repaint();
             }
         });
         c.gridwidth = 2;
@@ -120,7 +121,7 @@ public class OptionsPanel extends JPanel {
     }
 
     private void toggleFullscreen(boolean isFullscreen) {
-        Frame frame = Frame.getInstance();
+        net.sendback.util.components.Frame frame = Frame.getInstance();
         frame.dispose(); // Aktuellen Frame kurz schließen, um Änderungen anzuwenden
         frame.setUndecorated(isFullscreen); // Vollbild wenn true, sonst Fenstermodus
         frame.setVisible(true);
