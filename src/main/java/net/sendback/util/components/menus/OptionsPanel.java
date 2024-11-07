@@ -41,14 +41,14 @@ public class OptionsPanel extends JPanel {
         JLabel playervolumeLabel = new JLabel("Player Volume:");
         add(playervolumeLabel, c);
 
-        playervolumeSlider = new JSlider(0, 100, (int)(Settings.getFloat("volume.player") * 100)); // Lädt initialen Wert aus Settings
-        playervolumeSlider.setMajorTickSpacing(25);
+        playervolumeSlider = new JSlider(0, 10, (int)(Settings.getFloat("volume.player") * 10)); // Lädt initialen Wert aus Settings
+        playervolumeSlider.setMajorTickSpacing(5);
         playervolumeSlider.setPaintTicks(true);
         playervolumeSlider.setPaintLabels(true);
         playervolumeSlider.addChangeListener(new ChangeListener() {
             @Override
             public void stateChanged(ChangeEvent e) {
-                Settings.setFloat("volume.player", playervolumeSlider.getValue() / 100.0f); // Speichert Wert in Settings
+                Settings.setFloat("volume.player", playervolumeSlider.getValue() / 10.0f); // Speichert Wert in Settings
             }
         });
         c.gridx = 1;
@@ -60,14 +60,14 @@ public class OptionsPanel extends JPanel {
         JLabel backgroundvolumeLabel = new JLabel("Background Volume:");
         add(backgroundvolumeLabel, c);
 
-        backgroundvolumeSlider = new JSlider(0, 100, (int)(Settings.getFloat("volume.music") * 100));
-        backgroundvolumeSlider.setMajorTickSpacing(25);
+        backgroundvolumeSlider = new JSlider(0, 10, (int)(Settings.getFloat("volume.music") * 10));
+        backgroundvolumeSlider.setMajorTickSpacing(5);
         backgroundvolumeSlider.setPaintTicks(true);
         backgroundvolumeSlider.setPaintLabels(true);
         backgroundvolumeSlider.addChangeListener(new ChangeListener() {
             @Override
             public void stateChanged(ChangeEvent e) {
-                Settings.setFloat("volume.music", backgroundvolumeSlider.getValue() / 100.0f);
+                Settings.setFloat("volume.music", backgroundvolumeSlider.getValue() / 10.0f);
             }
         });
         c.gridx = 1;
@@ -80,14 +80,14 @@ public class OptionsPanel extends JPanel {
         JLabel objectvolumeLabel = new JLabel("Object Volume:");
         add(objectvolumeLabel, c);
 
-        objectvolumeSlider = new JSlider(0, 100, (int)(Settings.getFloat("volume.object") * 100)); 
-        objectvolumeSlider.setMajorTickSpacing(25);
+        objectvolumeSlider = new JSlider(0, 10, (int)(Settings.getFloat("volume.object") * 10));
+        objectvolumeSlider.setMajorTickSpacing(5);
         objectvolumeSlider.setPaintTicks(true);
         objectvolumeSlider.setPaintLabels(true);
         objectvolumeSlider.addChangeListener(new ChangeListener() {
             @Override
             public void stateChanged(ChangeEvent e) {
-                Settings.setFloat("volume.objects", objectvolumeSlider.getValue() / 100.0f);
+                Settings.setFloat("volume.objects", objectvolumeSlider.getValue() / 10.0f);
             }
         });
         c.gridx = 1;

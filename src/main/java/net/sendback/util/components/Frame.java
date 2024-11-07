@@ -15,6 +15,12 @@ import java.awt.event.WindowStateListener;
 public class Frame extends JFrame implements WindowStateListener {
     private static Frame instance;
 
+    private boolean isFullscreen = false;
+    private Dimension previousWindowSize;  // Speichert die Fenstergröße vor Vollbild
+    private Point previousWindowLocation;  // Speichert die Fensterposition vor Vollbild
+    private GraphicsDevice device = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();
+
+
     private Frame() {
         setTitle(Main.getName() + " | " + Main.getVersion());
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -71,5 +77,29 @@ public class Frame extends JFrame implements WindowStateListener {
                 GameCanvas.getInstance().resume();
             }
         }
+    }
+
+    public void toggleFullscreen() {
+        if (!isFullscreen) {
+            // Speichert die aktuelle Fensterposition und -größe
+            previousWindowSize = getSize();
+            previousWindowLocation = getLocation();
+
+            // Wechselt in den Vollbildmodus
+            dispose();  // Fenster kurzzeitig unsichtbar machen, um Änderungen anzuwenden
+            setUndecorated(true);  // Entfernt Rahmen und Titelleiste
+            device.setFullScreenWindow(this);  // Setzt dieses Fenster als Vollbildfenster
+            validate();
+            isFullscreen = true;
+        } else {
+            // Beendet den Vollbildmodus und stellt die vorherige Fenstergröße wieder her
+            device.setFullScreenWindow(null);  // Verlassen des Vollbildmodus
+            setUndecorated(false);  // Rahmen und Titelleiste wieder anzeigen
+            setSize(previousWindowSize);  // Ursprüngliche Größe wiederherstellen
+            setLocation(previousWindowLocation);  // Ursprüngliche Position wiederherstellen
+            validate();
+            isFullscreen = false;
+        }
+        setVisible(true);  // Fenster sichtbar machen
     }
 }
