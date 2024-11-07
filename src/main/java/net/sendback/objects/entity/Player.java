@@ -64,8 +64,8 @@ public class Player {
                     int floorY = (int) Math.floor(newY);
                     int ceilX = (int) Math.ceil(x);
 
-                    isMovingUp = !(newY < 0) && (world.getWorldGrid()[floorX][floorY] == null || !world.getWorldGrid()[floorX][floorY].isSolid()) &&
-                            (world.getWorldGrid()[ceilX][floorY] == null || !world.getWorldGrid()[ceilX][floorY].isSolid());
+                    isMovingUp = !(newY < 0) && (world.getWorldTileGrid()[floorX][floorY] == null || !world.getWorldTileGrid()[floorX][floorY].isSolid()) &&
+                            (world.getWorldTileGrid()[ceilX][floorY] == null || !world.getWorldTileGrid()[ceilX][floorY].isSolid());
                 }
             }
             case LEFT -> {
@@ -75,8 +75,8 @@ public class Player {
                     int floorY = (int) Math.floor(y);
                     int ceilY = (int) Math.ceil(y);
 
-                    isMovingLeft = !(newX < 0) && (world.getWorldGrid()[floorX][floorY] == null || !world.getWorldGrid()[floorX][floorY].isSolid()) &&
-                            (world.getWorldGrid()[floorX][ceilY] == null || !world.getWorldGrid()[floorX][ceilY].isSolid());
+                    isMovingLeft = !(newX < 0) && (world.getWorldTileGrid()[floorX][floorY] == null || !world.getWorldTileGrid()[floorX][floorY].isSolid()) &&
+                            (world.getWorldTileGrid()[floorX][ceilY] == null || !world.getWorldTileGrid()[floorX][ceilY].isSolid());
                 }
             }
             case DOWN -> {
@@ -86,8 +86,8 @@ public class Player {
                     int floorY = (int) Math.floor(newY + 1);
                     int ceilX = (int) Math.ceil(x);
 
-                    isMovingDown = !(newY > worldHeight - 1) && (world.getWorldGrid()[floorX][floorY] == null || !world.getWorldGrid()[floorX][floorY].isSolid()) &&
-                            (world.getWorldGrid()[ceilX][floorY] == null || !world.getWorldGrid()[ceilX][floorY].isSolid());
+                    isMovingDown = !(newY > worldHeight - 1) && (world.getWorldTileGrid()[floorX][floorY] == null || !world.getWorldTileGrid()[floorX][floorY].isSolid()) &&
+                            (world.getWorldTileGrid()[ceilX][floorY] == null || !world.getWorldTileGrid()[ceilX][floorY].isSolid());
                 }
             }
             case RIGHT -> {
@@ -97,8 +97,8 @@ public class Player {
                     int floorY = (int) Math.floor(y);
                     int ceilY = (int) Math.ceil(y);
 
-                    isMovingRight = !(newX > worldWidth - 1) && (world.getWorldGrid()[floorX][floorY] == null || !world.getWorldGrid()[floorX][floorY].isSolid()) &&
-                            (world.getWorldGrid()[floorX][ceilY] == null || !world.getWorldGrid()[floorX][ceilY].isSolid());
+                    isMovingRight = !(newX > worldWidth - 1) && (world.getWorldTileGrid()[floorX][floorY] == null || !world.getWorldTileGrid()[floorX][floorY].isSolid()) &&
+                            (world.getWorldTileGrid()[floorX][ceilY] == null || !world.getWorldTileGrid()[floorX][ceilY].isSolid());
                 }
             }
         }
@@ -152,8 +152,8 @@ public class Player {
                 int floorY = (int) Math.floor(newY);
                 int ceilX = (int) Math.ceil(x);
 
-                if(newY < 0 || (world.getWorldGrid()[floorX][floorY] != null && world.getWorldGrid()[floorX][floorY].isSolid()) ||
-                        (world.getWorldGrid()[ceilX][floorY] != null && world.getWorldGrid()[ceilX][floorY].isSolid())) {
+                if(newY < 0 || (world.getWorldTileGrid()[floorX][floorY] != null && world.getWorldTileGrid()[floorX][floorY].isSolid()) ||
+                        (world.getWorldTileGrid()[ceilX][floorY] != null && world.getWorldTileGrid()[ceilX][floorY].isSolid())) {
                     y = floorY + 1;
                 } else {
                     y = newY;
@@ -164,8 +164,8 @@ public class Player {
                 int floorY = (int) Math.floor(newY);
                 int ceilX = (int) Math.ceil(x);
 
-                if(newY < 0 || (world.getWorldGrid()[floorX][floorY] != null && world.getWorldGrid()[floorX][floorY].isSolid()) ||
-                        (world.getWorldGrid()[ceilX][floorY] != null && world.getWorldGrid()[ceilX][floorY].isSolid())) {
+                if(newY < 0 || (world.getWorldTileGrid()[floorX][floorY] != null && world.getWorldTileGrid()[floorX][floorY].isSolid()) ||
+                        (world.getWorldTileGrid()[ceilX][floorY] != null && world.getWorldTileGrid()[ceilX][floorY].isSolid())) {
                     y = floorY + 1;
                 }
             }
@@ -178,8 +178,8 @@ public class Player {
                 int floorY = (int) Math.floor(y);
                 int ceilY = (int) Math.ceil(y);
 
-                if(newX < 0 || (world.getWorldGrid()[floorX][floorY] != null && world.getWorldGrid()[floorX][floorY].isSolid()) ||
-                        (world.getWorldGrid()[floorX][ceilY] != null && world.getWorldGrid()[floorX][ceilY].isSolid())) {
+                if(newX < 0 || (world.getWorldTileGrid()[floorX][floorY] != null && world.getWorldTileGrid()[floorX][floorY].isSolid()) ||
+                        (world.getWorldTileGrid()[floorX][ceilY] != null && world.getWorldTileGrid()[floorX][ceilY].isSolid())) {
                     x = floorX + 1;
                 } else {
                     x = newX;
@@ -190,8 +190,8 @@ public class Player {
                 int floorY = (int) Math.floor(y);
                 int ceilY = (int) Math.ceil(y);
 
-                if(newX < 0 || (world.getWorldGrid()[floorX][floorY] != null && world.getWorldGrid()[floorX][floorY].isSolid()) ||
-                        (world.getWorldGrid()[floorX][ceilY] != null && world.getWorldGrid()[floorX][ceilY].isSolid())) {
+                if(newX < 0 || (world.getWorldTileGrid()[floorX][floorY] != null && world.getWorldTileGrid()[floorX][floorY].isSolid()) ||
+                        (world.getWorldTileGrid()[floorX][ceilY] != null && world.getWorldTileGrid()[floorX][ceilY].isSolid())) {
                     x = floorX + 1;
                 }
             }
@@ -204,8 +204,8 @@ public class Player {
                 int floorY = (int) Math.floor(newY + 1);
                 int ceilX = (int) Math.ceil(x);
 
-                if(newY > worldHeight - 1 || (world.getWorldGrid()[floorX][floorY] != null && world.getWorldGrid()[floorX][floorY].isSolid()) ||
-                        (world.getWorldGrid()[ceilX][floorY] != null && world.getWorldGrid()[ceilX][floorY].isSolid())) {
+                if(newY > worldHeight - 1 || (world.getWorldTileGrid()[floorX][floorY] != null && world.getWorldTileGrid()[floorX][floorY].isSolid()) ||
+                        (world.getWorldTileGrid()[ceilX][floorY] != null && world.getWorldTileGrid()[ceilX][floorY].isSolid())) {
                     y = floorY - 1;
                 } else {
                     y = newY;
@@ -216,8 +216,8 @@ public class Player {
                 int floorY = (int) Math.floor(newY + 1);
                 int ceilX = (int) Math.ceil(x);
 
-                if(newY > worldHeight - 1 || (world.getWorldGrid()[floorX][floorY] != null && world.getWorldGrid()[floorX][floorY].isSolid()) ||
-                        (world.getWorldGrid()[ceilX][floorY] != null && world.getWorldGrid()[ceilX][floorY].isSolid())) {
+                if(newY > worldHeight - 1 || (world.getWorldTileGrid()[floorX][floorY] != null && world.getWorldTileGrid()[floorX][floorY].isSolid()) ||
+                        (world.getWorldTileGrid()[ceilX][floorY] != null && world.getWorldTileGrid()[ceilX][floorY].isSolid())) {
                     y = floorY - 1;
                 }
             }
@@ -230,8 +230,8 @@ public class Player {
                 int floorY = (int) Math.floor(y);
                 int ceilY = (int) Math.ceil(y);
 
-                if(newX > worldWidth - 1 || (world.getWorldGrid()[floorX][floorY] != null && world.getWorldGrid()[floorX][floorY].isSolid()) ||
-                        (world.getWorldGrid()[floorX][ceilY] != null && world.getWorldGrid()[floorX][ceilY].isSolid())) {
+                if(newX > worldWidth - 1 || (world.getWorldTileGrid()[floorX][floorY] != null && world.getWorldTileGrid()[floorX][floorY].isSolid()) ||
+                        (world.getWorldTileGrid()[floorX][ceilY] != null && world.getWorldTileGrid()[floorX][ceilY].isSolid())) {
                     x = floorX - 1;
                 } else {
                     x = newX;
@@ -242,8 +242,8 @@ public class Player {
                 int floorY = (int) Math.floor(y);
                 int ceilY = (int) Math.ceil(y);
 
-                if(newX > worldWidth - 1 || (world.getWorldGrid()[floorX][floorY] != null && world.getWorldGrid()[floorX][floorY].isSolid()) ||
-                        (world.getWorldGrid()[floorX][ceilY] != null && world.getWorldGrid()[floorX][ceilY].isSolid())) {
+                if(newX > worldWidth - 1 || (world.getWorldTileGrid()[floorX][floorY] != null && world.getWorldTileGrid()[floorX][floorY].isSolid()) ||
+                        (world.getWorldTileGrid()[floorX][ceilY] != null && world.getWorldTileGrid()[floorX][ceilY].isSolid())) {
                     x = floorX - 1;
                 }
             }

@@ -1,6 +1,6 @@
-package net.sendback.util.procedural;
+package net.sendback.worlds.procedural;
 
-public class PerlinNoise {
+public class NoodleNoise {
     private static final int[] permutation = {151, 160, 137, 91, 90, 15, 131, 13, 201,
             95, 96, 53, 194, 233, 7, 225, 140, 36, 103, 30, 69, 142, 8, 99,
             37, 240, 21, 10, 23, 190, 6, 148, 247, 120, 234, 75, 0, 26,
@@ -85,6 +85,6 @@ public class PerlinNoise {
         int h = hash & 15;
         double u = h < 8 ? x : y,
                 v = h < 4 ? y : h == 12 || h == 14 ? x : z;
-        return ((h & 1) == 0 ? u : -u) + ((h & 2) == 0 ? v : -v);
+        return ((h & 1) == 0 ? Math.sin(u) : -Math.sin(u)) + ((h & 2) == 0 ? Math.cos(v) : -Math.cos(v));
     }
 }

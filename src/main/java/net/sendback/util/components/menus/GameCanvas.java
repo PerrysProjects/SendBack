@@ -231,15 +231,15 @@ public class GameCanvas extends Canvas implements Runnable, KeyListener {
                     //drawTile(g2, world.getTileGrid(), world.getBorderTile(), tilePosX, tilePosY, screenPosX, screenPosY, tileSize);
                     //drawTile(g2, world.getWorldGrid(), world.getBorderWorldTile(), tilePosX, tilePosY, screenPosX, screenPosY, tileSize);
 
-                    BufferedImage texture = world.getBorderWorldTile().getTextures().getTexture();
+                    BufferedImage texture = world.getBorderTile().getTextures().getTexture();
                     if(tilePosX >= 0 && tilePosX < world.getWidth() && tilePosY >= 0 && tilePosY < world.getHeight()) {
-                        if(world.getTileGrid()[tilePosX][tilePosY] != null) {
-                            texture = getTexture(world.getTileGrid(), tilePosX, tilePosY);
+                        if(world.getFloorTileGrid()[tilePosX][tilePosY] != null) {
+                            texture = getTexture(world.getFloorTileGrid(), tilePosX, tilePosY);
                             g2.drawImage(texture, screenPosX, screenPosY, tileSize, tileSize, this);
                         }
 
-                        if(world.getWorldGrid()[tilePosX][tilePosY] != null) {
-                            texture = getTexture(world.getWorldGrid(), tilePosX, tilePosY);
+                        if(world.getWorldTileGrid()[tilePosX][tilePosY] != null) {
+                            texture = getTexture(world.getWorldTileGrid(), tilePosX, tilePosY);
                             g2.drawImage(texture, screenPosX, screenPosY, tileSize, tileSize, this);
                         }
                     } else {

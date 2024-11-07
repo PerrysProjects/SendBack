@@ -3,6 +3,7 @@ package net.sendback.util;
 import net.sendback.Main;
 import net.sendback.objects.entity.Player;
 import net.sendback.worlds.World;
+import net.sendback.worlds.generator.GeneratorPresets;
 
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -26,14 +27,14 @@ public class Session implements Runnable {
     private boolean paused;
     private final Object lock = new Object();
 
-    public Session(String name, int seed) {
+    public Session(String name, int seed, GeneratorPresets preset) {
         this.name = name;
         path = Paths.get(Main.getPath() + "/" + name);
         creationDate = new Date();
         lastUse = new Date();
 
         this.seed = seed;
-        worlds = new World[]{new World("Test", 500, 500, 20, seed)};
+        worlds = new World[]{new World("Test", 500, 500, seed, preset)};
         currentWorld = worlds[0];
 
         player = new Player(this, 80, 80);
