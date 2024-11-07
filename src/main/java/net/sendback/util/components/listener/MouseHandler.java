@@ -17,11 +17,18 @@ public class MouseHandler implements MouseListener {
 
     public static void init() {
         Toolkit toolkit = Toolkit.getDefaultToolkit();
-        Point hotspot = new Point(0, 0);
 
-        defaultCursor = toolkit.createCustomCursor(ResourceGetter.getIconTexture("cursor.png"), hotspot, "Default Cursor");
-        clickCursor = toolkit.createCustomCursor(ResourceGetter.getIconTexture("click_cursor.png"), hotspot, "Click Cursor");
-        holdCursor = toolkit.createCustomCursor(ResourceGetter.getIconTexture("hold_cursor.png"), hotspot, "Hold Cursor");
+        Image defaultImage = ResourceGetter.getIconTexture("cursor.png");
+        Image clickImage = ResourceGetter.getIconTexture("click_cursor.png");
+        Image holdImage = ResourceGetter.getIconTexture("hold_cursor.png");
+
+        Point defaultHotspot = new Point(defaultImage.getWidth(null) / 3, defaultImage.getHeight(null) / 3);
+        Point clickHotspot = new Point(clickImage.getWidth(null) / 3, clickImage.getHeight(null) / 3);
+        Point holdHotspot = new Point(holdImage.getWidth(null) / 3, holdImage.getHeight(null) / 3);
+
+        defaultCursor = toolkit.createCustomCursor(defaultImage, defaultHotspot, "Default Cursor");
+        clickCursor = toolkit.createCustomCursor(clickImage, clickHotspot, "Click Cursor");
+        holdCursor = toolkit.createCustomCursor(holdImage, holdHotspot, "Hold Cursor");
     }
 
     @Override

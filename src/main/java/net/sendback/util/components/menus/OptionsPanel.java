@@ -4,18 +4,17 @@ import net.sendback.util.Settings;
 import net.sendback.util.components.Frame;
 
 import javax.swing.*;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-import javax.swing.event.ChangeEvent;
-import javax.swing.event.ChangeListener;
-
 public class OptionsPanel extends JPanel {
     private static OptionsPanel instance;
-    private JSlider playervolumeSlider;
-    private JSlider backgroundvolumeSlider;
-    private JSlider objectvolumeSlider;
+    private JSlider playerVolumeSlider;
+    private JSlider backgroundVolumeSlider;
+    private JSlider objectVolumeSlider;
     private JCheckBox fullscreenCheckBox;
     private JCheckBox devOverlay;
 
@@ -28,70 +27,70 @@ public class OptionsPanel extends JPanel {
         c.anchor = GridBagConstraints.WEST;
 
 /*
-        JLabel playervolumeLabel = new JLabel("player volume: ");
-        add(playervolumeLabel, c);
+        JLabel playerVolumeLabel = new JLabel("player Volume: ");
+        add(playerVolumeLabel, c);
 
-        playervolumeSlider = new JSlider(0, 100, 50); // 50 als Standardwert
-        playervolumeSlider.setMajorTickSpacing(25);
-        playervolumeSlider.setPaintTicks(true);
-        playervolumeSlider.setPaintLabels(true);
+        playerVolumeSlider = new JSlider(0, 100, 50); // 50 als Standardwert
+        playerVolumeSlider.setMajorTickSpacing(25);
+        playerVolumeSlider.setPaintTicks(true);
+        playerVolumeSlider.setPaintLabels(true);
         c.gridx = 1;
-        add(playervolumeSlider, c);
+        add(playerVolumeSlider, c);
 */
-        JLabel playervolumeLabel = new JLabel("Player Volume:");
-        add(playervolumeLabel, c);
+        JLabel playerVolumeLabel = new JLabel("Player Volume:");
+        add(playerVolumeLabel, c);
 
-        playervolumeSlider = new JSlider(0, 10, (int)(Settings.getFloat("volume.player") * 10)); // Lädt initialen Wert aus Settings
-        playervolumeSlider.setMajorTickSpacing(5);
-        playervolumeSlider.setPaintTicks(true);
-        playervolumeSlider.setPaintLabels(true);
-        playervolumeSlider.addChangeListener(new ChangeListener() {
+        playerVolumeSlider = new JSlider(0, 10, (int)(Settings.getFloat("volume.player") * 10)); // Lädt initialen Wert aus Settings
+        playerVolumeSlider.setMajorTickSpacing(5);
+        playerVolumeSlider.setPaintTicks(true);
+        playerVolumeSlider.setPaintLabels(true);
+        playerVolumeSlider.addChangeListener(new ChangeListener() {
             @Override
             public void stateChanged(ChangeEvent e) {
-                Settings.setFloat("volume.player", playervolumeSlider.getValue() / 10.0f); // Speichert Wert in Settings
+                Settings.setFloat("Volume.player", playerVolumeSlider.getValue() / 10.0f); // Speichert Wert in Settings
             }
         });
         c.gridx = 1;
-        add(playervolumeSlider, c);
+        add(playerVolumeSlider, c);
 
 
         c.gridx = 0;
         c.gridy++;
-        JLabel backgroundvolumeLabel = new JLabel("Background Volume:");
-        add(backgroundvolumeLabel, c);
+        JLabel backgroundVolumeLabel = new JLabel("Background Volume:");
+        add(backgroundVolumeLabel, c);
 
-        backgroundvolumeSlider = new JSlider(0, 10, (int)(Settings.getFloat("volume.music") * 10));
-        backgroundvolumeSlider.setMajorTickSpacing(5);
-        backgroundvolumeSlider.setPaintTicks(true);
-        backgroundvolumeSlider.setPaintLabels(true);
-        backgroundvolumeSlider.addChangeListener(new ChangeListener() {
+        backgroundVolumeSlider = new JSlider(0, 10, (int)(Settings.getFloat("volume.music") * 10));
+        backgroundVolumeSlider.setMajorTickSpacing(5);
+        backgroundVolumeSlider.setPaintTicks(true);
+        backgroundVolumeSlider.setPaintLabels(true);
+        backgroundVolumeSlider.addChangeListener(new ChangeListener() {
             @Override
             public void stateChanged(ChangeEvent e) {
-                Settings.setFloat("volume.music", backgroundvolumeSlider.getValue() / 10.0f);
+                Settings.setFloat("Volume.music", backgroundVolumeSlider.getValue() / 10.0f);
             }
         });
         c.gridx = 1;
-        add(backgroundvolumeSlider, c);
+        add(backgroundVolumeSlider, c);
 
 
         // Objektlautstärke
         c.gridx = 0;
         c.gridy++;
-        JLabel objectvolumeLabel = new JLabel("Object Volume:");
-        add(objectvolumeLabel, c);
+        JLabel objectVolumeLabel = new JLabel("Object Volume:");
+        add(objectVolumeLabel, c);
 
-        objectvolumeSlider = new JSlider(0, 10, (int)(Settings.getFloat("volume.object") * 10));
-        objectvolumeSlider.setMajorTickSpacing(5);
-        objectvolumeSlider.setPaintTicks(true);
-        objectvolumeSlider.setPaintLabels(true);
-        objectvolumeSlider.addChangeListener(new ChangeListener() {
+        objectVolumeSlider = new JSlider(0, 10, (int)(Settings.getFloat("volume.object") * 10));
+        objectVolumeSlider.setMajorTickSpacing(5);
+        objectVolumeSlider.setPaintTicks(true);
+        objectVolumeSlider.setPaintLabels(true);
+        objectVolumeSlider.addChangeListener(new ChangeListener() {
             @Override
             public void stateChanged(ChangeEvent e) {
-                Settings.setFloat("volume.objects", objectvolumeSlider.getValue() / 10.0f);
+                Settings.setFloat("Volume.objects", objectVolumeSlider.getValue() / 10.0f);
             }
         });
         c.gridx = 1;
-        add(objectvolumeSlider, c);
+        add(objectVolumeSlider, c);
 
 
         // Vollbild-Umschaltung
@@ -113,7 +112,7 @@ public class OptionsPanel extends JPanel {
 
         c.gridx = 0;
         c.gridy++;
-        JLabel devmodeCheckBox = new JLabel("dev mode:");
+        JLabel devmodeCheckBox = new JLabel("Dev Mode:");
         add(devmodeCheckBox, c);
 
         devOverlay = new JCheckBox();
@@ -130,7 +129,7 @@ public class OptionsPanel extends JPanel {
         // Zurück zum Hauptmenü
         c.gridx = 0;
         c.gridy++;
-        JButton backButton = new JButton("GO BACK");
+        JButton backButton = new JButton("Go Back");
         backButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -161,15 +160,15 @@ public class OptionsPanel extends JPanel {
     }
 
     public int getplayerVolume() {
-        return playervolumeSlider.getValue();
+        return playerVolumeSlider.getValue();
     }
 
     public int getbackgroundVolume() {
-        return backgroundvolumeSlider.getValue();
+        return backgroundVolumeSlider.getValue();
     }
 
     public int getobjectVolume() {
-        return objectvolumeSlider.getValue();
+        return objectVolumeSlider.getValue();
     }
 
     public boolean isFullscreen() {

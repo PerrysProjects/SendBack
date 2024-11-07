@@ -22,8 +22,8 @@ public class MainMenuPanel extends JPanel {
     private MainMenuPanel() {
         setLayout(new GridBagLayout());
 
-        buttonWidth = 400;
-        buttonHeight = 100;
+        buttonWidth = 250;
+        buttonHeight = 80;
 
         GridBagConstraints c = new GridBagConstraints();
 
