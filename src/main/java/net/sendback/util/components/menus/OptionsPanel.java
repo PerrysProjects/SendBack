@@ -61,7 +61,7 @@ public class OptionsPanel extends JPanel {
         add(musicVolumeLabel, c);
 
         c.gridx = 2;
-        musicVolumeSlider = new JSlider(0, 10, (int) (Settings.getFloat("volume.music") * 10));
+        musicVolumeSlider = new JSlider(0, 10, (int) (Settings.getFloat("volume.music") * 5));
         musicVolumeSlider.setMajorTickSpacing(5);
         musicVolumeSlider.setPaintTicks(true);
         musicVolumeSlider.setPaintLabels(true);
@@ -75,7 +75,7 @@ public class OptionsPanel extends JPanel {
         add(playerVolumeLabel, c);
 
         c.gridx = 2;
-        playerVolumeSlider = new JSlider(0, 10, (int) (Settings.getFloat("volume.player") * 10));
+        playerVolumeSlider = new JSlider(0, 10, (int) (Settings.getFloat("volume.player") * 5));
         playerVolumeSlider.setMajorTickSpacing(5);
         playerVolumeSlider.setPaintTicks(true);
         playerVolumeSlider.setPaintLabels(true);
@@ -89,7 +89,7 @@ public class OptionsPanel extends JPanel {
         add(entityVolumeLabel, c);
 
         c.gridx = 2;
-        entityVolumeSlider = new JSlider(0, 10, (int) (Settings.getFloat("volume.entity") * 10));
+        entityVolumeSlider = new JSlider(0, 10, (int) (Settings.getFloat("volume.entity") * 5));
         entityVolumeSlider.setMajorTickSpacing(5);
         entityVolumeSlider.setPaintTicks(true);
         entityVolumeSlider.setPaintLabels(true);
@@ -103,7 +103,7 @@ public class OptionsPanel extends JPanel {
         add(objectVolumeLabel, c);
 
         c.gridx = 2;
-        objectVolumeSlider = new JSlider(0, 10, (int) (Settings.getFloat("volume.object") * 10));
+        objectVolumeSlider = new JSlider(0, 10, (int) (Settings.getFloat("volume.object") * 5));
         objectVolumeSlider.setMajorTickSpacing(5);
         objectVolumeSlider.setPaintTicks(true);
         objectVolumeSlider.setPaintLabels(true);

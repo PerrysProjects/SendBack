@@ -16,7 +16,7 @@ public class SessionButton extends TexturedButton implements ActionListener {
     public SessionButton(Session session, BufferedImage texture) {
         super(texture);
         this.session = session;
-        
+
         setText(session.getName());
 
         setClickedTexture(ResourceGetter.getIconTexture("clicked_button.png"));

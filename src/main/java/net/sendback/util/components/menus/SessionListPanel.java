@@ -2,6 +2,7 @@ package net.sendback.util.components.menus;
 
 import net.sendback.util.Session;
 import net.sendback.util.components.SessionButton;
+import net.sendback.util.components.TexturedButton;
 import net.sendback.util.resources.ResourceGetter;
 
 import javax.swing.*;
@@ -30,16 +31,23 @@ public class SessionListPanel extends JPanel {
         c.weightx = 1.0;
         c.anchor = GridBagConstraints.CENTER;
 
-/*
-        //setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
-        setLayout(new GridBagLayout());
 
-        int buttonWidth = 200;
-        int buttonHeight = 50;
+       TexturedButton newSeedButton = new TexturedButton(ResourceGetter.getIconTexture("button.png"), "generate new Seed");
+        newSeedButton.setClickedTexture(ResourceGetter.getIconTexture("clicked_button.png"));
+        newSeedButton.setFont(ResourceGetter.getBold());
+        newSeedButton.setFontOffset(-10);
+        newSeedButton.setForeground(Color.decode("#4D6385"));
+        newSeedButton.setClickedForeground(Color.decode("#7790B5"));
+        newSeedButton.setPreferredSize(new Dimension(300, 100));
+        newSeedButton.addActionListener(e -> {
 
-        GridBagConstraints c = new GridBagConstraints();
-*/
-        backgroundImage = ResourceGetter.getMenusTexture("menu.png");
+        });
+        GridBagConstraints e = new GridBagConstraints();
+        e.gridx = 0;
+        e.gridy = 0;
+        e.insets = new Insets(10, 10, 10, 10);
+        e.fill = GridBagConstraints.LAST_LINE_END;
+        add(newSeedButton, e);
 
     }
 
