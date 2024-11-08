@@ -6,10 +6,12 @@ import net.sendback.util.resources.ResourceGetter;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.image.BufferedImage;
 
 public class SessionListPanel extends JPanel {
     private static SessionListPanel instance;
     private Image backgroundImage;
+    private BufferedImage texture = ResourceGetter.getIconTexture("button.png");;
 
     private static Session[] sessionList;
 
@@ -51,7 +53,7 @@ public class SessionListPanel extends JPanel {
 
     private void update() {
         for(Session session : sessionList) {
-            add(new SessionButton(session));
+            add(new SessionButton(session, texture));
         }
     }
 
