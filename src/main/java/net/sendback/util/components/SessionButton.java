@@ -39,9 +39,11 @@ public class SessionButton extends JButton implements ActionListener {
     public void actionPerformed(ActionEvent e) {
         GameCanvas.getInstance().setup(session);
 
-        Frame.getInstance().getContentPane().removeAll();
+        /*Frame.getInstance().getContentPane().removeAll();
         Frame.getInstance().add(GameCanvas.getInstance());
         Frame.getInstance().revalidate();
-        Frame.getInstance().repaint();
+        Frame.getInstance().repaint();*/
+
+        Frame.getInstance().switchPanel(GameCanvas.getInstance());
     }
 }
