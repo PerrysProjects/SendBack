@@ -103,20 +103,17 @@ public class SoundManager {
             return;
         }
 
-        // Define the minimum dB level as allowed by the FloatControl
         float minDb = -80.0f;
-        float maxDb = 0.0f; // Typically, 0 dB is the maximum for MASTER_GAIN
+        float maxDb = 0.0f;
         float dbVolume;
 
         if(volume == 0.0f) {
-            dbVolume = minDb;  // Silent
+            dbVolume = minDb;
         } else {
-            // Convert linear scale (0.0 to 1.0) to decibel scale for perceived loudness
             dbVolume = 20.0f * (float) Math.log10(volume);
 
-            // Ensure the dbVolume is within the allowed range
-            dbVolume = Math.max(dbVolume, minDb); // Clamp to minDb if below
-            dbVolume = Math.min(dbVolume, maxDb); // Clamp to maxDb if above
+            dbVolume = Math.max(dbVolume, minDb);
+            dbVolume = Math.min(dbVolume, maxDb);
         }
 
         for(Clip clip : clips.values()) {

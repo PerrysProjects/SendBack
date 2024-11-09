@@ -39,17 +39,15 @@ public class PerlinGenerator extends Generator {
         boolean validLeftBottom = Math.abs(leftBottomTile) > 0.3;
         boolean validRightBottom = Math.abs(rightBottomTile) > 0.3;
 
-        boolean validBlock = (
-                (validLeft && validTop && validTile && validLeftTop) ||
+        boolean validBlock = ((validLeft && validTop && validTile && validLeftTop) ||
                         (validRight && validTop && validTile && validRightTop) ||
                         (validLeft && validBottom && validTile && validLeftBottom) ||
-                        (validRight && validBottom && validTile && validRightBottom)
-        );
+                        (validRight && validBottom && validTile && validRightBottom));
 
-        if(!validTile || !validBlock) {
-            return null;
+        if(validTile && validBlock || x < 5 || x > getWidth() - 5 || y < 5 || y > getHeight() - 5) {
+            return new WorldTile(x, y, getWorldTileIDs()[0]);
         }
 
-        return new WorldTile(x, y, getWorldTileIDs()[0]);
+        return null;
     }
 }

@@ -3,6 +3,8 @@ package net.sendback.util.components.menus;
 import net.sendback.util.Settings;
 import net.sendback.util.components.Frame;
 import net.sendback.util.components.TexturedButton;
+import net.sendback.util.components.TexturedCheckBox;
+import net.sendback.util.components.TexturedSlider;
 import net.sendback.util.resources.ResourceGetter;
 
 import javax.swing.*;
@@ -11,13 +13,13 @@ import java.awt.*;
 public class OptionsPanel extends JPanel {
     private static OptionsPanel instance;
 
-    private final JSlider musicVolumeSlider;
+    private final TexturedSlider musicVolumeSlider;
     private final JSlider playerVolumeSlider;
     private final JSlider entityVolumeSlider;
     private final JSlider objectVolumeSlider;
 
-    private final JCheckBox fullscreenCheckBox;
-    private final JCheckBox devOverlayCheckBox;
+    private final TexturedCheckBox fullscreenCheckBox;
+    private final TexturedCheckBox devOverlayCheckBox;
 
     private final TexturedButton goBackButton;
     private final TexturedButton resetButton;
@@ -61,10 +63,10 @@ public class OptionsPanel extends JPanel {
         add(musicVolumeLabel, c);
 
         c.gridx = 2;
-        musicVolumeSlider = new JSlider(0, 10, (int) (Settings.getFloat("volume.music") * 5));
-        musicVolumeSlider.setMajorTickSpacing(5);
-        musicVolumeSlider.setPaintTicks(true);
-        musicVolumeSlider.setPaintLabels(true);
+        musicVolumeSlider = new TexturedSlider(SwingConstants.HORIZONTAL, ResourceGetter.getIconTexture("track.png"), ResourceGetter.getIconTexture("thumb.png"));
+        musicVolumeSlider.setMaximum(100);
+        musicVolumeSlider.setValue((int) (Settings.getFloat("volume.music") * 100));
+        musicVolumeSlider.setPreferredSize(new Dimension(250, 50));
         add(musicVolumeSlider, c);
 
         c.gridx = 0;
@@ -75,10 +77,10 @@ public class OptionsPanel extends JPanel {
         add(playerVolumeLabel, c);
 
         c.gridx = 2;
-        playerVolumeSlider = new JSlider(0, 10, (int) (Settings.getFloat("volume.player") * 5));
-        playerVolumeSlider.setMajorTickSpacing(5);
-        playerVolumeSlider.setPaintTicks(true);
-        playerVolumeSlider.setPaintLabels(true);
+        playerVolumeSlider = new TexturedSlider(SwingConstants.HORIZONTAL, ResourceGetter.getIconTexture("track.png"), ResourceGetter.getIconTexture("thumb.png"));
+        playerVolumeSlider.setMaximum(100);
+        playerVolumeSlider.setValue((int) (Settings.getFloat("volume.player") * 100));
+        playerVolumeSlider.setPreferredSize(new Dimension(250, 50));
         add(playerVolumeSlider, c);
 
         c.gridx = 0;
@@ -89,10 +91,10 @@ public class OptionsPanel extends JPanel {
         add(entityVolumeLabel, c);
 
         c.gridx = 2;
-        entityVolumeSlider = new JSlider(0, 10, (int) (Settings.getFloat("volume.entity") * 5));
-        entityVolumeSlider.setMajorTickSpacing(5);
-        entityVolumeSlider.setPaintTicks(true);
-        entityVolumeSlider.setPaintLabels(true);
+        entityVolumeSlider = new TexturedSlider(SwingConstants.HORIZONTAL, ResourceGetter.getIconTexture("track.png"), ResourceGetter.getIconTexture("thumb.png"));
+        entityVolumeSlider.setMaximum(100);
+        entityVolumeSlider.setValue((int) (Settings.getFloat("volume.entity") * 100));
+        entityVolumeSlider.setPreferredSize(new Dimension(250, 50));
         add(entityVolumeSlider, c);
 
         c.gridx = 0;
@@ -103,10 +105,10 @@ public class OptionsPanel extends JPanel {
         add(objectVolumeLabel, c);
 
         c.gridx = 2;
-        objectVolumeSlider = new JSlider(0, 10, (int) (Settings.getFloat("volume.object") * 5));
-        objectVolumeSlider.setMajorTickSpacing(5);
-        objectVolumeSlider.setPaintTicks(true);
-        objectVolumeSlider.setPaintLabels(true);
+        objectVolumeSlider = new TexturedSlider(SwingConstants.HORIZONTAL, ResourceGetter.getIconTexture("track.png"), ResourceGetter.getIconTexture("thumb.png"));
+        objectVolumeSlider.setMaximum(100);
+        objectVolumeSlider.setValue((int) (Settings.getFloat("volume.object") * 100));
+        objectVolumeSlider.setPreferredSize(new Dimension(250, 50));
         add(objectVolumeSlider, c);
 
         c.gridx = 0;
@@ -117,7 +119,11 @@ public class OptionsPanel extends JPanel {
         add(fullscreenLabel, c);
 
         c.gridx = 2;
-        fullscreenCheckBox = new JCheckBox();
+        fullscreenCheckBox = new TexturedCheckBox(ResourceGetter.getIconTexture("button.png"));
+        fullscreenCheckBox.setSelectedTexture(ResourceGetter.getIconTexture("clicked_button.png"));
+        fullscreenCheckBox.setCheckmarkOffset(-2);
+        fullscreenCheckBox.setForeground(Color.decode("#7790B5"));
+        fullscreenCheckBox.setPreferredSize(new Dimension(50, 50));
         add(fullscreenCheckBox, c);
 
         c.gridx = 0;
@@ -128,7 +134,11 @@ public class OptionsPanel extends JPanel {
         add(devOverlayLabel, c);
 
         c.gridx = 2;
-        devOverlayCheckBox = new JCheckBox();
+        devOverlayCheckBox = new TexturedCheckBox(ResourceGetter.getIconTexture("button.png"));
+        devOverlayCheckBox.setSelectedTexture(ResourceGetter.getIconTexture("clicked_button.png"));
+        devOverlayCheckBox.setCheckmarkOffset(-2);
+        devOverlayCheckBox.setForeground(Color.decode("#7790B5"));
+        devOverlayCheckBox.setPreferredSize(new Dimension(50, 50));
         devOverlayCheckBox.setSelected(Settings.getBoolean("screen.devOverlay"));
         add(devOverlayCheckBox, c);
 
@@ -184,9 +194,7 @@ public class OptionsPanel extends JPanel {
             Settings.setFloat("volume.player", (float) playerVolumeSlider.getValue() / 10);
             Settings.setFloat("volume.entity", (float) entityVolumeSlider.getValue() / 10);
             Settings.setFloat("volume.object", (float) objectVolumeSlider.getValue() / 10);
-            if(fullscreenCheckBox.isSelected()) {
-                toggleFullscreen();
-            }
+            toggleFullscreen(fullscreenCheckBox.isSelected());
             Settings.setBoolean("screen.devOverlay", devOverlayCheckBox.isSelected());
         });
         add(saveButton, c);
@@ -199,22 +207,24 @@ public class OptionsPanel extends JPanel {
         return instance;
     }
 
-    private void toggleFullscreen() {
-        Frame frame = Frame.getInstance();
-        frame.dispose();
-        frame.setUndecorated(true);
-        frame.setVisible(true);
+    private void toggleFullscreen(boolean toggle) {
+        if(Frame.getInstance().isUndecorated() != toggle) {
+            Frame frame = Frame.getInstance();
+            frame.dispose();
+            frame.setUndecorated(toggle);
+            frame.setVisible(true);
+        }
     }
 
-    public int getplayerVolume() {
+    public int getPlayerVolume() {
         return playerVolumeSlider.getValue();
     }
 
-    public int getbackgroundVolume() {
+    public int getBackgroundVolume() {
         return musicVolumeSlider.getValue();
     }
 
-    public int getobjectVolume() {
+    public int getObjectVolume() {
         return objectVolumeSlider.getValue();
     }
 

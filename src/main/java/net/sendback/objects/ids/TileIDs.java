@@ -1,7 +1,6 @@
 package net.sendback.objects.ids;
 
 import net.sendback.util.resources.ResourceGetter;
-import net.sendback.util.resources.Sprites;
 import net.sendback.util.resources.TileSprites;
 
 public enum TileIDs {

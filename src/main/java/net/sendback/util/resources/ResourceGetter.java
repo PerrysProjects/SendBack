@@ -182,7 +182,6 @@ public class ResourceGetter {
                 false
         );
 
-        // Decode the stream if the format is unsupported
         AudioInputStream decodedAudioInputStream = AudioSystem.getAudioInputStream(decodedFormat, audioInputStream);
         Clip clip = AudioSystem.getClip();
         clip.open(decodedAudioInputStream);
@@ -225,6 +224,7 @@ public class ResourceGetter {
     public static BufferedImage getIconTexture(String name) {
         return iconTextures.get(name);
     }
+
     public static HashMap<String, BufferedImage> getMenusTextures() {
         return menusTextures;
     }
