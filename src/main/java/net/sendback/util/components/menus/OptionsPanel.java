@@ -10,6 +10,8 @@ import net.sendback.util.resources.ResourceGetter;
 import javax.swing.*;
 import java.awt.*;
 
+
+
 public class OptionsPanel extends JPanel {
     private static OptionsPanel instance;
 
@@ -24,6 +26,12 @@ public class OptionsPanel extends JPanel {
     private final TexturedButton goBackButton;
     private final TexturedButton resetButton;
     private final TexturedButton saveButton;
+
+    //Test
+    private Dimension previousWindowSize;
+    private Point previousWindowLocation;
+
+    private boolean isFullscreen;
 
     private OptionsPanel() {
         setBackground(Color.decode("#0A111B"));
@@ -195,6 +203,7 @@ public class OptionsPanel extends JPanel {
             Settings.setFloat("volume.entity", (float) entityVolumeSlider.getValue() / 10);
             Settings.setFloat("volume.object", (float) objectVolumeSlider.getValue() / 10);
             toggleFullscreen(fullscreenCheckBox.isSelected());
+            //Settings.setBoolean("screen.fullscreen", fullscreenCheckBox.isSelected());
             Settings.setBoolean("screen.devOverlay", devOverlayCheckBox.isSelected());
         });
         add(saveButton, c);
@@ -207,17 +216,28 @@ public class OptionsPanel extends JPanel {
         return instance;
     }
 
-    private void toggleFullscreen(boolean toggle) {
-        if(Frame.getInstance().isUndecorated() != toggle) {
-            Frame frame = Frame.getInstance();
-            frame.dispose();
-            frame.setUndecorated(toggle);
-            frame.setVisible(true);
-        }
-    }
+
+      private void toggleFullscreen(boolean toggle) {
+
+           if(Frame.getInstance().isUndecorated() != toggle) {
+               Frame frame = Frame.getInstance();
+               frame.dispose();
+               //    frame.setLocationRelativeTo(null);
+               frame.setSize(Toolkit.getDefaultToolkit().getScreenSize());  // größe wird erfasst und gesetted aber wenn man es dann noch versucht zu zentrieren dann wird das frame nicht mehr gezeichnet
+               frame.setUndecorated(toggle);
+
+               frame.setVisible(true);
+
+           }
+       }
+
+
 
     public int getPlayerVolume() {
         return playerVolumeSlider.getValue();
+    }
+    public int getEntityVolume() {
+        return entityVolumeSlider.getValue();
     }
 
     public int getBackgroundVolume() {

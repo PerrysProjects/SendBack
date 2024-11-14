@@ -12,6 +12,7 @@ public class Settings {
         settings.put("screen.fps", 60);
         settings.put("screen.zoom", 14);
         settings.put("screen.devOverlay", false);
+        settings.put("screen.fullscreen", false);
 
         settings.put("keyBind.forward", 'w');
         settings.put("keyBind.left", 'a');
