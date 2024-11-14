@@ -42,6 +42,7 @@ public class Frame extends JFrame implements WindowStateListener {
 
         setSize(900, 700);
         setMinimumSize(new Dimension(900, 700));
+
         setLocationRelativeTo(null);
     }
 
