@@ -37,4 +37,4 @@ log/
 
 # Game generated files
 logs/
-.log
+*.log

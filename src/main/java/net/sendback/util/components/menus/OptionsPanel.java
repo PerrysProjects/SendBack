@@ -198,13 +198,15 @@ public class OptionsPanel extends JPanel {
         saveButton.setClickedForeground(Color.decode("#7790B5"));
         saveButton.setPreferredSize(new Dimension(buttonWidth, buttonHeight));
         saveButton.addActionListener(e -> {
-            Settings.setFloat("volume.music", (float) musicVolumeSlider.getValue() / 10);
-            Settings.setFloat("volume.player", (float) playerVolumeSlider.getValue() / 10);
-            Settings.setFloat("volume.entity", (float) entityVolumeSlider.getValue() / 10);
-            Settings.setFloat("volume.object", (float) objectVolumeSlider.getValue() / 10);
+            Settings.setFloat("volume.music", (float) musicVolumeSlider.getValue() / 100);
+            Settings.setFloat("volume.player", (float) playerVolumeSlider.getValue() / 100);
+            Settings.setFloat("volume.entity", (float) entityVolumeSlider.getValue() / 100);
+            Settings.setFloat("volume.object", (float) objectVolumeSlider.getValue() / 100);
             toggleFullscreen(fullscreenCheckBox.isSelected());
             //Settings.setBoolean("screen.fullscreen", fullscreenCheckBox.isSelected());
             Settings.setBoolean("screen.devOverlay", devOverlayCheckBox.isSelected());
+
+            Settings.saveInFile();
         });
         add(saveButton, c);
     }
