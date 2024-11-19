@@ -264,6 +264,14 @@ public class GameCanvas extends Canvas implements Runnable, KeyListener {
                 g2.drawString(SystemStats.getCpuUsage(), 50, 110);
             }
 
+            if(player.isInventoryOpen()) {
+                int invWidth = 4 * tileSize * 2;
+                int invHeight = 3 * tileSize * 2;
+
+                g2.setColor(Color.RED);
+                g2.fillRect((getWidth() - invWidth) / 2, (getHeight() - invHeight) / 2, invWidth, invHeight);
+            }
+
             g2.dispose();
             bufferStrategy.show();
         }
@@ -319,6 +327,8 @@ public class GameCanvas extends Canvas implements Runnable, KeyListener {
         char backward = Settings.getChar("keyBind.backward");
         char right = Settings.getChar("keyBind.right");
 
+        char inventory = Settings.getChar("keyBind.inventory");
+
         if(key == forward) {
             player.startMoving(MovementType.UP);
         } else if(key == left) {
@@ -327,6 +337,8 @@ public class GameCanvas extends Canvas implements Runnable, KeyListener {
             player.startMoving(MovementType.DOWN);
         } else if(key == right) {
             player.startMoving(MovementType.RIGHT);
+        } else if(key == inventory) {
+            player.toggleInventory();
         }
     }
 

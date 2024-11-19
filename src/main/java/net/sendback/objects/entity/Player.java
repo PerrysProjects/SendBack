@@ -1,5 +1,6 @@
 package net.sendback.objects.entity;
 
+import net.sendback.objects.item.Item;
 import net.sendback.util.Session;
 import net.sendback.util.Settings;
 import net.sendback.util.SoundManager;
@@ -19,9 +20,12 @@ public class Player {
     private World world;
 
     private double x, y;
-    private boolean isMoving, isMovingUp, isMovingLeft, isMovingDown, isMovingRight;
+    private boolean moving, movingUp, movingLeft, movingDown, movingRight;
 
     private double speed;
+
+    private Item[][] inventory;
+    private boolean inventoryOpen;
 
     public Player(Session session, double x, double y) {
         size = 1;
@@ -45,6 +49,9 @@ public class Player {
         this.y = y;
 
         speed = 0.1;
+
+        inventory = new Item[4][3];
+        inventoryOpen = false;
     }
 
     public void startMoving(MovementType type) {
@@ -64,7 +71,7 @@ public class Player {
                     int floorY = (int) Math.floor(newY);
                     int ceilX = (int) Math.ceil(x);
 
-                    isMovingUp = !(newY < 0) && (world.getWorldTileGrid()[floorX][floorY] == null || !world.getWorldTileGrid()[floorX][floorY].isSolid()) &&
+                    movingUp = !(newY < 0) && (world.getWorldTileGrid()[floorX][floorY] == null || !world.getWorldTileGrid()[floorX][floorY].isSolid()) &&
                             (world.getWorldTileGrid()[ceilX][floorY] == null || !world.getWorldTileGrid()[ceilX][floorY].isSolid());
                 }
             }
@@ -75,7 +82,7 @@ public class Player {
                     int floorY = (int) Math.floor(y);
                     int ceilY = (int) Math.ceil(y);
 
-                    isMovingLeft = !(newX < 0) && (world.getWorldTileGrid()[floorX][floorY] == null || !world.getWorldTileGrid()[floorX][floorY].isSolid()) &&
+                    movingLeft = !(newX < 0) && (world.getWorldTileGrid()[floorX][floorY] == null || !world.getWorldTileGrid()[floorX][floorY].isSolid()) &&
                             (world.getWorldTileGrid()[floorX][ceilY] == null || !world.getWorldTileGrid()[floorX][ceilY].isSolid());
                 }
             }
@@ -86,7 +93,7 @@ public class Player {
                     int floorY = (int) Math.floor(newY + 1);
                     int ceilX = (int) Math.ceil(x);
 
-                    isMovingDown = !(newY > worldHeight - 1) && (world.getWorldTileGrid()[floorX][floorY] == null || !world.getWorldTileGrid()[floorX][floorY].isSolid()) &&
+                    movingDown = !(newY > worldHeight - 1) && (world.getWorldTileGrid()[floorX][floorY] == null || !world.getWorldTileGrid()[floorX][floorY].isSolid()) &&
                             (world.getWorldTileGrid()[ceilX][floorY] == null || !world.getWorldTileGrid()[ceilX][floorY].isSolid());
                 }
             }
@@ -97,7 +104,7 @@ public class Player {
                     int floorY = (int) Math.floor(y);
                     int ceilY = (int) Math.ceil(y);
 
-                    isMovingRight = !(newX > worldWidth - 1) && (world.getWorldTileGrid()[floorX][floorY] == null || !world.getWorldTileGrid()[floorX][floorY].isSolid()) &&
+                    movingRight = !(newX > worldWidth - 1) && (world.getWorldTileGrid()[floorX][floorY] == null || !world.getWorldTileGrid()[floorX][floorY].isSolid()) &&
                             (world.getWorldTileGrid()[floorX][ceilY] == null || !world.getWorldTileGrid()[floorX][ceilY].isSolid());
                 }
             }
@@ -106,26 +113,26 @@ public class Player {
 
     public void stopMoving(MovementType type) {
         switch(type) {
-            case UP -> isMovingUp = false;
-            case LEFT -> isMovingLeft = false;
-            case DOWN -> isMovingDown = false;
-            case RIGHT -> isMovingRight = false;
+            case UP -> movingUp = false;
+            case LEFT -> movingLeft = false;
+            case DOWN -> movingDown = false;
+            case RIGHT -> movingRight = false;
         }
     }
 
     public boolean isMoving(MovementType type) {
         switch(type) {
             case UP -> {
-                return isMovingUp;
+                return movingUp;
             }
             case LEFT -> {
-                return isMovingLeft;
+                return movingLeft;
             }
             case DOWN -> {
-                return isMovingDown;
+                return movingDown;
             }
             case RIGHT -> {
-                return isMovingRight;
+                return movingRight;
             }
             default -> {
                 return false;
@@ -146,7 +153,7 @@ public class Player {
         }
 
         if(y > 0) {
-            if(isMovingUp) {
+            if(movingUp) {
                 double newY = y - speed;
                 int floorX = (int) Math.floor(x);
                 int floorY = (int) Math.floor(newY);
@@ -158,7 +165,7 @@ public class Player {
                 } else {
                     y = newY;
                 }
-            } else if(y != Math.floor(y) && !isMovingDown) {
+            } else if(y != Math.floor(y) && !movingDown) {
                 double newY = y - speed;
                 int floorX = (int) Math.floor(x);
                 int floorY = (int) Math.floor(newY);
@@ -172,7 +179,7 @@ public class Player {
         }
 
         if(x > 0) {
-            if(isMovingLeft) {
+            if(movingLeft) {
                 double newX = x - speed;
                 int floorX = (int) Math.floor(newX);
                 int floorY = (int) Math.floor(y);
@@ -184,7 +191,7 @@ public class Player {
                 } else {
                     x = newX;
                 }
-            } else if(x != Math.floor(x) && !isMovingRight) {
+            } else if(x != Math.floor(x) && !movingRight) {
                 double newX = x - speed;
                 int floorX = (int) Math.floor(newX);
                 int floorY = (int) Math.floor(y);
@@ -198,7 +205,7 @@ public class Player {
         }
 
         if(y < worldHeight - 1) {
-            if(isMovingDown) {
+            if(movingDown) {
                 double newY = y + speed;
                 int floorX = (int) Math.floor(x);
                 int floorY = (int) Math.floor(newY + 1);
@@ -210,7 +217,7 @@ public class Player {
                 } else {
                     y = newY;
                 }
-            } else if(y != Math.floor(y) && !isMovingUp) {
+            } else if(y != Math.floor(y) && !movingUp) {
                 double newY = y + speed;
                 int floorX = (int) Math.floor(x);
                 int floorY = (int) Math.floor(newY + 1);
@@ -224,7 +231,7 @@ public class Player {
         }
 
         if(x < worldWidth - 1) {
-            if(isMovingRight) {
+            if(movingRight) {
                 double newX = x + speed;
                 int floorX = (int) Math.floor(newX + 1);
                 int floorY = (int) Math.floor(y);
@@ -236,7 +243,7 @@ public class Player {
                 } else {
                     x = newX;
                 }
-            } else if(x != Math.floor(x) && !isMovingLeft) {
+            } else if(x != Math.floor(x) && !movingLeft) {
                 double newX = x + speed;
                 int floorX = (int) Math.floor(newX + 1);
                 int floorY = (int) Math.floor(y);
@@ -249,9 +256,9 @@ public class Player {
             }
         }
 
-        isMoving = isMovingUp || isMovingLeft || isMovingDown || isMovingRight;
+        moving = movingUp || movingLeft || movingDown || movingRight;
 
-        if(isMoving) {
+        if(moving) {
             walkSounds.play();
         } else {
             walkSounds.pause();
@@ -267,19 +274,19 @@ public class Player {
     }
 
     public BufferedImage getTexture() {
-        if(isMovingUp && isMovingLeft && !isMovingRight && !isMovingDown) {
+        if(movingUp && movingLeft && !movingRight && !movingDown) {
             return sprite.getUpLeftTexture();
-        } else if(isMovingUp && isMovingRight && !isMovingLeft && !isMovingDown) {
+        } else if(movingUp && movingRight && !movingLeft && !movingDown) {
             return sprite.getUpRightTexture();
-        } else if(isMovingDown && isMovingLeft && !isMovingRight && !isMovingUp) {
+        } else if(movingDown && movingLeft && !movingRight && !movingUp) {
             return sprite.getDownLeftTexture();
-        } else if(isMovingDown && isMovingRight && !isMovingLeft && !isMovingUp) {
+        } else if(movingDown && movingRight && !movingLeft && !movingUp) {
             return sprite.getDownRightTexture();
-        } else if(isMovingUp && !isMovingDown) {
+        } else if(movingUp && !movingDown) {
             return sprite.getUpTexture();
-        } else if(isMovingLeft && !isMovingRight) {
+        } else if(movingLeft && !movingRight) {
             return sprite.getLeftTexture();
-        } else if(isMovingRight && !isMovingLeft) {
+        } else if(movingRight && !movingLeft) {
             return sprite.getRightTexture();
         } else {
             return sprite.getTexture();
@@ -324,5 +331,18 @@ public class Player {
 
     public void setSpeed(double speed) {
         this.speed = speed;
+    }
+
+    public Item[][] getInventory() {
+        return inventory;
+    }
+
+    public boolean isInventoryOpen() {
+        return inventoryOpen;
+    }
+
+    public void toggleInventory() {
+        inventoryOpen = !inventoryOpen;
+        System.out.println(inventoryOpen);
     }
 }
