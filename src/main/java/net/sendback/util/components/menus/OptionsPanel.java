@@ -225,7 +225,7 @@ public class OptionsPanel extends JPanel {
                Frame frame = Frame.getInstance();
                frame.dispose();
                //    frame.setLocationRelativeTo(null);
-               frame.setSize(Toolkit.getDefaultToolkit().getScreenSize());  // größe wird erfasst und gesetted aber wenn man es dann noch versucht zu zentrieren dann wird das frame nicht mehr gezeichnet
+               //frame.setSize(Toolkit.getDefaultToolkit().getScreenSize());  // größe wird erfasst und gesetted aber wenn man es dann noch versucht zu zentrieren dann wird das frame nicht mehr gezeichnet
                frame.setUndecorated(toggle);
 
                frame.setVisible(true);

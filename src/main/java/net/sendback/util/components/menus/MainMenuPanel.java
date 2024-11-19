@@ -27,7 +27,7 @@ public class MainMenuPanel extends JPanel {
 
         backgroundImage = ResourceGetter.getMenusTexture("menu.png");
 
-        TexturedButton startGameButton = new TexturedButton(ResourceGetter.getIconTexture("button.png"), "Start Game");
+        TexturedButton startGameButton = new TexturedButton(ResourceGetter.getIconTexture("button.png"), "Play");
         startGameButton.setClickedTexture(ResourceGetter.getIconTexture("clicked_button.png"));
         startGameButton.setFont(ResourceGetter.getBold());
         startGameButton.setFontOffset(-10);
