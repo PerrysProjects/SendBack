@@ -7,7 +7,12 @@ public enum GeneratorPresets {
             new TileIDs[]{TileIDs.TREE},
             TileIDs.TREE,
             new PerlinGenerator(),
-            20);
+            20),
+    LAB(new TileIDs[]{TileIDs.GRASS},
+            new TileIDs[]{TileIDs.STONE},
+            TileIDs.TREE,
+            new LabGenerator(),
+            0);
 
     private final TileIDs[] floorTileIDs;
     private final TileIDs[] worldTileIDs;

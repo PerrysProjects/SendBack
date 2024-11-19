@@ -21,7 +21,8 @@ public enum TileIDs {
             ResourceGetter.getTileTexture("tree_inverted_down_left.png"),
             ResourceGetter.getTileTexture("tree_inverted_down_right.png")),
             true, false, 1, 1, true),
-    TREE_ALONE(1, new TileSprites(ResourceGetter.getTileTexture("tree_alone.png")), true, false, 1, 1, true);
+    TREE_ALONE(1, new TileSprites(ResourceGetter.getTileTexture("tree_alone.png")), true, false, 1, 1, true),
+    LAB_WALL(1, new TileSprites(ResourceGetter.getTileTexture("lab_wall.png")), true, false, 1, 1, true);
 
     private final int id;
     private final TileSprites sprites;

@@ -88,7 +88,7 @@ public class Main {
 
         SessionListPanel.setSessionList(new Session[]{
                 new Session("Forest", -673232, GeneratorPresets.FOREST),
-                new Session("Labyrinth", 111, GeneratorPresets.FOREST),
+                new Session("Labyrinth", 111, GeneratorPresets.LAB),
                 new Session("Block", -65445, GeneratorPresets.FOREST)
         });
 
