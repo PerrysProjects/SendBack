@@ -24,7 +24,7 @@ public class SessionButton extends TexturedButton implements ActionListener {
         setFontOffset(-10);
         setForeground(Color.decode("#4D6385"));
         setClickedForeground(Color.decode("#7790B5"));
-        setPreferredSize(new Dimension(150, 100));
+        setPreferredSize(new Dimension(220, 80));
 
         setFocusable(true);
         addActionListener(this);

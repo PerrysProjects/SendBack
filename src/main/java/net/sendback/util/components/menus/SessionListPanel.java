@@ -91,7 +91,7 @@ public class SessionListPanel extends JPanel {
         button.setFontOffset(-10);
         button.setForeground(Color.decode("#4D6385"));
         button.setClickedForeground(Color.decode("#7790B5"));
-        button.setPreferredSize(new Dimension(200, 100));
+        button.setPreferredSize(new Dimension(280, 70));
         button.addActionListener(e -> createNewSession());
 
         return button;
@@ -104,7 +104,7 @@ public class SessionListPanel extends JPanel {
         goBackButton.setFontOffset(-6);
         goBackButton.setForeground(Color.decode("#4D6385"));
         goBackButton.setClickedForeground(Color.decode("#7790B5"));
-        goBackButton.setPreferredSize(new Dimension(200, 100));
+        goBackButton.setPreferredSize(new Dimension(280, 70));
         goBackButton.addActionListener(e -> Frame.getInstance().switchPanel(MainMenuPanel.getInstance()));
 
         return goBackButton;
