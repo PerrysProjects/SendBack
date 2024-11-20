@@ -33,6 +33,20 @@ public enum TileIDs {
     BLUEBUTTON_DOWN(1, new TileSprites(ResourceGetter.getTileTexture("bluebutton_down.png")), true, false, 1, 1, true),
     PURPLEBUTTON_UP(1, new TileSprites(ResourceGetter.getTileTexture("purplebutton_up.png")), true, false, 1, 1, true),
     PRUPLEBUTTON_DOWN(1, new TileSprites(ResourceGetter.getTileTexture("purplebutton_down.png")), true, false, 1, 1, true),
+    PIPEWALL_DOWN_1(1, new TileSprites(ResourceGetter.getTileTexture("pipewall_down_1.png")), true, false, 1, 1, true),
+    PIPEWALL_DOWN_2(1, new TileSprites(ResourceGetter.getTileTexture("pipewall_down_2.png")), true, false, 1, 1, true),
+    PIPEWALL_DOWN_3(1, new TileSprites(ResourceGetter.getTileTexture("pipewall_down_3.png")), true, false, 1, 1, true),
+    PIPEWALL_DOWN_4(1, new TileSprites(ResourceGetter.getTileTexture("pipewall_down_4.png")), true, false, 1, 1, true),
+    PIPEWALL_DOWN_5(1, new TileSprites(ResourceGetter.getTileTexture("pipewall_down_5.png")), true, false, 1, 1, true),
+    PIPEWALL_UP_1(1, new TileSprites(ResourceGetter.getTileTexture("pipewall_up_1.png")), true, false, 1, 1, true),
+    PIPEWALL_UP_2(1, new TileSprites(ResourceGetter.getTileTexture("pipewall_up_2.png")), true, false, 1, 1, true),
+    PIPEWALL_UP_3(1, new TileSprites(ResourceGetter.getTileTexture("pipewall_up_3.png")), true, false, 1, 1, true),
+    PIPEWALL_UP_4(1, new TileSprites(ResourceGetter.getTileTexture("pipewall_up_4.png")), true, false, 1, 1, true),
+    PIPEWALL_UP_5(1, new TileSprites(ResourceGetter.getTileTexture("pipewall_up_5.png")), true, false, 1, 1, true),
+    GRAYWALL(1, new TileSprites(ResourceGetter.getTileTexture("graywall.png")), true, false, 1, 1, true),
+
+
+
     WALL_WALL(1, new TileSprites(ResourceGetter.getTileTexture("wall_wall.png")), true, false, 1, 1, true);
 
 
