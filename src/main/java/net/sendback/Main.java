@@ -9,7 +9,6 @@ import net.sendback.util.components.menus.SessionListPanel;
 import net.sendback.util.logging.LogType;
 import net.sendback.util.logging.Logger;
 import net.sendback.util.resources.ResourceGetter;
-import net.sendback.worlds.generator.GeneratorPresets;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
@@ -87,9 +86,9 @@ public class Main {
         MouseHandler.init();
 
         SessionListPanel.setSessionList(new Session[]{
-                new Session("Forest", -673232, GeneratorPresets.FOREST),
-                new Session("Labyrinth", 111, GeneratorPresets.LAB),
-                new Session("Block", -65445, GeneratorPresets.FOREST)
+                new Session("Forest", -68752),
+                new Session("Labyrinth", 111),
+                new Session("Block", -65445)
         });
 
         SwingUtilities.invokeLater(() -> Frame.getInstance().setVisible(true));

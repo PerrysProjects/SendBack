@@ -1,6 +1,7 @@
 package net.sendback.worlds.generator;
 
 import net.sendback.objects.FloorTile;
+import net.sendback.objects.InteractiveTile;
 import net.sendback.objects.WorldTile;
 import net.sendback.worlds.procedural.PerlinNoise;
 
@@ -48,6 +49,11 @@ public class PerlinGenerator extends Generator {
             return new WorldTile(x, y, getWorldTileIDs()[0]);
         }
 
+        return null;
+    }
+
+    @Override
+    public InteractiveTile getInteractiveTile(int x, int y) {
         return null;
     }
 }

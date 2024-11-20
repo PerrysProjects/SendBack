@@ -109,7 +109,7 @@ public class GameCanvas extends Canvas implements Runnable, KeyListener {
             stop();
         }
         this.session = session;
-        world = session.getWorlds()[0];
+        world = session.getCurrentWorld();
         player = session.getPlayer();
 
         start();
@@ -194,10 +194,11 @@ public class GameCanvas extends Canvas implements Runnable, KeyListener {
             g2.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_LCD_HRGB);
             g2.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
 
-
             g2.setFont(ResourceGetter.getBold());
 
             int zoom = Settings.getInt("screen.zoom");
+
+            world = session.getCurrentWorld();
 
             int tileSize = 0;
             while(tileSize == 0) {
@@ -211,7 +212,7 @@ public class GameCanvas extends Canvas implements Runnable, KeyListener {
             double offsetY = player.getY() - (int) player.getY();
 
             for(int x = 0; x < tileScreenWidth + 2; x++) {
-                for(int y = 0; y < tileScreenHeight + 2; y++) {
+                for(int y = -1; y < tileScreenHeight + 2; y++) {
                     int tilePosX = (int) (player.getX() - tileScreenWidth / 2 + x);
                     int tilePosY = (int) (player.getY() - tileScreenHeight / 2 + y);
 
@@ -228,22 +229,80 @@ public class GameCanvas extends Canvas implements Runnable, KeyListener {
                     int screenPosX = (int) (tileSize * x - tileSize * offsetX + extraX);
                     int screenPosY = (int) (tileSize * y - tileSize * offsetY + extraY);
 
-                    //drawTile(g2, world.getTileGrid(), world.getBorderTile(), tilePosX, tilePosY, screenPosX, screenPosY, tileSize);
-                    //drawTile(g2, world.getWorldGrid(), world.getBorderWorldTile(), tilePosX, tilePosY, screenPosX, screenPosY, tileSize);
-
                     BufferedImage texture = world.getBorderTile().getTextures().getTexture();
+
+                    int tileWidth;
+                    int tileHeight;
+
+                    int tileOffsetX;
+                    int tileOffsetY;
+
                     if(tilePosX >= 0 && tilePosX < world.getWidth() && tilePosY >= 0 && tilePosY < world.getHeight()) {
                         if(world.getFloorTileGrid()[tilePosX][tilePosY] != null) {
                             texture = getTexture(world.getFloorTileGrid(), tilePosX, tilePosY);
-                            g2.drawImage(texture, screenPosX, screenPosY, tileSize, tileSize, this);
-                        }
 
-                        if(world.getWorldTileGrid()[tilePosX][tilePosY] != null) {
-                            texture = getTexture(world.getWorldTileGrid(), tilePosX, tilePosY);
-                            g2.drawImage(texture, screenPosX, screenPosY, tileSize, tileSize, this);
+                            tileWidth = world.getFloorTileGrid()[tilePosX][tilePosY].getWidth() * tileSize;
+                            tileHeight = world.getFloorTileGrid()[tilePosX][tilePosY].getWidth() * tileSize;
+
+                            tileOffsetX = world.getFloorTileGrid()[tilePosX][tilePosY].getOffsetX() * tileSize;
+                            tileOffsetY = world.getFloorTileGrid()[tilePosX][tilePosY].getOffsetY() * tileSize;
+
+                            g2.drawImage(texture, screenPosX + tileOffsetX, screenPosY + tileOffsetY, tileWidth, tileHeight, this);
                         }
                     } else {
                         g2.drawImage(texture, screenPosX, screenPosY, tileSize, tileSize, this);
+                    }
+                }
+            }
+
+            for(int x = 0; x < tileScreenWidth + 2; x++) {
+                for(int y = -1; y < tileScreenHeight + 2; y++) {
+                    int tilePosX = (int) (player.getX() - tileScreenWidth / 2 + x);
+                    int tilePosY = (int) (player.getY() - tileScreenHeight / 2 + y);
+
+                    int extraX = (getWidth() / 2 - tileSize / 2) % tileSize;
+                    if(extraX >= tileSize / 2) {
+                        extraX -= tileSize;
+                    }
+
+                    int extraY = (getHeight() / 2 - tileSize / 2) % tileSize;
+                    if(extraY >= tileSize / 2) {
+                        extraY -= tileSize;
+                    }
+
+                    int screenPosX = (int) (tileSize * x - tileSize * offsetX + extraX);
+                    int screenPosY = (int) (tileSize * y - tileSize * offsetY + extraY);
+
+                    BufferedImage texture;
+
+                    int tileWidth;
+                    int tileHeight;
+
+                    int tileOffsetX;
+                    int tileOffsetY;
+
+                    if(tilePosX >= 0 && tilePosX < world.getWidth() && tilePosY >= 0 && tilePosY < world.getHeight()) {
+                        if(world.getInteractiveTileGrid()[tilePosX][tilePosY] != null) {
+                            texture = getTexture(world.getInteractiveTileGrid(), tilePosX, tilePosY);
+
+                            tileWidth = world.getInteractiveTileGrid()[tilePosX][tilePosY].getWidth() * tileSize;
+                            tileHeight = world.getInteractiveTileGrid()[tilePosX][tilePosY].getWidth() * tileSize;
+
+                            tileOffsetX = world.getInteractiveTileGrid()[tilePosX][tilePosY].getOffsetX() * tileSize;
+                            tileOffsetY = world.getInteractiveTileGrid()[tilePosX][tilePosY].getOffsetY() * tileSize;
+
+                            g2.drawImage(texture, screenPosX + tileOffsetX, screenPosY + tileOffsetY, tileWidth, tileHeight, this);
+                        } else if(world.getWorldTileGrid()[tilePosX][tilePosY] != null) {
+                            texture = getTexture(world.getWorldTileGrid(), tilePosX, tilePosY);
+
+                            tileWidth = world.getWorldTileGrid()[tilePosX][tilePosY].getWidth() * tileSize;
+                            tileHeight = world.getWorldTileGrid()[tilePosX][tilePosY].getWidth() * tileSize;
+
+                            tileOffsetX = world.getWorldTileGrid()[tilePosX][tilePosY].getOffsetX() * tileSize;
+                            tileOffsetY = world.getWorldTileGrid()[tilePosX][tilePosY].getOffsetY() * tileSize;
+
+                            g2.drawImage(texture, screenPosX + tileOffsetX, screenPosY + tileOffsetY, tileWidth, tileHeight, this);
+                        }
                     }
                 }
             }
@@ -329,6 +388,8 @@ public class GameCanvas extends Canvas implements Runnable, KeyListener {
 
         char inventory = Settings.getChar("keyBind.inventory");
 
+        char interacting = Settings.getChar("keyBind.interacting");
+
         if(key == forward) {
             player.startMoving(MovementType.UP);
         } else if(key == left) {
@@ -339,6 +400,8 @@ public class GameCanvas extends Canvas implements Runnable, KeyListener {
             player.startMoving(MovementType.RIGHT);
         } else if(key == inventory) {
             player.toggleInventory();
+        } else if(key == interacting) {
+            player.interact(true);
         }
     }
 
@@ -351,6 +414,8 @@ public class GameCanvas extends Canvas implements Runnable, KeyListener {
         char backward = Settings.getChar("keyBind.backward");
         char right = Settings.getChar("keyBind.right");
 
+        char interacting = Settings.getChar("keyBind.interacting");
+
         if(key == forward) {
             player.stopMoving(MovementType.UP);
         } else if(key == left) {
@@ -359,6 +424,8 @@ public class GameCanvas extends Canvas implements Runnable, KeyListener {
             player.stopMoving(MovementType.DOWN);
         } else if(key == right) {
             player.stopMoving(MovementType.RIGHT);
+        } else if(key == interacting) {
+            player.interact(false);
         }
     }
 

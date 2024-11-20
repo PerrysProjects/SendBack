@@ -26,6 +26,7 @@ public class Settings {
         settings.put("keyBind.backward", "s");
         settings.put("keyBind.right", "d");
         settings.put("keyBind.inventory", "e");
+        settings.put("keyBind.interacting", "i");
 
         settings.put("volume.music", "1.0");
         settings.put("volume.player", "1.0");

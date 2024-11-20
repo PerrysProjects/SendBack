@@ -3,6 +3,7 @@ package net.sendback.util.logging;
 import net.sendback.Main;
 import net.sendback.util.files.FileWriterUtil;
 
+import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -10,7 +11,7 @@ import java.util.ArrayList;
 public class Logger {
     private static final ArrayList<String> logs = new ArrayList<>();
 
-    private static final FileWriterUtil logfile = new FileWriterUtil(Main.getPath().toString() + "/logs/latest.log");
+    private static final FileWriterUtil logfile = new FileWriterUtil(Main.getPath().toString() + "/logs/" + LocalDate.now() + ".log");
 
     public static void log(String message) {
         log(message, LogType.INFO);

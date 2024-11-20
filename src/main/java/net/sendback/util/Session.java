@@ -15,11 +15,11 @@ public class Session implements Runnable {
     private final Date creationDate;
     private final Date lastUse;
 
+    private final Player player;
+
     private final int seed;
     private final World[] worlds;
-    private final World currentWorld;
-
-    private final Player player;
+    private World currentWorld;
 
     private final Thread thread;
     private final int tps;
@@ -27,31 +27,32 @@ public class Session implements Runnable {
     private boolean paused;
     private final Object lock = new Object();
 
-    public Session(String name, int seed, GeneratorPresets preset) {
+    public Session(String name, int seed) {
         this.name = name;
         path = Paths.get(Main.getPath() + "/" + name);
         creationDate = new Date();
         lastUse = new Date();
 
-        this.seed = seed;
-        worlds = new World[]{new World("Test", 500, 500, seed, preset)};
-        currentWorld = worlds[0];
+        player = new Player(this, 8, 8);
 
-        player = new Player(this, 5, 5);
+        this.seed = seed;
+        worlds = new World[]{new World("Lab", 500, 500, seed, GeneratorPresets.LAB, this),
+                new World("StoneAge", 500, 500, seed, GeneratorPresets.FOREST, this)};
+        currentWorld = worlds[0];
 
         thread = new Thread(this, name);
         tps = 40;
     }
 
     private void update() {
-        /*for(World world : worlds) {
-            world.update();
-        }*/
+        getCurrentWorld().update();
 
         player.update();
     }
 
     public void start() {
+        player.setUp();
+
         if(paused) {
             resume();
         } else if(!thread.isAlive()) {
@@ -134,6 +135,10 @@ public class Session implements Runnable {
 
     public World getCurrentWorld() {
         return currentWorld;
+    }
+
+    public void setCurrentWorld(World currentWorld) {
+        this.currentWorld = currentWorld;
     }
 
     public Player getPlayer() {

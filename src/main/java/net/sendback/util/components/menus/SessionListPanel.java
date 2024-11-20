@@ -1,12 +1,10 @@
 package net.sendback.util.components.menus;
 
 import net.sendback.util.Session;
-
 import net.sendback.util.components.Frame;
 import net.sendback.util.components.SessionButton;
 import net.sendback.util.components.TexturedButton;
 import net.sendback.util.resources.ResourceGetter;
-import net.sendback.worlds.generator.GeneratorPresets;
 
 import javax.swing.*;
 import java.awt.*;
@@ -126,7 +124,7 @@ public class SessionListPanel extends JPanel {
             return;
         }
 
-        Session newSession = new Session(name, seed, GeneratorPresets.FOREST);
+        Session newSession = new Session(name, seed);
         addSession(newSession);
     }
 
