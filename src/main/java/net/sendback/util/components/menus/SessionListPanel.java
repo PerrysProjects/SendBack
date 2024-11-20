@@ -43,7 +43,7 @@ public class SessionListPanel extends JPanel {
 
         // Session-Container erstellen
         sessionListContainer = new JPanel();
-        sessionListContainer.setLayout(new GridLayout(2, 1, 20, 20)); // 2x2 Grid mit Abständen
+        sessionListContainer.setLayout(new GridLayout(3, 3, 20, 20));
         sessionListContainer.setOpaque(false);
 
 
@@ -74,7 +74,7 @@ public class SessionListPanel extends JPanel {
         centerPanel.add(sessionListContainer);
 
         // Buttons unten anordnen
-        JPanel bottomPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 200, 10));
+        JPanel bottomPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 50, 10));
         bottomPanel.setOpaque(false);
         bottomPanel.add(newSeedButton);
         bottomPanel.add(goBackButton);
