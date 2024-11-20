@@ -317,10 +317,9 @@ public class GameCanvas extends Canvas implements Runnable, KeyListener {
                 g2.drawString("FPS: " + currentFps, 50, 50);
 
                 g2.setColor(Color.CYAN);
-                g2.drawString(SystemStats.getMemoryUsage(), 50, 80);
-
-                g2.setColor(Color.CYAN);
-                g2.drawString(SystemStats.getCpuUsage(), 50, 110);
+                g2.drawString(SystemStats.getMemoryUsage()[0], 50, 80);
+                g2.drawString(SystemStats.getMemoryUsage()[1], 50, 110);
+                g2.drawString(SystemStats.getCpuUsage(), 50, 140);
             }
 
             if(player.isInventoryOpen()) {

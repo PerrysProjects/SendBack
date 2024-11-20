@@ -7,7 +7,9 @@ import java.lang.management.MemoryMXBean;
 import java.lang.management.MemoryUsage;
 
 public class SystemStats {
-    public static String getMemoryUsage() {
+    private static double cpuSave;
+
+    public static String[] getMemoryUsage() {
         MemoryMXBean memoryBean = ManagementFactory.getMemoryMXBean();
         MemoryUsage heapMemoryUsage = memoryBean.getHeapMemoryUsage();
         MemoryUsage nonHeapMemoryUsage = memoryBean.getNonHeapMemoryUsage();
@@ -17,20 +19,22 @@ public class SystemStats {
         long usedNonHeapMemory = nonHeapMemoryUsage.getUsed();
         long maxNonHeapMemory = nonHeapMemoryUsage.getMax();
 
-        return String.format("Heap Memory: %d MB / %d MB\n" +
-                        "Non-Heap Memory: Used: %d MB, Max: %d MB",
-                bytesToMegabytes(usedHeapMemory), bytesToMegabytes(maxHeapMemory),
-                bytesToMegabytes(usedNonHeapMemory), bytesToMegabytes(maxNonHeapMemory));
+        return new String[]{String.format("HM: %dMB / %dMB", bytesToMegabytes(usedHeapMemory), bytesToMegabytes(maxHeapMemory)),
+                String.format("NHM: %dMB / %dMB", bytesToMegabytes(usedNonHeapMemory), bytesToMegabytes(maxNonHeapMemory))};
     }
 
     public static String getCpuUsage() {
         OperatingSystemMXBean osBean = (OperatingSystemMXBean) ManagementFactory.getOperatingSystemMXBean();
-        if (osBean != null) {
-
-            double cpuLoad = osBean.getCpuLoad(); // Returns a value between 0.0 and 1.0
-            return String.format("CPU Usage: %.2f%%", cpuLoad * 100);
+        if(osBean != null) {
+            double cpuLoad = osBean.getCpuLoad();
+            if(!Double.isNaN(cpuLoad)) {
+                cpuSave = cpuLoad;
+                return String.format("CPU: %.2f%%", cpuLoad * 100);
+            } else {
+                return String.format("CPU: %.2f%%", cpuSave * 100);
+            }
         } else {
-            return "CPU Usage information not available on this operating system.";
+            return "CPU: -";
         }
     }
 
