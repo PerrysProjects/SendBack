@@ -22,7 +22,20 @@ public enum TileIDs {
             ResourceGetter.getTileTexture("tree_inverted_down_right.png")),
             true, false, 1, 1, true),
     TREE_ALONE(1, new TileSprites(ResourceGetter.getTileTexture("tree_alone.png")), true, false, 1, 1, true),
-    LAB_WALL(1, new TileSprites(ResourceGetter.getTileTexture("lab_wall.png")), true, false, 1, 1, true);
+    LAB_WALL(1, new TileSprites(ResourceGetter.getTileTexture("lab_wall.png")), true, false, 1, 1, true),
+    REDBUTTON_UP(1, new TileSprites(ResourceGetter.getTileTexture("redbutton_up.png")), true, false, 1, 1, true),
+    REDBUTTON_DOWN(1, new TileSprites(ResourceGetter.getTileTexture("redbutton_down.png")), true, false, 1, 1, true),
+    YELLOWBUTTON_UP(1, new TileSprites(ResourceGetter.getTileTexture("yellowbutton_up.png")), true, false, 1, 1, true),
+    YELLOWBUTTON_DOWN(1, new TileSprites(ResourceGetter.getTileTexture("yellowbutton_down.png")), true, false, 1, 1, true),
+    GREENBUTTON_UP(1, new TileSprites(ResourceGetter.getTileTexture("greenbutton_up.png")), true, false, 1, 1, true),
+    GREENBUTTON_DOWNL(1, new TileSprites(ResourceGetter.getTileTexture("greenbutton_down.png")), true, false, 1, 1, true),
+    BLUEBUTTON_UP(1, new TileSprites(ResourceGetter.getTileTexture("bluebutton_up.png")), true, false, 1, 1, true),
+    BLUEBUTTON_DOWN(1, new TileSprites(ResourceGetter.getTileTexture("bluebutton_down.png")), true, false, 1, 1, true),
+    PURPLEBUTTON_UP(1, new TileSprites(ResourceGetter.getTileTexture("purplebutton_up.png")), true, false, 1, 1, true),
+    PRUPLEBUTTON_DOWN(1, new TileSprites(ResourceGetter.getTileTexture("purplebutton_down.png")), true, false, 1, 1, true),
+    WALL_WALL(1, new TileSprites(ResourceGetter.getTileTexture("wall_wall.png")), true, false, 1, 1, true);
+
+
 
     private final int id;
     private final TileSprites sprites;
